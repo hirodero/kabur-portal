@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { SkillGapPanel } from "@/components/jobs/SkillGapPanel";
-import { ApplyButton } from "@/components/jobs/ApplyButton";
 import { JobCardMini } from "@/components/jobs/JobCardMini";
+import { FunderModeHeader } from "@/components/jobs/FunderModeHeader";
+import { QualificationsPanel } from "@/components/jobs/QualificationsPanel";
 import { JOBS } from "@/lib/mock-data";
 import {
   ArrowRight01Icon,
@@ -88,51 +89,12 @@ export default async function JobDetailPage({ params }: PageProps) {
 
       {/* ── JOB HEADER CARD ── */}
       <div className="bg-white border border-ink/10 rounded-card p-6 mb-5">
-        <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
-          {/* Left info */}
-          <div className="flex-1">
-            <h1 className="font-jakarta font-bold text-2xl sm:text-3xl text-ink mb-1">
-              {job.title}
-            </h1>
-            <p className="font-jakarta text-base text-ink-muted mb-4">{job.company}</p>
-
-            <div className="flex flex-wrap gap-2 mb-4">
-              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
-                via {job.offTaker}
-              </span>
-              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
-                {job.sector}
-              </span>
-            </div>
-
-            <div className="flex flex-wrap gap-4 font-jakarta text-sm text-ink-muted">
-              <span className="flex items-center gap-1.5">
-                <Calendar01Icon size={14} />
-                Diposting {postedDate}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <UserAdd01Icon size={14} />
-                Deadline {deadlineDate}
-              </span>
-            </div>
-          </div>
-
-          {/* Right: salary + actions */}
-          <div className="flex flex-col items-start lg:items-end gap-4">
-            <div className="lg:text-right">
-              <p className="font-jakarta text-xs text-ink-muted mb-1">Gaji</p>
-              <p className="font-jakarta font-bold text-2xl text-primary">
-                {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-              </p>
-              <p className="font-jakarta text-sm text-ink-muted mt-0.5">
-                {job.placement ? `📍 ${job.placement.city}, ${job.placement.country}` : `${job.countryFlag} ${job.country}`}
-              </p>
-            </div>
-            <div className="flex gap-3 w-full lg:w-auto">
-              <ApplyButton job={job} size="default" className="flex-1 lg:flex-none lg:w-36" />
-            </div>
-          </div>
-        </div>
+        <FunderModeHeader
+          job={job}
+          postedDate={postedDate}
+          deadlineDate={deadlineDate}
+          formattedSalary={formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+        />
       </div>
 
       {/* ── TWO-COLUMN LAYOUT ── */}
@@ -166,20 +128,8 @@ export default async function JobDetailPage({ params }: PageProps) {
             </p>
           </div>
 
-          {/* Qualifications */}
-           <div className="bg-white border border-ink/10 rounded-card p-6">
-            <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
-              Kualifikasi
-            </h2>
-            <ul className="space-y-2.5">
-              {job.qualifications.map((q, idx) => (
-                <li key={idx} className="flex items-start gap-2.5 font-jakarta text-sm text-ink-muted">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                  {q}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Qualifications — with funder toggle */}
+          <QualificationsPanel jobId={job.id} qualifications={job.qualifications} />
 
           {/* Skill Gap Panel */}
           <SkillGapPanel skillRequirements={job.skillRequirements} />

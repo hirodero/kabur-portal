@@ -39,6 +39,7 @@ interface JobCardProps {
   job: Job;
   variant?: "default" | "featured";
   viewMode?: "grid" | "list";
+  funderData?: { qualifiedCount: number; fundingNeeded: number };
 }
 
 function formatSalary(min: number, max: number, currency: string): string {
@@ -69,7 +70,7 @@ function OffTakerBadge({ offTaker, size = "md" }: { offTaker: string; size?: "sm
   );
 }
 
-export function JobCard({ job, variant = "default", viewMode = "grid" }: JobCardProps) {
+export function JobCard({ job, variant = "default", viewMode = "grid", funderData }: JobCardProps) {
   const countryCode = job.countryCode ?? COUNTRY_TO_ISO[job.country];
   const FlagIcon = countryCode ? FLAG_MAP[countryCode] : null;
 
@@ -171,6 +172,21 @@ export function JobCard({ job, variant = "default", viewMode = "grid" }: JobCard
             {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}{" "}
             <span className="text-sm font-jakarta font-medium text-ink/70">/bln</span>
           </p>
+
+          {/* Funder overlay */}
+          {funderData && (
+            <div className="mt-3 flex items-center justify-between bg-funded/8 border border-funded/20 rounded-lg px-3 py-2 gap-2">
+              <span className="font-jakarta text-[11px] font-semibold text-funded">
+                {funderData.qualifiedCount} qualified
+              </span>
+              <span className="font-jakarta text-[11px] text-funded-dark font-medium">
+                {funderData.fundingNeeded > 0
+                  ? `Rp ${(funderData.fundingNeeded / 1_000_000).toFixed(1)} jt needed`
+                  : "Belum ada kandidat"}
+              </span>
+            </div>
+          )}
+
           <div className="flex items-center justify-between pt-3 border-t border-ink/10 mt-3">
             <span className="text-xs text-ink-muted bg-ink/5 px-2.5 py-1.5 rounded-badge font-medium">
               {job.sector}

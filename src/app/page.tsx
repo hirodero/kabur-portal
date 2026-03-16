@@ -36,14 +36,21 @@ export default function LandingPage() {
           backgroundImage: 'radial-gradient(ellipse 60% 60% at 80% 50%, rgba(200,16,46,0.18) 0%, transparent 70%)',
         }}
       >
-        {/* Desktop globe - kuadran kiri atas globe nempel di pojok kanan bawah section */}
-        <div className="hidden lg:block absolute bottom-0 right-0 pointer-events-none z-10 overflow-hidden"
-          style={{ width: 'min(52vw, 600px)', height: 'min(52vw, 600px)' }}
-        >
-          <div className="absolute bottom-0 right-0 pointer-events-auto"
-            style={{ width: 'min(104vw, 1200px)', height: 'min(104vw, 1200px)', transform: 'translate(50%, 50%)' }}
+        {/* Desktop globe - 2x larger, ditengah agak kebawah */}
+        <div className="hidden lg:block absolute inset-0 pointer-events-none z-10 overflow-hidden">
+          <div className="absolute left-1/2 top-[55%] -translate-x-1/2 -translate-y-1/2 pointer-events-auto"
+            style={{ width: 'min(208vw, 2400px)', height: 'min(208vw, 2400px)' }}
           >
             <Globe />
+          </div>
+        </div>
+
+        {/* Mobile globe - kebawahin dikit, keliatan cuma setengah atas */}
+        <div className="lg:hidden absolute bottom-0 left-0 right-0 pointer-events-none z-10 overflow-hidden">
+          <div className="relative w-full h-[min(85vw,340px)]">
+            <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[min(170vw,680px)] h-[min(170vw,680px)]">
+              <Globe />
+            </div>
           </div>
         </div>
 
@@ -134,15 +141,6 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Center bottom (mobile): Globe - 2/4 (kuadran 1+2, bagian atas) */}
-          <div className="flex lg:hidden justify-center items-end pt-4 pb-8 overflow-hidden">
-            <div className="relative w-[min(85vw,340px)] h-[min(42.5vw,170px)]">
-              <div className="absolute left-0 top-0 w-[min(85vw,340px)] h-[min(85vw,340px)]">
-                <Globe />
-              </div>
-            </div>
-          </div>
-
           {/* Scroll indicator - mobile */}
           <div className="flex sm:hidden justify-center pb-4">
             <div className="w-1 h-1 bg-white/30 rounded-full animate-bounce-slow" />
@@ -222,8 +220,8 @@ export default function LandingPage() {
 
       {/* ── SECTION 5: CTA BAND ── */}
       <section
-        className="grain relative overflow-hidden py-28"
-        style={{ backgroundColor: '#8B0000' }}
+        className="grain relative overflow-hidden py-4 pb-12"
+        style={{ backgroundColor: '#F0EDE8' }}
       >
         <div className="relative z-10 max-w-3xl mx-auto px-5 sm:px-8 text-center">
           <div className="reveal">

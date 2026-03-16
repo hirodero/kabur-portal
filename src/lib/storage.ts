@@ -7,6 +7,8 @@ export const STORAGE_KEYS = {
   MP_REFERRAL: "pmi_mp_referral",
   FILTERS: "pmi_filters",
   MP_BANNER_DISMISSED: "pmi_mp_banner_dismissed",
+  FUNDER_MODE: "pmi_funder_mode",
+  QUALIFIED_USERS: "pmi_qualified_users",
 } as const;
 
 const DEFAULT_USER: UserProfile = {
@@ -143,11 +145,12 @@ export function dismissMPBanner(): void {
   setItem(STORAGE_KEYS.MP_BANNER_DISMISSED, true);
 }
 
-// Filters
+// Filters (normalize legacy "funded_first" from old localStorage)
 export function getFilters(): FilterState {
-  const stored = getItem<FilterState>(STORAGE_KEYS.FILTERS) ?? DEFAULT_FILTERS;
-  const sortBy = stored.sortBy === "funded_first" ? "latest" : stored.sortBy;
-  return { ...stored, sortBy };
+  const stored = getItem<FilterState & { sortBy?: string }>(STORAGE_KEYS.FILTERS) ?? DEFAULT_FILTERS;
+  const validSortBy: FilterState["sortBy"] =
+    stored.sortBy === "skill_match" ? "skill_match" : "latest";
+  return { ...stored, sortBy: validSortBy } as FilterState;
 }
 
 export function setFilters(filters: FilterState): void {
@@ -156,4 +159,50 @@ export function setFilters(filters: FilterState): void {
 
 export function resetFilters(): void {
   removeItem(STORAGE_KEYS.FILTERS);
+}
+
+// Funder Mode
+export function getFunderMode(): boolean {
+  return getItem<boolean>(STORAGE_KEYS.FUNDER_MODE) ?? false;
+}
+
+export function setFunderMode(value: boolean): void {
+  setItem(STORAGE_KEYS.FUNDER_MODE, value);
+}
+
+// Seeded mock qualified users — realistic distribution across 22 jobs
+const MOCK_QUALIFIED_USERS: Record<string, number> = {
+  job_001: 14, job_002: 8,  job_003: 21, job_004: 6,  job_005: 17,
+  job_006: 11, job_007: 3,  job_008: 25, job_009: 9,  job_010: 19,
+  job_011: 5,  job_012: 13, job_013: 28, job_014: 7,  job_015: 16,
+  job_016: 22, job_017: 4,  job_018: 12, job_019: 31, job_020: 10,
+  job_021: 18, job_022: 8,
+};
+
+// Qualified users per job: Record<jobId, count>
+export function getQualifiedUsers(): Record<string, number> {
+  return getItem<Record<string, number>>(STORAGE_KEYS.QUALIFIED_USERS) ?? {};
+}
+
+export function initQualifiedUsers(): void {
+  if (!isBrowser()) return;
+  const existing = getItem<Record<string, number>>(STORAGE_KEYS.QUALIFIED_USERS);
+  if (!existing) {
+    setItem(STORAGE_KEYS.QUALIFIED_USERS, MOCK_QUALIFIED_USERS);
+  }
+}
+
+export function addQualifiedUser(jobId: string): number {
+  const current = getQualifiedUsers();
+  const next = { ...current, [jobId]: (current[jobId] ?? 0) + 1 };
+  setItem(STORAGE_KEYS.QUALIFIED_USERS, next);
+  return next[jobId];
+}
+
+export function removeQualifiedUser(jobId: string): number {
+  const current = getQualifiedUsers();
+  const newCount = Math.max(0, (current[jobId] ?? 0) - 1);
+  const next = { ...current, [jobId]: newCount };
+  setItem(STORAGE_KEYS.QUALIFIED_USERS, next);
+  return newCount;
 }

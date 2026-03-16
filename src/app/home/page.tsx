@@ -8,14 +8,17 @@ import { JOBS } from "@/lib/mock-data";
 import {
   getUserProfile,
   initUserProfile,
+  initQualifiedUsers,
   getFilters,
   setFilters as persistFilters,
 } from "@/lib/storage";
+import { useFunderMode } from "@/hooks/useFunderMode";
 import type { UserProfile, FilterState } from "@/types";
 import {
   FilterIcon,
   GridViewIcon,
   ListViewIcon,
+  MoneyBag01Icon,
 } from "hugeicons-react";
 import Link from "next/link";
 import { Button, ButtonGroup } from "@heroui/react";
@@ -46,12 +49,14 @@ export default function HomePage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const { funderMode, toggleFunderMode, getCount, hydrated } = useFunderMode();
 
   useEffect(() => {
     const profile = initUserProfile();
     setUser(profile);
     const savedFilters = getFilters();
     setFiltersState(savedFilters);
+    initQualifiedUsers();
   }, []);
 
   function updateFilters(updates: Partial<FilterState>) {
@@ -246,18 +251,50 @@ export default function HomePage() {
               <h1 className="font-jakarta font-bold text-xl sm:text-2xl text-ink">
                 Selamat datang, {user?.name?.split(" ")[0] ?? "PMI"}
               </h1>
+              {hydrated && funderMode && (
+                <p className="font-jakarta text-xs text-funded font-semibold mt-0.5">
+                  Funder Mode aktif
+                </p>
+              )}
             </div>
-            {/* Mobile filter toggle */}
-            <Button
-              variant="bordered"
-              size="sm"
-              className="lg:hidden font-jakarta"
-              startContent={<FilterIcon size={14} />}
-              onClick={() => setMobileFiltersOpen((v) => !v)}
-            >
-              Filter
-            </Button>
+            <div className="flex items-center gap-2">
+              {/* Funder mode toggle */}
+              {hydrated && (
+                <button
+                  type="button"
+                  onClick={toggleFunderMode}
+                  className={`inline-flex items-center gap-1.5 font-jakarta text-xs font-semibold px-3 py-1.5 rounded-badge border transition-all duration-200 ${
+                    funderMode
+                      ? "bg-funded text-white border-funded shadow-sm"
+                      : "bg-white text-ink-muted border-ink/15 hover:border-funded/50 hover:text-funded"
+                  }`}
+                >
+                  <MoneyBag01Icon size={13} />
+                  {funderMode ? "Funder" : "Funder Mode"}
+                </button>
+              )}
+              {/* Mobile filter toggle */}
+              <Button
+                variant="bordered"
+                size="sm"
+                className="lg:hidden font-jakarta"
+                startContent={<FilterIcon size={14} />}
+                onClick={() => setMobileFiltersOpen((v) => !v)}
+              >
+                Filter
+              </Button>
+            </div>
           </div>
+
+          {/* Funder mode banner */}
+          {hydrated && funderMode && (
+            <div className="mb-4 flex items-center gap-2 bg-funded/8 border border-funded/20 rounded-card px-4 py-2.5">
+              <span className="w-2 h-2 rounded-full bg-funded animate-pulse shrink-0" />
+              <p className="font-jakarta text-xs text-funded-dark font-medium">
+                Funder Mode — kartu lowongan menampilkan jumlah kandidat qualified dan estimasi dana yang dibutuhkan.
+              </p>
+            </div>
+          )}
 
           {/* Mobile filters panel */}
           {mobileFiltersOpen && (
@@ -345,11 +382,18 @@ export default function HomePage() {
                     : "flex flex-col gap-4"
                 }
               >
-                {visibleJobs.map((job) => (
-                  <div key={job.id} className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
-                    <JobCard job={job} viewMode={filters.viewMode} />
-                  </div>
-                ))}
+                {visibleJobs.map((job) => {
+                  const qualifiedCount = hydrated ? getCount(job.id) : 0;
+                  const funderData =
+                    funderMode && hydrated
+                      ? { qualifiedCount, fundingNeeded: qualifiedCount * job.salaryMin }
+                      : undefined;
+                  return (
+                    <div key={job.id} className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
+                      <JobCard job={job} viewMode={filters.viewMode} funderData={funderData} />
+                    </div>
+                  );
+                })}
               </div>
 
               {totalPages > 1 && (
