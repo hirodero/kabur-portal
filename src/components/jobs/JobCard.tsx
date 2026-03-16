@@ -91,8 +91,10 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
           <div className="flex flex-col gap-1 shrink-0">
             <span className="flex items-center gap-2">
               {FlagIcon ? (
-                <span className="flex items-center justify-center w-10 h-6 rounded-md border border-ink/20 bg-white overflow-hidden shrink-0">
-                  <FlagIcon title={job.country} className="w-full h-full" />
+                <span className="relative block w-10 h-6 rounded-md border border-ink/20 overflow-hidden shrink-0">
+                  <span className="absolute inset-0 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:w-full [&>svg]:h-full [&>svg]:scale-125 [&>svg]:block">
+                    <FlagIcon title={job.country} className="w-full h-full" />
+                  </span>
                 </span>
               ) : (
                 <span className="text-sm">{job.countryFlag}</span>
@@ -143,8 +145,10 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
         <div className="flex items-center justify-between gap-2 mb-3 min-w-0">
           <span className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
             {FlagIcon ? (
-              <span className="flex items-center justify-center w-12 h-8 rounded-lg border-2 border-ink/20 bg-white overflow-hidden shrink-0 shadow-sm">
-                <FlagIcon title={job.country} className="w-full h-full" />
+              <span className="relative block w-12 h-8 rounded-lg border-2 border-ink/20 overflow-hidden shrink-0 shadow-sm">
+                <span className="absolute inset-0 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:w-full [&>svg]:h-full [&>svg]:scale-125 [&>svg]:block">
+                  <FlagIcon title={job.country} className="w-full h-full" />
+                </span>
               </span>
             ) : (
               <span className="shrink-0">{job.countryFlag}</span>

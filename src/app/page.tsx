@@ -243,7 +243,7 @@ export default function LandingPage() {
           <div className="reveal">
             <Link
               href="/home?funded=true"
-              className="inline-block font-jakarta font-medium text-sm bg-white text-ink px-8 py-3.5 rounded-btn mt-8 hover:bg-parchment transition-colors duration-200 active:scale-[0.97]"
+              className="inline-block font-jakarta font-medium text-sm bg-red-700 text-white px-8 py-3.5 rounded-btn mt-8 hover:bg-black transition-colors duration-200 active:scale-[0.97]"
             >
               Kabur aja dulu!
             </Link>

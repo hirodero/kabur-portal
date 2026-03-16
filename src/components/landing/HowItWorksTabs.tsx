@@ -20,7 +20,7 @@ import {
 const TABS = [
   {
     id: "pmi",
-    label: "Untuk PMI",
+    label: "PMI",
     steps: [
       {
         icon: Search01Icon,
@@ -44,7 +44,7 @@ const TABS = [
   },
   {
     id: "mp",
-    label: "Untuk Mitra",
+    label: "Mitra",
     steps: [
       {
         icon: UserAdd01Icon,
@@ -68,7 +68,7 @@ const TABS = [
   },
   {
     id: "offtaker",
-    label: "Untuk Offtaker",
+    label: "Offtaker",
     steps: [
       {
         icon: Briefcase01Icon,
@@ -92,7 +92,7 @@ const TABS = [
   },
   {
     id: "funder",
-    label: "Untuk Funder",
+    label: "Funder",
     steps: [
       {
         icon: MoneyBag01Icon,
@@ -144,12 +144,13 @@ export function HowItWorksTabs() {
 
       {/* Steps — horizontal timeline on desktop */}
       <div className="relative grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Connecting line on desktop */}
-        <div className="hidden md:block absolute top-4 left-[16.67%] right-[16.67%] h-px bg-[#E8E6E1]" />
+        {/* Full-width connecting line, vertically centered on the number row (leading ~20px / 2 = 10px) */}
+        <div className="hidden md:block absolute top-[10px] left-0 right-0 h-px bg-[#E8E6E1]" />
 
         {activeTab.steps.map((step) => (
           <div key={step.title} className="relative flex flex-col gap-3">
-            <span className="font-jakarta text-sm font-semibold text-primary relative z-10 bg-white w-fit pr-3">
+            {/* Number sits on top of the line — white bg clips the line behind it */}
+            <span className="font-jakarta text-sm font-semibold text-primary relative z-10 bg-[#F0EDE8] w-fit pr-3">
               {step.number}
             </span>
             <div>

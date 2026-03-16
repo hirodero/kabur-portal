@@ -21,7 +21,7 @@ import {
   MoneyBag01Icon,
 } from "hugeicons-react";
 import Link from "next/link";
-import { Button, ButtonGroup } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Pagination } from "@/components/ui/pagination";
 
 const COUNTRIES = [
@@ -343,28 +343,32 @@ export default function HomePage() {
               />
             </div>
 
-            <ButtonGroup variant="flat" size="sm" className="gap-0 p-0.5 bg-white border border-ink/10 rounded-lg overflow-hidden shrink-0">
-              <Button
-                isIconOnly
-                size="sm"
-                variant={filters.viewMode === "grid" ? "solid" : "light"}
-                color={filters.viewMode === "grid" ? "primary" : "default"}
+            <div className="flex bg-ink/10 border border-ink/10 rounded-lg overflow-hidden shrink-0 p-0">
+              <button
+                type="button"
                 aria-label="Grid view"
                 onClick={() => updateFilters({ viewMode: "grid" })}
+                className={`flex-1 flex items-center justify-center min-w-[36px] h-9 rounded-l-lg transition-colors ${
+                  filters.viewMode === "grid"
+                    ? "bg-primary text-white"
+                    : "bg-white text-ink-muted hover:text-ink"
+                }`}
               >
                 <GridViewIcon size={14} />
-              </Button>
-              <Button
-                isIconOnly
-                size="sm"
-                variant={filters.viewMode === "list" ? "solid" : "light"}
-                color={filters.viewMode === "list" ? "primary" : "default"}
+              </button>
+              <button
+                type="button"
                 aria-label="List view"
                 onClick={() => updateFilters({ viewMode: "list" })}
+                className={`flex-1 flex items-center justify-center min-w-[36px] h-9 rounded-r-lg transition-colors ${
+                  filters.viewMode === "list"
+                    ? "bg-primary text-white"
+                    : "bg-white text-ink-muted hover:text-ink"
+                }`}
               >
                 <ListViewIcon size={14} />
-              </Button>
-            </ButtonGroup>
+              </button>
+            </div>
           </div>
 
           {/* Results count */}
