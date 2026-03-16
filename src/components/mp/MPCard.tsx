@@ -2,9 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import type { MarketingPartner } from "@/types";
 
-const MP_LOGOS: Record<string, string> = {
+const PARTNER_LOGOS: Record<string, string> = {
   zenius: "/zenius.png",
   telkomsel: "/telkomsel.png",
+  vokati: "/vokati-logo.png",
+  apjati: "/apjati-logo.png",
 };
 
 interface MPCardProps {
@@ -12,7 +14,7 @@ interface MPCardProps {
 }
 
 export function MPCard({ partner }: MPCardProps) {
-  const logo = partner.slug ? MP_LOGOS[partner.slug] : undefined;
+  const logo = partner.slug ? PARTNER_LOGOS[partner.slug] : undefined;
 
   return (
     <div className="bg-white border border-ink/8 rounded-card p-6 flex flex-col hover:-translate-y-1 hover:shadow-card-hover transition-all duration-200">
@@ -48,9 +50,11 @@ export function MPCard({ partner }: MPCardProps) {
 
       {/* Stats row */}
       <div className="flex gap-4 mt-3">
-        <span className="text-[11px] text-ink-muted">
-          {partner.referralCount.toLocaleString("id-ID")} referral
-        </span>
+        {partner.referralCount > 0 && (
+          <span className="text-[11px] text-ink-muted">
+            {partner.referralCount.toLocaleString("id-ID")} referral
+          </span>
+        )}
         <span className="text-[11px] text-ink-muted">
           {partner.activeJobCount} lowongan aktif
         </span>
@@ -58,10 +62,10 @@ export function MPCard({ partner }: MPCardProps) {
 
       {/* CTA */}
       <Link
-        href={`/home?mp=${partner.slug}`}
+        href={partner.ctaHref ?? `/home?mp=${partner.slug}`}
         className="mt-4 text-xs text-primary font-medium hover:underline"
       >
-        → Lihat channel
+        {partner.ctaLabel ?? "→ Lihat channel"}
       </Link>
     </div>
   );

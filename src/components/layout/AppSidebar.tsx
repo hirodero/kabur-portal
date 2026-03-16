@@ -6,7 +6,6 @@ import {
   Home01Icon,
   Search01Icon,
   Bookmark02Icon,
-  CalendarAdd01Icon,
   Settings01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
@@ -17,7 +16,6 @@ import { useSidebar } from "@/contexts/SidebarContext";
 const NAV_ITEMS = [
   { href: "/", label: "Beranda", icon: Home01Icon },
   { href: "/home", label: "Lowongan", icon: Search01Icon },
-  { href: "/job-fair", label: "Job Fair", icon: CalendarAdd01Icon },
   { href: "/home?tab=saved", label: "Simpan", icon: Bookmark02Icon },
   { href: "#", label: "Pengaturan", icon: Settings01Icon },
 ];

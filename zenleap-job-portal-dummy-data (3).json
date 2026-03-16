@@ -1,0 +1,1439 @@
+[
+  {
+    "id": "job_001",
+    "title": "Perawat Anak Berkebutuhan Khusus (Fachkraft für Autismus-Betreuung)",
+    "description": "Provide specialized care and therapeutic support for children diagnosed with Autism Spectrum Disorder (ASD) in residential and day-care settings. Collaborate with multidisciplinary teams including therapists, educators, and families to develop individualized care plans that promote social, emotional, and cognitive development.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–32 years old",
+      "Minimum Diploma III (D3) in Nursing or Special Education",
+      "Experience working with children with special needs preferred",
+      "Minimum German language proficiency level B1",
+      "Patient, empathetic, and adaptable personality"
+    ],
+    "benefits": [
+      "Sponsored language training up to B2",
+      "Accommodation provided for the first 12 months",
+      "Pathway to permanent residency (Niederlassungserlaubnis)",
+      "Annual flight allowance to home country",
+      "Specialized training in ASD care methodology"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Deutsch B1",
+      "Komunikasi dengan Pasien dan Keluarga",
+      "Dasar Istilah Medis",
+      "Perawatan Anak Berkebutuhan Khusus",
+      "Dokumentasi Perawatan Anak",
+      "Psikologi Perkembangan Anak Dasar",
+      "Keselamatan dan Pertolongan Pertama",
+      "Komunikasi Terapeutik"
+    ],
+    "placement": {
+      "city": "Berlin",
+      "state": "Berlin",
+      "country": "Germany"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "30 hari kerja/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Jumat (occasional weekend shifts)",
+      "working_hours": "38.5 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": true,
+    "funded_by": "Bundesagentur für Arbeit (German Federal Employment Agency)",
+    "employer": {
+      "name": "Vivantes Klinikum Neukölln",
+      "information": "Vivantes is Berlin's largest municipal hospital group, operating 9 hospitals and over 100 outpatient facilities across the city. With more than 17,000 employees, Vivantes is one of the biggest employers in the German healthcare sector and a leader in pediatric and specialized care services."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_002",
+    "title": "Perawat ICU (Intensivpfleger/in)",
+    "description": "Deliver critical care nursing in the Intensive Care Unit of a leading German hospital. Monitor and manage patients with life-threatening conditions, operate advanced medical equipment, administer medications, and coordinate with physicians and specialists to ensure optimal patient outcomes in high-acuity settings.",
+    "requirements": [
+      "Male / Female",
+      "Age 24–35 years old",
+      "Minimum Bachelor's Degree (S1) in Nursing",
+      "Active STR (Surat Tanda Registrasi Keperawatan)",
+      "Minimum 2 years of ICU or emergency room experience",
+      "Minimum German language proficiency level B1",
+      "BLS and ACLS certification preferred"
+    ],
+    "benefits": [
+      "Sponsored language training up to B2",
+      "Relocation package including accommodation for 6 months",
+      "Pathway to permanent residency (Niederlassungserlaubnis)",
+      "Annual flight allowance to home country",
+      "Access to advanced ICU training and certifications in Germany",
+      "Competitive salary with night shift and weekend premiums"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Deutsch B1",
+      "Komunikasi dengan Pasien",
+      "Dasar Istilah Medis",
+      "Dokumentasi di Rumah Sakit",
+      "Istilah Perawatan Intensif",
+      "Komunikasi Darurat Medis",
+      "Pengoperasian Alat Medis",
+      "Farmakologi Dasar",
+      "Etika dan Hukum Keperawatan"
+    ],
+    "placement": {
+      "city": "Munich",
+      "state": "Bavaria",
+      "country": "Germany"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "30 hari kerja/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system, termasuk malam)",
+      "working_hours": "38.5 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "GIZ (Deutsche Gesellschaft für Internationale Zusammenarbeit) — Triple Win Programme",
+    "employer": {
+      "name": "Klinikum rechts der Isar – Technische Universität München",
+      "information": "One of Germany's top-ranked university hospitals affiliated with the Technical University of Munich. The hospital operates over 1,100 beds across 33 specialized departments and is recognized as a center of excellence in intensive care, surgical innovation, and translational medicine."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_003",
+    "title": "Perawat Geriatri (Altenpfleger/in im Krankenhaus)",
+    "description": "Provide compassionate and skilled nursing care to elderly patients in hospital geriatric wards and long-term care facilities. Manage chronic conditions, assist with rehabilitation programs, coordinate medication schedules, and support patients in maintaining dignity and quality of life throughout their care journey.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–35 years old",
+      "Minimum Diploma III (D3) in Nursing",
+      "Active STR (Surat Tanda Registrasi Keperawatan)",
+      "Minimum 1 year of clinical or elderly care experience",
+      "Minimum German language proficiency level B1",
+      "Compassionate and patient demeanor"
+    ],
+    "benefits": [
+      "Sponsored language training up to B2",
+      "Accommodation support for the first 6 months",
+      "Pathway to permanent residency (Niederlassungserlaubnis)",
+      "Annual flight allowance to home country",
+      "Free meals during working shifts",
+      "Geriatric care specialization training"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Deutsch B1",
+      "Komunikasi dengan Pasien dan Keluarga",
+      "Dasar Istilah Medis",
+      "Dokumentasi di Rumah Sakit",
+      "Perawatan Lansia dan Rehabilitasi",
+      "Manajemen Penyakit Kronis",
+      "Nutrisi dan Diet untuk Lansia",
+      "Pertolongan Pertama dan Penanganan Darurat"
+    ],
+    "placement": {
+      "city": "Düsseldorf",
+      "state": "North Rhine-Westphalia",
+      "country": "Germany"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "30 hari kerja/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "38.5 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Evangelisches Krankenhaus Düsseldorf",
+      "information": "A well-established Protestant hospital in Düsseldorf with over 120 years of history. Operates 450 beds specializing in internal medicine, geriatric care, and palliative medicine. Known for its patient-centered approach and strong commitment to elderly care and rehabilitation services."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_004",
+    "title": "Pengukir Kayu Tradisional (Holzbildhauer/in)",
+    "description": "Create and restore intricate wood carvings, sculptures, and ornamental works for architectural restoration, religious institutions, and luxury interior projects across Bavaria. Work with traditional European woodworking techniques alongside master artisans, preserving centuries-old craftsmanship while incorporating contemporary design sensibilities.",
+    "requirements": [
+      "Male / Female",
+      "Age 20–40 years old",
+      "Minimum SMK or vocational training in woodworking, fine arts, or related craft",
+      "Portfolio of woodcarving or sculpture work required",
+      "Minimum 2 years of hands-on woodcarving experience",
+      "Minimum German language proficiency level A2",
+      "Strong attention to detail and artistic sensibility"
+    ],
+    "benefits": [
+      "Apprenticeship under certified German master woodcarvers (Meister)",
+      "Sponsored language training up to B1",
+      "Accommodation provided near workshop",
+      "Tools and materials provided",
+      "Opportunity to obtain German craftsman certification (Gesellenbrief)",
+      "Annual flight allowance to home country"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Teknik Ukir dan Pahat Kayu",
+      "Jenis Kayu dan Karakteristiknya",
+      "Membaca Gambar Desain dan Pola",
+      "Keselamatan Kerja di Bengkel",
+      "Alat Tangan dan Alat Mesin Kayu",
+      "Finishing dan Pengawetan Kayu",
+      "Sejarah Seni Ukir Eropa"
+    ],
+    "placement": {
+      "city": "Oberammergau",
+      "state": "Bavaria",
+      "country": "Germany"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (termasuk masa pelatihan)",
+      "annual_leave": "24 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Jumat",
+      "working_hours": "40 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": true,
+    "funded_by": "Bayerisches Staatsministerium für Wissenschaft und Kunst (Bavarian State Ministry of Science and the Arts)",
+    "employer": {
+      "name": "Schnitzwerkstatt Lang",
+      "information": "A family-run woodcarving workshop in Oberammergau with over 80 years of tradition. Specializes in religious sculptures, architectural ornaments, and bespoke art commissions. Oberammergau is world-renowned for its woodcarving heritage and the workshop is one of the last in the region training international apprentices."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  },
+  {
+    "id": "job_005",
+    "title": "Kru Kabin (Flugbegleiter/in)",
+    "description": "Ensure the safety, comfort, and satisfaction of passengers aboard short-haul and long-haul flights. Conduct pre-flight safety checks, deliver in-flight service, manage onboard emergencies, and represent the airline's brand with professionalism and warmth. Operate from Frankfurt hub with routes across Europe, Asia, and the Americas.",
+    "requirements": [
+      "Female / Male",
+      "Age 21–30 years old",
+      "Minimum Diploma III (D3) in any field",
+      "Minimum height 160cm (female) / 170cm (male)",
+      "Fluent in English (TOEIC 700+ or equivalent)",
+      "Minimum German language proficiency level A2",
+      "Excellent grooming and interpersonal skills",
+      "Able to swim minimum 25 meters unassisted"
+    ],
+    "benefits": [
+      "Sponsored cabin crew training program (8 weeks)",
+      "Sponsored language training up to B1",
+      "Discounted flight tickets for employee and family",
+      "Layover allowances in international destinations",
+      "Health and dental insurance",
+      "Accommodation support during initial training period"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Pelayanan Penumpang dan Keramahan",
+      "Prosedur Keselamatan Penerbangan",
+      "Penanganan Keluhan Penumpang",
+      "Makanan dan Minuman dalam Penerbangan",
+      "Pertolongan Pertama di Pesawat",
+      "Komunikasi Antar Kru",
+      "Penanganan Situasi Darurat"
+    ],
+    "placement": {
+      "city": "Frankfurt",
+      "state": "Hesse",
+      "country": "Germany"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "28 hari kerja/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Shift system (termasuk weekend dan hari libur)",
+      "working_hours": "Rata-rata 35–40 jam/minggu (variabel berdasarkan jadwal penerbangan)"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Cover Letter",
+      "Ijazah",
+      "Transkrip Nilai",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Condor Flugdienst GmbH",
+      "information": "Condor is a leading German leisure airline headquartered in Frankfurt. Operating since 1956, the airline serves over 90 destinations worldwide with a fleet of modern Airbus A320neo and A330neo aircraft. Condor carries approximately 9 million passengers annually and is known for its diverse, multilingual cabin crew."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_006",
+    "title": "Pengemudi Bus & Truk (Bus- und LKW-Fahrer/in)",
+    "description": "Operate commercial buses and heavy goods vehicles across Hamburg's metropolitan transit network and regional logistics routes. Ensure safe and timely transportation of passengers or cargo, perform vehicle inspections, maintain compliance with European driving regulations, and deliver excellent service to passengers and logistics partners.",
+    "requirements": [
+      "Male / Female",
+      "Age 23–40 years old",
+      "Minimum SMA/SMK or equivalent",
+      "Valid SIM B2 Umum (Indonesian commercial driving license)",
+      "Minimum 2 years of professional driving experience (bus or truck)",
+      "Minimum German language proficiency level A2",
+      "Clean driving record with no major violations",
+      "Physically fit with valid medical certificate"
+    ],
+    "benefits": [
+      "Sponsored EU commercial driving license conversion (Führerschein Klasse C/D)",
+      "Sponsored language training up to B1",
+      "Accommodation support for the first 6 months",
+      "Overtime and holiday pay premiums",
+      "Health insurance included",
+      "Annual flight allowance to home country"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Peraturan Lalu Lintas Eropa",
+      "Navigasi dan Pembacaan Peta",
+      "Perawatan dan Inspeksi Kendaraan",
+      "Keselamatan Berkendara Komersial",
+      "Penanganan Muatan dan Kargo",
+      "Komunikasi dengan Penumpang",
+      "Prosedur Darurat di Jalan Raya"
+    ],
+    "placement": {
+      "city": "Hamburg",
+      "state": "Hamburg",
+      "country": "Germany"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "26 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Sabtu (rotasi shift)",
+      "working_hours": "40 jam/minggu (sesuai regulasi EU driving hours)"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": true,
+    "funded_by": "Hamburger Hochbahn AG (employer-funded training program)",
+    "employer": {
+      "name": "Hamburger Hochbahn AG",
+      "information": "Hamburg's primary public transit operator, managing the city's bus and U-Bahn network. Hochbahn transports over 1.2 million passengers daily and operates a fleet of 1,000+ buses across 112 routes. The company is actively recruiting international drivers to meet growing urban mobility demands."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  },
+  {
+    "id": "job_007",
+    "title": "Perawat & Bidan RS Pemerintah (Registered Nurse & Midwife)",
+    "description": "Deliver comprehensive nursing and midwifery care within Australia's public hospital system. Manage patient assessments, administer treatments, support maternity care from prenatal through postnatal stages, and contribute to community health initiatives. Work within a multicultural healthcare environment serving diverse patient populations.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–35 years old",
+      "Minimum Bachelor's Degree (S1) in Nursing or Midwifery",
+      "Active STR (Surat Tanda Registrasi Keperawatan) or equivalent",
+      "Minimum 1 year of clinical experience",
+      "Minimum IELTS score of 7.0 (or OET Grade B)",
+      "Willingness to complete AHPRA registration process"
+    ],
+    "benefits": [
+      "Sponsored AHPRA registration and bridging program",
+      "Relocation assistance up to AUD 5,000",
+      "Pathway to permanent residency via employer-sponsored visa (subclass 482/186)",
+      "Salary packaging and tax benefits",
+      "Paid professional development and continuing education",
+      "Superannuation (retirement fund) contributions"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "English Advanced",
+      "Komunikasi dengan Pasien Multikultural",
+      "Istilah Medis dalam Bahasa Inggris",
+      "Dokumentasi Klinis",
+      "Perawatan Prenatal dan Postnatal",
+      "Penulisan Laporan Medis",
+      "Etika Keperawatan Internasional",
+      "Kebidanan dan Kesehatan Ibu"
+    ],
+    "placement": {
+      "city": "Melbourne",
+      "state": "Victoria",
+      "country": "Australia"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "20 hari kerja/tahun + 10 personal/sick leave",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "38 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Cover Letter",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "Victorian Department of Health — International Nurse Recruitment Program",
+    "employer": {
+      "name": "The Royal Women's Hospital Melbourne",
+      "information": "Australia's largest specialist hospital for women's health, neonatal care, and maternity services. Located in Parkville, the hospital delivers over 7,500 babies annually and provides care across gynaecology, oncology, and neonatal intensive care. Affiliated with the University of Melbourne and a teaching hospital with a strong international workforce."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_008",
+    "title": "Profesional Perhotelan & F&B (Hospitality Professional)",
+    "description": "Join a premium hospitality team at one of Sydney's top-rated hotels and restaurants. Deliver exceptional guest experiences across front-of-house operations, food and beverage service, event coordination, and guest relations. Work in a fast-paced, multicultural environment catering to international travelers and high-profile clientele.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–30 years old",
+      "Minimum Diploma III (D3) in Hospitality, Tourism, or Culinary Arts",
+      "Minimum 1 year of experience in hotels, restaurants, or event management",
+      "Minimum IELTS score of 5.5 (or equivalent)",
+      "Excellent presentation and communication skills",
+      "RSA (Responsible Service of Alcohol) certification preferred"
+    ],
+    "benefits": [
+      "Sponsored RSA and food safety certification",
+      "Accommodation assistance for the first 3 months",
+      "Pathway to permanent residency via employer-sponsored visa",
+      "Discounted hotel stays across partner properties",
+      "Tips and service charge sharing",
+      "Career progression to supervisory and management roles"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "Pelayanan Tamu dan Keramahan",
+      "Penanganan Keluhan Tamu",
+      "Makanan dan Minuman Internasional",
+      "Koordinasi Acara dan Reservasi",
+      "Kebersihan dan Keamanan Pangan",
+      "Manajemen Restoran dan Bar",
+      "Etika Kerja di Industri Perhotelan"
+    ],
+    "placement": {
+      "city": "Sydney",
+      "state": "New South Wales",
+      "country": "Australia"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "20 hari kerja/tahun + 10 personal/sick leave",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Minggu (shift system, termasuk hari libur)",
+      "working_hours": "38 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Cover Letter",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Merivale Group",
+      "information": "One of Australia's largest privately owned hospitality groups, operating over 80 venues across Sydney including award-winning restaurants, bars, hotels, and event spaces. Merivale employs over 5,000 staff and is a dominant force in Sydney's dining and nightlife scene, known for brands like Mr. Wong, Ivy, and Hotel Centennial."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_009",
+    "title": "Juru Gambar Arsitektur (Bautechnische/r Zeichner/in)",
+    "description": "Produce detailed architectural and construction drawings for residential, commercial, and public infrastructure projects across Vienna. Translate design concepts from architects and engineers into precise technical drawings using CAD software. Collaborate with project teams on building permit documentation, construction detailing, and 3D visualization.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–35 years old",
+      "Minimum Diploma III (D3) or Bachelor's Degree in Architecture, Civil Engineering, or Drafting",
+      "Proficient in AutoCAD, Revit, or ArchiCAD",
+      "Portfolio of technical/architectural drawings required",
+      "Minimum 1 year of drafting experience",
+      "Minimum German language proficiency level A2",
+      "Strong spatial reasoning and attention to detail"
+    ],
+    "benefits": [
+      "Sponsored language training up to B1",
+      "Relocation support including accommodation for the first 3 months",
+      "Access to Austrian architecture and construction certification programs",
+      "Public transportation pass (Wiener Linien Jahreskarte)",
+      "Pathway to Red-White-Red Card (Austrian work permit)",
+      "Annual flight allowance to home country"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Membaca dan Membuat Gambar Teknis",
+      "Istilah Teknis Bangunan dan Konstruksi",
+      "Penggunaan CAD untuk Arsitektur",
+      "Standar Bangunan dan Regulasi Eropa",
+      "Komunikasi dalam Tim Proyek",
+      "Material Bangunan dan Spesifikasinya",
+      "Dasar Perencanaan Tata Ruang",
+      "Pemodelan 3D dan Visualisasi"
+    ],
+    "placement": {
+      "city": "Vienna",
+      "state": "Vienna",
+      "country": "Austria"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "25 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Jumat",
+      "working_hours": "38.5 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Cover Letter",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "AMS Österreich (Austrian Public Employment Service) — Fachkräfteoffensive",
+    "employer": {
+      "name": "Architekten Maurer & Partner ZT GmbH",
+      "information": "A mid-sized architecture and engineering firm based in Vienna's 7th district, specializing in urban residential development, public infrastructure, and heritage building restoration. The firm has delivered over 200 projects across Austria and Central Europe and is known for combining traditional Viennese architectural aesthetics with modern sustainable design."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  },
+  {
+    "id": "job_010",
+    "title": "Pembuat Pastry & Cokelat (Konditor/in)",
+    "description": "Craft premium Swiss pastries, chocolates, confections, and baked goods at a renowned pâtisserie and chocolatier in Zürich. Master traditional Swiss and European confectionery techniques, create seasonal collections, and contribute to product innovation. Work alongside award-winning pastry chefs in one of the world's most celebrated culinary destinations.",
+    "requirements": [
+      "Male / Female",
+      "Age 20–35 years old",
+      "Minimum SMK or vocational training in Pastry, Bakery, or Culinary Arts",
+      "Minimum 1 year of professional pastry or bakery experience",
+      "Portfolio or documentation of past creations preferred",
+      "Minimum German language proficiency level A2",
+      "Creative, detail-oriented, and able to work under pressure"
+    ],
+    "benefits": [
+      "Apprenticeship under certified Swiss master confectioners",
+      "Sponsored language training up to B1",
+      "Accommodation provided near workplace",
+      "Meals provided during working shifts",
+      "Opportunity to obtain Swiss Federal Certificate of Proficiency (EFZ)",
+      "Discounts on premium Swiss chocolate and pastry products",
+      "Annual flight allowance to home country"
+    ],
+    "required_subcourses": [
+      "Deutsch A1",
+      "Deutsch A2",
+      "Teknik Pembuatan Pastry Eropa",
+      "Teknik Pengolahan Cokelat",
+      "Kebersihan dan Keamanan Pangan",
+      "Resep dan Konversi Takaran",
+      "Dekorasi dan Plating",
+      "Manajemen Dapur dan Inventaris",
+      "Pengenalan Bahan Baku Premium",
+      "Inovasi Produk dan Menu Musiman"
+    ],
+    "placement": {
+      "city": "Zürich",
+      "state": "Zürich",
+      "country": "Switzerland"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (termasuk masa pelatihan)",
+      "annual_leave": "20 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Sabtu (1 hari libur di weekday sebagai pengganti)",
+      "working_hours": "42 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": true,
+    "funded_by": "Sprüngli Foundation — Apprenticeship & Cultural Exchange Fund",
+    "employer": {
+      "name": "Confiserie Sprüngli AG",
+      "information": "One of Switzerland's oldest and most prestigious confectioners, founded in 1836. Famous worldwide for its Luxemburgerli macarons and handcrafted Swiss chocolates. Sprüngli operates 25 locations across Switzerland and maintains its own production facility in Dietikon. The company has a long-standing tradition of training international apprentices in Swiss confectionery arts."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_011",
+    "title": "Perawat Rumah Sakit (病院看護師)",
+    "description": "Provide comprehensive nursing care in one of Tokyo's leading medical institutions. Perform patient assessments, administer medications and treatments, assist physicians during procedures, and ensure accurate medical documentation. Work within Japan's advanced healthcare system while supporting international patient services.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–35 years old",
+      "Minimum Bachelor's Degree (S1) in Nursing",
+      "Active STR (Surat Tanda Registrasi Keperawatan)",
+      "Minimum 1 year of clinical experience",
+      "Minimum Japanese language proficiency level JLPT N3",
+      "Willingness to obtain Japanese nursing license (看護師国家試験)"
+    ],
+    "benefits": [
+      "Sponsored Japanese language training up to JLPT N2",
+      "Sponsored preparation for Japanese nursing license exam",
+      "Accommodation provided for the first 12 months",
+      "Pathway to permanent residency via Specified Skilled Worker visa",
+      "Annual flight allowance to home country",
+      "Bonus for passing Japanese nursing license exam"
+    ],
+    "required_subcourses": [
+      "Nihongo N5",
+      "Nihongo N4",
+      "Nihongo N3",
+      "Komunikasi dengan Pasien Jepang",
+      "Dasar Istilah Medis Jepang",
+      "Dokumentasi di Rumah Sakit Jepang",
+      "Sistem Kesehatan dan Asuransi Jepang",
+      "Farmakologi Dasar",
+      "Etika Keperawatan di Jepang",
+      "Persiapan Ujian Lisensi Keperawatan Jepang"
+    ],
+    "placement": {
+      "city": "Tokyo",
+      "state": "Tokyo",
+      "country": "Japan"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi dan lisensi)",
+      "annual_leave": "20 hari kerja/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "40 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "JICWELS (Japan International Corporation of Welfare Services) — EPA Programme",
+    "employer": {
+      "name": "St. Luke's International Hospital (聖路加国際病院)",
+      "information": "One of Tokyo's most prestigious international hospitals, founded in 1901 and located in Chuo-ku. Operates 520 beds with over 30 medical departments and is renowned for its bilingual medical services. Affiliated with St. Luke's International University and consistently ranked among Japan's top hospitals. Actively recruits international nurses through the EPA (Economic Partnership Agreement) framework."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_012",
+    "title": "Perawat Fasilitas Lansia (介護福祉士)",
+    "description": "Provide dedicated elderly care services at a specialized long-term care facility in Osaka. Assist residents with daily living activities, implement individualized care plans, facilitate recreational and rehabilitation programs, and ensure the physical and emotional well-being of elderly residents in Japan's aging society.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–35 years old",
+      "Minimum Diploma III (D3) in Nursing or Caregiving",
+      "Experience in elderly care or geriatric nursing preferred",
+      "Minimum Japanese language proficiency level JLPT N4",
+      "Patient, respectful, and culturally sensitive",
+      "Willingness to obtain Kaigo Fukushishi certification"
+    ],
+    "benefits": [
+      "Sponsored Japanese language training up to JLPT N3",
+      "Sponsored Kaigo Fukushishi exam preparation",
+      "Accommodation provided throughout contract period",
+      "Meals provided during working shifts",
+      "Pathway to permanent residency via Specified Skilled Worker visa",
+      "Annual flight allowance to home country",
+      "Bonus for passing Kaigo Fukushishi certification exam"
+    ],
+    "required_subcourses": [
+      "Nihongo N5",
+      "Nihongo N4",
+      "Nihongo N3",
+      "Komunikasi dengan Lansia Jepang",
+      "Perawatan Lansia dan Aktivitas Harian",
+      "Istilah Perawatan Lansia Jepang",
+      "Rehabilitasi dan Terapi Ringan",
+      "Nutrisi dan Diet untuk Lansia",
+      "Dokumentasi Perawatan",
+      "Persiapan Ujian Kaigo Fukushishi"
+    ],
+    "placement": {
+      "city": "Osaka",
+      "state": "Osaka",
+      "country": "Japan"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi dan sertifikasi)",
+      "annual_leave": "20 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "40 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": true,
+    "funded_by": "JICWELS (Japan International Corporation of Welfare Services) — EPA Programme",
+    "employer": {
+      "name": "Seishinkai Medical Group (清心会医療グループ)",
+      "information": "A major elderly care and medical welfare group based in Osaka Prefecture, operating 12 long-term care facilities, 3 rehabilitation centers, and 2 group homes across the Kansai region. Seishinkai serves over 2,000 elderly residents and has been a pioneer in Japan's kaigo (care) workforce internationalization program, hosting Indonesian and Filipino care workers since 2009."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  },
+  {
+    "id": "job_013",
+    "title": "Teknisi Otomotif (自動車整備士)",
+    "description": "Perform diagnostics, maintenance, and repairs on vehicles at an authorized dealership and service center in Japan's automotive heartland. Work with cutting-edge Japanese automotive technology, hybrid and electric vehicle systems, and advanced diagnostic equipment. Contribute to the highest standards of vehicle safety and performance.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–35 years old",
+      "Minimum SMK or vocational training in Automotive Engineering or Mechanical Engineering",
+      "Minimum 2 years of professional automotive repair experience",
+      "Familiarity with Japanese vehicle brands (Toyota, Honda, Nissan, etc.)",
+      "Minimum Japanese language proficiency level JLPT N4",
+      "Valid Indonesian driving license (SIM A)"
+    ],
+    "benefits": [
+      "Sponsored Japanese language training up to JLPT N3",
+      "Training on hybrid and EV technology",
+      "Accommodation provided for the first 12 months",
+      "Tools and work uniforms provided",
+      "Pathway to Specified Skilled Worker visa renewal",
+      "Annual flight allowance to home country",
+      "Opportunity to obtain Japanese automotive mechanic certification (自動車整備士資格)"
+    ],
+    "required_subcourses": [
+      "Nihongo N5",
+      "Nihongo N4",
+      "Sistem Mesin dan Komponen Kendaraan",
+      "Diagnostik Kendaraan Modern",
+      "Teknologi Hybrid dan Kendaraan Listrik",
+      "Perawatan Berkala Kendaraan",
+      "Keselamatan Kerja di Bengkel",
+      "Membaca Manual dan Instruksi Teknis",
+      "Alat Diagnostik dan Pengukuran",
+      "Standar Keselamatan Kendaraan Jepang"
+    ],
+    "placement": {
+      "city": "Nagoya",
+      "state": "Aichi",
+      "country": "Japan"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "18 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Sabtu (Sabtu half-day, rotasi libur)",
+      "working_hours": "40 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Nagoya Toyota Motor Co., Ltd. (名古屋トヨタ自動車株式会社)",
+      "information": "An authorized Toyota dealer group based in Nagoya, Aichi Prefecture — the hometown of Toyota Motor Corporation. Operates 45 dealerships and service centers across the Chubu region, employing over 3,000 technicians and staff. The company is at the forefront of hybrid and electric vehicle servicing and has been expanding its international technician recruitment program since 2020."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_014",
+    "title": "Juru Las & Fabrikasi Logam (溶接技能者)",
+    "description": "Perform precision welding and metal fabrication for industrial manufacturing, shipbuilding, and infrastructure projects in Osaka's industrial district. Execute MIG, TIG, and arc welding techniques on various metals, read and interpret engineering blueprints, and ensure all welds meet Japanese Industrial Standards (JIS) quality specifications.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–40 years old",
+      "Minimum SMK or vocational training in Welding, Metalworking, or Mechanical Engineering",
+      "Minimum 2 years of professional welding experience",
+      "Welding certification (AWS, JIS, or equivalent) preferred",
+      "Minimum Japanese language proficiency level JLPT N4",
+      "Physically fit and comfortable working in industrial environments"
+    ],
+    "benefits": [
+      "Sponsored Japanese language training up to JLPT N3",
+      "JIS welding certification training and exam sponsorship",
+      "Accommodation provided throughout contract period",
+      "Meals provided during working shifts",
+      "Overtime pay at 125%–150% standard rate",
+      "Pathway to Specified Skilled Worker visa renewal",
+      "Annual flight allowance to home country"
+    ],
+    "required_subcourses": [
+      "Nihongo N5",
+      "Nihongo N4",
+      "Teknik Las MIG, TIG, dan Arc",
+      "Jenis Logam dan Karakteristiknya",
+      "Membaca Gambar Teknis dan Blueprint",
+      "Keselamatan Kerja di Lingkungan Industri",
+      "Standar Kualitas Las Jepang (JIS)",
+      "Inspeksi dan Kontrol Kualitas",
+      "Alat Ukur dan Fabrikasi",
+      "Perawatan Peralatan Las"
+    ],
+    "placement": {
+      "city": "Osaka",
+      "state": "Osaka",
+      "country": "Japan"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "18 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Sabtu (Sabtu half-day, rotasi)",
+      "working_hours": "40 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Hitachi Zosen Corporation (日立造船株式会社)",
+      "information": "A major Japanese industrial conglomerate headquartered in Osaka, specializing in environmental systems, industrial plants, shipbuilding, and steel fabrication. Founded in 1881, Hitachi Zosen employs over 11,000 workers globally and is a key contractor for Japan's infrastructure, energy, and maritime sectors. The company actively recruits skilled welders through Japan's Technical Intern Training and Specified Skilled Worker visa programs."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_015",
+    "title": "Perawat Rumah Sakit (간호사)",
+    "description": "Provide professional nursing care in one of South Korea's top-tier university hospitals. Conduct patient assessments, assist in surgical procedures, manage post-operative care, and ensure accurate electronic medical record documentation. Work within Korea's technologically advanced healthcare system alongside a multidisciplinary medical team.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–34 years old",
+      "Minimum Bachelor's Degree (S1) in Nursing",
+      "Active STR (Surat Tanda Registrasi Keperawatan)",
+      "Minimum 1 year of clinical experience",
+      "Minimum Korean language proficiency level TOPIK 3",
+      "Willingness to obtain Korean nursing license (간호사 면허)"
+    ],
+    "benefits": [
+      "Sponsored Korean language training up to TOPIK 4",
+      "Sponsored preparation for Korean nursing license exam",
+      "Accommodation provided for the first 12 months",
+      "Pathway to E-7 Professional Work Visa renewal",
+      "Annual flight allowance to home country",
+      "Bonus for passing Korean nursing license exam"
+    ],
+    "required_subcourses": [
+      "Hangugeo Beginner 1",
+      "Hangugeo Beginner 2",
+      "Hangugeo Intermediate",
+      "Komunikasi dengan Pasien Korea",
+      "Dasar Istilah Medis Korea",
+      "Dokumentasi Medis Elektronik",
+      "Sistem Kesehatan dan Asuransi Korea",
+      "Farmakologi Dasar",
+      "Etika Keperawatan di Korea",
+      "Persiapan Ujian Lisensi Keperawatan Korea"
+    ],
+    "placement": {
+      "city": "Seoul",
+      "state": "Seoul",
+      "country": "South Korea"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi dan lisensi)",
+      "annual_leave": "15 hari kerja/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "40 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "Korean Ministry of Health and Welfare — Foreign Nurse Recruitment Programme",
+    "employer": {
+      "name": "Samsung Medical Center (삼성서울병원)",
+      "information": "One of South Korea's most prestigious hospitals, affiliated with Sungkyunkwan University School of Medicine. Located in Gangnam-gu, Seoul, the center operates 1,989 beds across 44 specialized departments. Ranked consistently among Asia's top 10 hospitals, Samsung Medical Center is a leader in oncology, organ transplantation, and robotic surgery. The hospital actively recruits international nursing professionals under Korea's healthcare workforce expansion initiatives."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_016",
+    "title": "Teknisi Galangan Kapal (조선기술자)",
+    "description": "Perform precision assembly, welding, and outfitting work at one of the world's largest shipbuilding complexes. Contribute to the construction of LNG carriers, container ships, and offshore platforms using advanced fabrication techniques. Work alongside Korean master technicians in a high-output industrial environment with strict quality and safety standards.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–40 years old",
+      "Minimum SMK or vocational training in Welding, Shipbuilding, or Mechanical Engineering",
+      "Minimum 2 years of welding or heavy fabrication experience",
+      "Welding certification (AWS, KS, or equivalent) preferred",
+      "Minimum Korean language proficiency level TOPIK 2",
+      "Physically fit and comfortable working at heights and in confined spaces"
+    ],
+    "benefits": [
+      "Sponsored Korean language training up to TOPIK 3",
+      "KS welding certification training and exam sponsorship",
+      "Dormitory accommodation provided throughout contract",
+      "Meals provided during working shifts",
+      "Overtime pay at 150% standard rate",
+      "Pathway to E-9 Visa renewal or E-7 upgrade",
+      "Annual flight allowance to home country"
+    ],
+    "required_subcourses": [
+      "Hangugeo Beginner 1",
+      "Hangugeo Beginner 2",
+      "Teknik Las untuk Konstruksi Kapal",
+      "Jenis Logam dan Material Maritim",
+      "Membaca Blueprint Galangan Kapal",
+      "Keselamatan Kerja di Lingkungan Maritim",
+      "Standar Kualitas Pengelasan Korea (KS)",
+      "Perakitan dan Outfitting Kapal",
+      "Alat Berat dan Crane Operation Dasar",
+      "Prosedur Darurat di Galangan"
+    ],
+    "placement": {
+      "city": "Geoje",
+      "state": "South Gyeongsang",
+      "country": "South Korea"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "36 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "15 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Sabtu (Sabtu half-day, rotasi)",
+      "working_hours": "44 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Hanwha Ocean Co., Ltd. (한화오션)",
+      "information": "Formerly known as Daewoo Shipbuilding & Marine Engineering (DSME), Hanwha Ocean is one of the world's top three shipbuilders, headquartered in Geoje Island. The company specializes in LNG carriers, ultra-large container ships, submarines, and offshore platforms. With over 20,000 employees and a 4.3km-long dry dock — one of the largest on Earth — Hanwha Ocean recruits thousands of international skilled workers annually to meet global demand for commercial and military vessels."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  },
+  {
+    "id": "job_017",
+    "title": "Perawat Geriatri (老人護理員)",
+    "description": "Provide professional elderly care services in Hong Kong's expanding network of residential care homes and community health centers. Assist elderly residents with daily living activities, coordinate with physicians for chronic disease management, and implement individualized wellness programs. Support Hong Kong's aging population through compassionate, culturally sensitive care.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–35 years old",
+      "Minimum Diploma III (D3) in Nursing or Elderly Care",
+      "Minimum 1 year of elderly care or clinical experience",
+      "Minimum IELTS score of 5.5 or equivalent English proficiency",
+      "Basic Cantonese language willingness to learn",
+      "Patient, respectful, and culturally sensitive"
+    ],
+    "benefits": [
+      "Sponsored Cantonese language training",
+      "Accommodation provided throughout contract period",
+      "Pathway to Hong Kong Employment Visa renewal",
+      "Medical and dental insurance",
+      "Annual flight allowance to home country",
+      "Professional development in geriatric care"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "Cantonese Dasar",
+      "Komunikasi dengan Pasien Lansia",
+      "Perawatan Lansia dan Aktivitas Harian",
+      "Manajemen Penyakit Kronis",
+      "Nutrisi dan Diet untuk Lansia",
+      "Dokumentasi Perawatan",
+      "Pertolongan Pertama dan Penanganan Darurat",
+      "Budaya dan Etiket di Hong Kong"
+    ],
+    "placement": {
+      "city": "Hong Kong",
+      "state": "New Territories",
+      "country": "Hong Kong SAR"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "14 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Sabtu (rotasi shift, 1 hari libur/minggu)",
+      "working_hours": "44 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "Hong Kong Social Welfare Department — Supplementary Labour Scheme (SLS)",
+    "employer": {
+      "name": "Haven of Hope Christian Service (基督教靈實協會)",
+      "information": "One of Hong Kong's largest non-profit elderly care and healthcare providers, operating since 1953. Haven of Hope manages 12 residential care homes, 5 community health centers, and 3 rehabilitation facilities across the New Territories and Kowloon. The organization serves over 4,000 elderly residents and is a leading participant in Hong Kong's Supplementary Labour Scheme for importing care workers to address the city's severe elderly care workforce shortage."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_018",
+    "title": "Koki & Profesional F&B (廚師及餐飲專業人員)",
+    "description": "Work as a skilled culinary professional in Hong Kong's world-class dining scene. Prepare and present dishes in a high-volume, internationally acclaimed restaurant environment. Collaborate with executive chefs on menu development, maintain exceptional food quality standards, and contribute to one of Asia's most vibrant food cultures.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–35 years old",
+      "Minimum SMK or Diploma in Culinary Arts, Hospitality, or Food & Beverage",
+      "Minimum 2 years of professional kitchen experience",
+      "Competent in at least one cuisine specialty (Asian, Western, or pastry)",
+      "Minimum IELTS score of 5.0 or equivalent English proficiency",
+      "Able to work in fast-paced, high-pressure kitchen environments"
+    ],
+    "benefits": [
+      "Work alongside Michelin-starred and award-winning chefs",
+      "Accommodation assistance for the first 3 months",
+      "Meals provided during working shifts",
+      "Pathway to Hong Kong Employment Visa renewal",
+      "Medical insurance",
+      "Career progression to Sous Chef and Executive Chef roles"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "Teknik Memasak Internasional",
+      "Kebersihan dan Keamanan Pangan",
+      "Manajemen Dapur Profesional",
+      "Presentasi dan Plating",
+      "Pengelolaan Inventaris dan Bahan Baku",
+      "Menu Development dan Food Costing",
+      "Komunikasi di Lingkungan Dapur"
+    ],
+    "placement": {
+      "city": "Hong Kong",
+      "state": "Hong Kong Island",
+      "country": "Hong Kong SAR"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "14 hari kerja/tahun",
+      "probation_period": "3 bulan",
+      "working_days": "Senin–Minggu (shift system, 1 hari libur/minggu)",
+      "working_hours": "48 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Cover Letter",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Maxim's Caterers Limited (美心食品有限公司)",
+      "information": "Hong Kong's largest food and beverage conglomerate, operating over 1,600 outlets across Hong Kong, China, and Southeast Asia. Maxim's portfolio spans fine dining restaurants, casual eateries, bakeries, and institutional catering. The company holds franchise rights for Starbucks and Genki Sushi in Hong Kong and employs over 35,000 staff. Maxim's is renowned for its culinary training programs and regularly recruits international kitchen talent."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_019",
+    "title": "Perawat & Tenaga Medis (ممرض/ة)",
+    "description": "Deliver high-quality nursing care in a state-of-the-art hospital facility in Abu Dhabi. Manage diverse patient populations from over 200 nationalities, perform clinical assessments, administer treatments, and maintain documentation in compliance with UAE Department of Health (DOH) standards. Work within a rapidly growing healthcare ecosystem that blends cutting-edge technology with multicultural patient care.",
+    "requirements": [
+      "Male / Female",
+      "Age 23–35 years old",
+      "Minimum Bachelor's Degree (S1) in Nursing",
+      "Active STR (Surat Tanda Registrasi Keperawatan)",
+      "Minimum 2 years of clinical experience",
+      "Minimum IELTS score of 6.5 (or OET Grade B)",
+      "Willingness to obtain DOH or DHA nursing license"
+    ],
+    "benefits": [
+      "Tax-free salary",
+      "Furnished accommodation provided",
+      "Annual flight ticket to home country",
+      "Medical and dental insurance for employee and dependents",
+      "Sponsored DOH/DHA licensing process",
+      "30 days paid annual leave",
+      "End-of-service gratuity as per UAE Labour Law"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "English Advanced",
+      "Komunikasi dengan Pasien Multikultural",
+      "Istilah Medis dalam Bahasa Inggris",
+      "Dokumentasi Klinis Standar Internasional",
+      "Sistem Kesehatan UAE dan Regulasi DOH",
+      "Farmakologi Dasar",
+      "Etika Keperawatan Internasional",
+      "Arabic Dasar untuk Tenaga Medis"
+    ],
+    "placement": {
+      "city": "Abu Dhabi",
+      "state": "Abu Dhabi",
+      "country": "United Arab Emirates"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "30 hari kalender/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "48 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Resume",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "Abu Dhabi Health Services Company (SEHA) — International Recruitment Programme",
+    "employer": {
+      "name": "Cleveland Clinic Abu Dhabi",
+      "information": "A world-class multispecialty hospital on Al Maryah Island, Abu Dhabi, and the first international extension of the renowned Cleveland Clinic (USA). The 364-bed facility houses 13 specialized institutes including the Heart & Vascular Institute, Neurological Institute, and Digestive Disease Institute. Staffed by over 4,000 professionals from 80+ nationalities, the hospital is JCI-accredited and consistently ranked among the best in the Middle East."
+    },
+    "agency": "BINAWAN"
+  },
+  {
+    "id": "job_020",
+    "title": "Teknisi Mekanikal & HVAC (فني ميكانيكي)",
+    "description": "Install, maintain, and troubleshoot mechanical systems including HVAC, plumbing, fire protection, and building management systems across large-scale commercial and hospitality developments in Dubai. Work on iconic infrastructure projects in one of the world's fastest-growing cities, ensuring systems meet international standards and operate at peak efficiency in extreme desert climate conditions.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–40 years old",
+      "Minimum SMK or Diploma in Mechanical Engineering, HVAC, or Building Services",
+      "Minimum 2 years of experience in HVAC installation, maintenance, or building mechanical systems",
+      "Familiarity with VRF/VRV systems, chillers, and BMS preferred",
+      "Minimum English proficiency for technical communication",
+      "Valid technical certifications (City & Guilds, BTEC, or equivalent) preferred"
+    ],
+    "benefits": [
+      "Tax-free salary",
+      "Shared accommodation provided",
+      "Annual flight ticket to home country",
+      "Medical insurance",
+      "Overtime pay at 125% standard rate",
+      "End-of-service gratuity as per UAE Labour Law",
+      "Opportunity to obtain UAE Estidama or LEED certification"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "Sistem HVAC dan Pendinginan",
+      "Instalasi Plumbing dan Pipa",
+      "Membaca Gambar Teknis MEP",
+      "Keselamatan Kerja di Konstruksi",
+      "Sistem Proteksi Kebakaran",
+      "Building Management System (BMS) Dasar",
+      "Perawatan Preventif Peralatan Mekanikal",
+      "Standar Bangunan UAE dan Regulasi DEWA"
+    ],
+    "placement": {
+      "city": "Dubai",
+      "state": "Dubai",
+      "country": "United Arab Emirates"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "30 hari kalender/tahun",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Sabtu",
+      "working_hours": "48 jam/minggu (reduced hours during Ramadan)"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": false,
+    "funded_by": null,
+    "employer": {
+      "name": "Emaar Properties PJSC",
+      "information": "The UAE's largest real estate developer and the company behind Burj Khalifa, Dubai Mall, and Dubai Marina. Emaar Properties manages a portfolio spanning residential, commercial, hospitality, and leisure assets across 6 countries. With over 10,000 employees, Emaar recruits thousands of international technicians and engineers annually for ongoing mega-developments including Dubai Creek Harbour and The Valley."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  },
+  {
+    "id": "job_021",
+    "title": "Perawat RS Swasta (Registered Nurse)",
+    "description": "Deliver patient-centered nursing care in one of Singapore's premier private hospital groups. Manage patient assessments, medication administration, wound care, and post-surgical monitoring across medical, surgical, and specialist wards. Work within Singapore's world-renowned healthcare system, serving a diverse international patient base in a technologically advanced clinical environment.",
+    "requirements": [
+      "Male / Female",
+      "Age 22–35 years old",
+      "Minimum Bachelor's Degree (S1) in Nursing",
+      "Active STR (Surat Tanda Registrasi Keperawatan)",
+      "Minimum 2 years of clinical experience",
+      "Minimum IELTS score of 6.5 (or equivalent)",
+      "Willingness to obtain Singapore Nursing Board (SNB) registration"
+    ],
+    "benefits": [
+      "Sponsored SNB registration and adaptation programme",
+      "Subsidized accommodation in hospital staff housing",
+      "Pathway to Singapore Permanent Residency (PR)",
+      "Medical and dental insurance",
+      "Annual flight allowance to home country",
+      "Paid continuing professional development",
+      "Performance bonus"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "English Advanced",
+      "Komunikasi dengan Pasien Multikultural",
+      "Istilah Medis dalam Bahasa Inggris",
+      "Dokumentasi Klinis Standar Internasional",
+      "Farmakologi Dasar",
+      "Etika Keperawatan Internasional",
+      "Penulisan Laporan Medis",
+      "Sistem Kesehatan Singapura dan Regulasi MOH"
+    ],
+    "placement": {
+      "city": "Singapore",
+      "state": "Singapore",
+      "country": "Singapore"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "14 hari kerja/tahun (meningkat sesuai masa kerja)",
+      "probation_period": "6 bulan",
+      "working_days": "Senin–Minggu (shift system)",
+      "working_hours": "44 jam/minggu"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Resume",
+      "Cover Letter",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Tanda Registrasi Keperawatan",
+      "Surat Pengalaman Kerja",
+      "BPJS",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga"
+    ],
+    "is_funded": true,
+    "funded_by": "Singapore Ministry of Health (MOH) — Healthcare Manpower Plan",
+    "employer": {
+      "name": "Parkway Pantai Limited (Mount Elizabeth Hospital)",
+      "information": "Part of IHH Healthcare — the world's second-largest private healthcare group. Mount Elizabeth Hospital in Orchard Road is Singapore's flagship premium hospital, operating 345 beds with over 30 specialist centers. The hospital serves patients from across Southeast Asia and the Middle East, and is consistently ranked among Asia-Pacific's top private hospitals. Parkway Pantai actively recruits international nurses through Singapore's MOH-approved workforce pipeline."
+    },
+    "agency": "APJATI"
+  },
+  {
+    "id": "job_022",
+    "title": "Teknisi Semikonduktor (Semiconductor Technician)",
+    "description": "Operate, monitor, and maintain advanced semiconductor fabrication equipment in Singapore's leading chip manufacturing facility. Perform wafer processing, conduct in-process quality inspections, troubleshoot equipment faults, and ensure production output meets stringent yield and quality targets. Work in a cleanroom environment at the cutting edge of global semiconductor manufacturing.",
+    "requirements": [
+      "Male / Female",
+      "Age 21–35 years old",
+      "Minimum Diploma III (D3) in Electrical Engineering, Electronics, Mechatronics, or Chemical Engineering",
+      "Minimum 1 year of experience in semiconductor, electronics manufacturing, or precision engineering",
+      "Comfortable working in cleanroom environments (gowning, ESD protocols)",
+      "Minimum English proficiency for technical communication",
+      "Willing to work rotating 12-hour shifts"
+    ],
+    "benefits": [
+      "Sponsored technical training on advanced fab equipment",
+      "Subsidized accommodation",
+      "Pathway to Singapore Employment Pass or S Pass renewal",
+      "Medical and dental insurance",
+      "Shift allowances and overtime pay",
+      "Annual flight allowance to home country",
+      "Career progression to Senior Technician and Process Engineer roles"
+    ],
+    "required_subcourses": [
+      "English Beginner",
+      "English Intermediate",
+      "Dasar Proses Fabrikasi Semikonduktor",
+      "Pengoperasian Peralatan Cleanroom",
+      "Kontrol Kualitas dan Yield Management",
+      "Keselamatan Kerja di Lingkungan Cleanroom",
+      "Dasar Elektronika dan Sirkuit",
+      "Troubleshooting Peralatan Fabrikasi",
+      "Membaca Spesifikasi Teknis dan SOP",
+      "Standar ESD dan Kontaminasi"
+    ],
+    "placement": {
+      "city": "Singapore",
+      "state": "Singapore",
+      "country": "Singapore"
+    },
+    "terms_and_conditions": {
+      "duration_of_contract": "24 bulan (perpanjangan berdasarkan evaluasi)",
+      "annual_leave": "14 hari kerja/tahun (meningkat sesuai masa kerja)",
+      "probation_period": "3 bulan",
+      "working_days": "4 hari kerja / 4 hari libur (compressed shift rotation)",
+      "working_hours": "44 jam/minggu (12-hour rotating shifts)"
+    },
+    "document_requirements": [
+      "Paspor",
+      "CV Candidate",
+      "Ijazah",
+      "Transkrip Nilai",
+      "Surat Pengalaman Kerja",
+      "Akta Kelahiran",
+      "Kartu Tanda Penduduk",
+      "Kartu Keluarga",
+      "Surat Izin Orang Tua (jika < 21 tahun)"
+    ],
+    "is_funded": true,
+    "funded_by": "Singapore Economic Development Board (EDB) — Precision Engineering Workforce Initiative",
+    "employer": {
+      "name": "GlobalFoundries Singapore Pte. Ltd.",
+      "information": "One of the world's largest semiconductor foundries, with its Singapore campus in Woodlands housing two advanced wafer fabrication plants (Fab 7 and Fab 3E). The Singapore operations employ over 4,000 workers producing chips for automotive, IoT, 5G, and data center applications. GlobalFoundries Singapore is a key pillar of the country's semiconductor ecosystem and regularly recruits international technicians to support 24/7 production operations."
+    },
+    "agency": "Mitra Kerja Nusantara"
+  }
+]

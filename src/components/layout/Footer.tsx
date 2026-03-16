@@ -5,7 +5,6 @@ export function Footer() {
   const navLinks = [
     { label: "Tentang Kami", href: "/#tentang" },
     { label: "Lowongan", href: "/home" },
-    { label: "Job Fair", href: "/job-fair" },
     { label: "Untuk Partner", href: "/#partner" },
     { label: "Kebijakan Privasi", href: "#" },
   ];
@@ -56,7 +55,7 @@ export function Footer() {
             <div className="flex flex-col gap-3">
               {partners.map((mp) => (
                 <div key={mp.label} className="flex items-center gap-2.5">
-                  <span className="relative w-12 h-7 rounded border border-white/20 bg-white/5 overflow-hidden shrink-0 flex items-center justify-center p-1">
+                  <span className="relative w-12 h-7 rounded border border-ink/10 bg-white overflow-hidden shrink-0 flex items-center justify-center p-1">
                     <Image
                       src={mp.logo}
                       alt={mp.label}
@@ -71,14 +70,36 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Info */}
+          {/* Off-taker logos */}
           <div>
             <h4 className="font-jakarta font-semibold text-xs uppercase tracking-widest text-white/40 mb-4">
               Dukungan
             </h4>
-            <div className="space-y-2">
-              <p className="text-sm text-white/50">Vokati</p>
-              <p className="text-sm text-white/50">APJATI</p>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2.5">
+                <span className="relative w-12 h-7 rounded border border-ink/10 bg-white overflow-hidden shrink-0 flex items-center justify-center p-1">
+                  <Image
+                    src="/vokati-logo.png"
+                    alt="Vokati"
+                    width={40}
+                    height={20}
+                    className="object-contain w-full h-full"
+                  />
+                </span>
+                <span className="text-sm text-white/50">Vokati</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <span className="relative w-12 h-7 rounded border border-ink/10 bg-white overflow-hidden shrink-0 flex items-center justify-center p-1">
+                  <Image
+                    src="/apjati-logo.png"
+                    alt="APJATI"
+                    width={40}
+                    height={20}
+                    className="object-contain w-full h-full"
+                  />
+                </span>
+                <span className="text-sm text-white/50">APJATI</span>
+              </div>
             </div>
           </div>
         </div>

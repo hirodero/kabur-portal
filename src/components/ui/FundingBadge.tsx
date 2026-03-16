@@ -16,12 +16,6 @@ export function FundingBadge({
       <div className="bg-funded-light border border-funded/20 rounded-card p-4 flex gap-3">
         <CheckmarkCircle02Icon size={20} className="text-funded shrink-0 mt-0.5" />
         <div>
-          <p className="font-jakarta text-sm font-semibold text-funded-dark">
-            Biaya training untuk posisi ini ditanggung {funderName ?? "program subsidi"}
-          </p>
-          {fundingCoverage && (
-            <p className="font-jakarta text-xs text-funded mt-0.5">{fundingCoverage}</p>
-          )}
         </div>
       </div>
     );

@@ -6,13 +6,11 @@ import {
   Home01Icon,
   Search01Icon,
   Bookmark02Icon,
-  CalendarAdd01Icon,
 } from "hugeicons-react";
 
 const NAV_ITEMS = [
   { href: "/", label: "Beranda", icon: Home01Icon },
   { href: "/home", label: "Lowongan", icon: Search01Icon },
-  { href: "/job-fair", label: "Job Fair", icon: CalendarAdd01Icon },
   { href: "/home?tab=saved", label: "Simpan", icon: Bookmark02Icon },
 ];
 

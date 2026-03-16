@@ -8,6 +8,8 @@ import { JobCard } from "@/components/jobs/JobCard";
 import { MPCard } from "@/components/mp/MPCard";
 import { HowItWorksTabs } from "@/components/landing/HowItWorksTabs";
 import { Globe } from "@/components/ui/Globe";
+import { InfiniteMovingLogos } from "@/components/ui/infinite-moving-logos";
+import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
 import { JOBS, MARKETING_PARTNERS } from "@/lib/mock-data";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -58,10 +60,9 @@ export default function LandingPage() {
             {/* Headline */}
             <div className="reveal reveal-delay-1">
               <h1 className="font-jakarta font-bold text-display-xl text-white leading-none">
-                Dari Indonesia,
+                <span className="lg:whitespace-nowrap">Dari Indonesia,</span>
                 <br />
-                untuk{" "}
-                <span className="text-primary">Dunia.</span>
+                <span className="lg:whitespace-nowrap">untuk <span className="text-primary">Dunia.</span></span>
               </h1>
             </div>
 
@@ -73,8 +74,27 @@ export default function LandingPage() {
               </p>
             </div>
 
+            {/* Stats */}
+            <div className="reveal reveal-delay-2 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+              {STATS.map((stat, idx) => (
+                <div
+                  key={stat.label}
+                  className={`flex flex-col items-center justify-center py-2 ${
+                    idx < 3 ? "border-r border-white/20" : ""
+                  } ${idx >= 2 ? "border-t border-white/20 md:border-t-0" : ""}`}
+                >
+                  <p className="font-jakarta text-2xl md:text-3xl font-bold text-white tracking-tight">
+                    {stat.value}
+                  </p>
+                  <p className="font-jakarta text-xs text-white/50 mt-0.5">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
             {/* CTA row */}
-            <div className="reveal reveal-delay-3 mt-12 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+            <div className="reveal reveal-delay-3 mt-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
               <Link
                 href="/home"
                 className="font-jakarta font-medium text-sm bg-primary text-white px-8 py-3.5 rounded-btn hover:bg-primary-dark transition-colors duration-200 active:scale-[0.97]"
@@ -91,6 +111,21 @@ export default function LandingPage() {
               >
                 Pelajari lebih lanjut ↓
               </Button>
+            </div>
+
+            {/* Partner & off-taker logos - infinite moving */}
+            <div className="reveal reveal-delay-3 mt-10 w-full max-w-2xl">
+              <InfiniteMovingLogos
+                items={[
+                  { src: "/telkomsel.png", alt: "Telkomsel" },
+                  { src: "/zenius.png", alt: "Zenius" },
+                  { src: "/vokati-logo.png", alt: "Vokati" },
+                  { src: "/apjati-logo.png", alt: "APJATI" },
+                ]}
+                direction="left"
+                speed="normal"
+                pauseOnHover
+              />
             </div>
 
             {/* Scroll indicator - desktop */}
@@ -115,25 +150,33 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 2: STATS STRIP ── */}
-      <section className="py-16" style={{ backgroundColor: '#F9F7F4' }}>
+      {/* ── SECTION 2: FEATURED JOBS ── */}
+      <section className="py-24" style={{ backgroundColor: '#F0EDE8' }}>
         <div className="max-w-5xl mx-auto px-4 sm:px-8">
-          <div className="reveal grid grid-cols-2 md:grid-cols-4">
-            {STATS.map((stat, idx) => (
-              <div
-                key={stat.label}
-                className={`px-6 py-4 ${
-                  idx < 3 ? "border-r border-ink/10" : ""
-                }`}
-              >
-                <p className="stat-number font-jakarta text-5xl font-bold text-ink tracking-tight">
-                  {stat.value}
-                </p>
-                <p className="font-jakarta text-sm text-ink-muted mt-1">
-                  {stat.label}
-                </p>
-              </div>
+          <div className="reveal flex items-end justify-between mb-12">
+            <h2 className="font-jakarta text-display-md text-ink leading-none">
+              Lowongan
+              <br />
+              terbaru
+            </h2>
+            <Link
+              href="/home"
+              className="font-jakarta text-sm text-primary hover:underline hidden sm:block"
+            >
+              Lihat semua →
+            </Link>
+          </div>
+
+          <div className="reveal reveal-delay-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+            {featuredJobs.map((job) => (
+              <JobCard key={job.id} job={job} />
             ))}
+          </div>
+
+          <div className="mt-6 sm:hidden text-center">
+            <Link href="/home" className="font-jakarta text-sm text-primary">
+              Lihat semua →
+            </Link>
           </div>
         </div>
       </section>
@@ -169,7 +212,7 @@ export default function LandingPage() {
               Mitra terpercaya
             </h2>
           </div>
-          <div className="reveal reveal-delay-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="reveal reveal-delay-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {MARKETING_PARTNERS.map((mp) => (
               <MPCard key={mp.id} partner={mp} />
             ))}
@@ -177,67 +220,24 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── SECTION 5: FEATURED JOBS ── */}
-      <section className="py-24 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-8">
-          <div className="reveal flex items-end justify-between mb-12">
-            <h2 className="font-jakarta text-display-md text-ink leading-none">
-              Lowongan
-              <br />
-              terbaru
-            </h2>
-            <Link
-              href="/home"
-              className="font-jakarta text-sm text-primary hover:underline hidden sm:block"
-            >
-              Lihat semua →
-            </Link>
-          </div>
-
-          <div className="reveal reveal-delay-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {featuredJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
-
-          <div className="mt-6 sm:hidden text-center">
-            <Link href="/home" className="font-jakarta text-sm text-primary">
-              Lihat semua →
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── SECTION 6: CTA BAND ── */}
+      {/* ── SECTION 5: CTA BAND ── */}
       <section
         className="grain relative overflow-hidden py-28"
         style={{ backgroundColor: '#8B0000' }}
       >
         <div className="relative z-10 max-w-3xl mx-auto px-5 sm:px-8 text-center">
           <div className="reveal">
-            <p className="font-jakarta text-xs uppercase tracking-widest text-white/50 mb-4">
-              Program Subsidi Aktif
-            </p>
-            <h2 className="font-jakarta text-display-lg text-white">
-              Biaya training bisa
-              <br />
-              100% gratis.
-            </h2>
-            <p className="font-jakarta text-base text-white/70 mt-4 max-w-md mx-auto leading-relaxed">
-              Didanai oleh program pemerintah dan korporat — ratusan PMI
-              sudah mendapat subsidi penuh untuk pelatihan dan penempatan kerja.
-            </p>
             <Link
               href="/home?funded=true"
               className="inline-block font-jakarta font-medium text-sm bg-white text-ink px-8 py-3.5 rounded-btn mt-8 hover:bg-parchment transition-colors duration-200 active:scale-[0.97]"
             >
-              Cek kelayakan saya →
+              Kabur aja dulu!
             </Link>
           </div>
         </div>
       </section>
 
-      {/* ── SECTION 7: FOOTER ── */}
+      {/* ── SECTION 6: FOOTER ── */}
       <Footer />
     </div>
   );

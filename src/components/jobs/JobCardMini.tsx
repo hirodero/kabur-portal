@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { FundingBadge } from "@/components/ui/FundingBadge";
 import type { Job } from "@/types";
 
 interface JobCardMiniProps {
@@ -32,7 +31,6 @@ export function JobCardMini({ job }: JobCardMiniProps) {
           <span className="font-jakarta text-[11px] font-bold text-primary">
             {formatSalaryShort(job.salaryMin, job.salaryMax, job.salaryCurrency)}
           </span>
-          {job.isFunded && <FundingBadge />}
         </div>
       </div>
     </Link>

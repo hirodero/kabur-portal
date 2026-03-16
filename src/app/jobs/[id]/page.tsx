@@ -3,7 +3,6 @@ import Link from "next/link";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { SkillGapPanel } from "@/components/jobs/SkillGapPanel";
 import { ApplyButton } from "@/components/jobs/ApplyButton";
-import { FundingBadge } from "@/components/ui/FundingBadge";
 import { JobCardMini } from "@/components/jobs/JobCardMini";
 import { JOBS } from "@/lib/mock-data";
 import {
@@ -19,11 +18,6 @@ import {
 interface PageProps {
   params: Promise<{ id: string }>;
 }
-
-const MP_CONFIG: Record<string, { label: string; color: string }> = {
-  zenius: { label: "Zenius", color: "#C8102E" },
-  telkomsel: { label: "Telkomsel", color: "#C8102E" },
-};
 
 const BENEFIT_ICONS: Record<string, typeof Home02Icon> = {
   akomodasi: Home02Icon,
@@ -60,7 +54,6 @@ export default async function JobDetailPage({ params }: PageProps) {
 
   if (!job) notFound();
 
-  const mpConfig = job.mpChannel ? MP_CONFIG[job.mpChannel] : null;
   const similarJobs = JOBS.filter(
     (j) => j.id !== job.id && j.sector === job.sector
   ).slice(0, 2);
@@ -110,10 +103,6 @@ export default async function JobDetailPage({ params }: PageProps) {
               <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
                 {job.sector}
               </span>
-              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
-                {job.positions} posisi
-              </span>
-              {job.isFunded && <FundingBadge />}
             </div>
 
             <div className="flex flex-wrap gap-4 font-jakarta text-sm text-ink-muted">
@@ -136,7 +125,7 @@ export default async function JobDetailPage({ params }: PageProps) {
                 {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
               </p>
               <p className="font-jakarta text-sm text-ink-muted mt-0.5">
-                {job.countryFlag} {job.country}
+                {job.placement ? `📍 ${job.placement.city}, ${job.placement.country}` : `${job.countryFlag} ${job.country}`}
               </p>
             </div>
             <div className="flex gap-3 w-full lg:w-auto">
@@ -146,39 +135,27 @@ export default async function JobDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* ── MP CHANNEL BADGE ── */}
-      {mpConfig && (
-        <div
-          className="flex items-center gap-3 rounded-card px-4 py-3 mb-5"
-          style={{ backgroundColor: `${mpConfig.color}12` }}
-        >
-          <div
-            className="w-7 h-7 rounded-badge flex items-center justify-center text-white font-jakarta font-bold text-xs shrink-0"
-            style={{ backgroundColor: mpConfig.color }}
-          >
-            {mpConfig.label[0]}
-          </div>
-          <p className="font-jakarta text-sm font-medium" style={{ color: mpConfig.color }}>
-            Dipromosikan oleh {mpConfig.label}
-          </p>
-        </div>
-      )}
-
-      {/* ── FUNDING CALLOUT ── */}
-      {job.isFunded && job.funderName && (
-        <div className="mb-5">
-          <FundingBadge
-            variant="callout"
-            funderName={job.funderName}
-            fundingCoverage={job.fundingCoverage}
-          />
-        </div>
-      )}
-
       {/* ── TWO-COLUMN LAYOUT ── */}
       <div className="flex flex-col lg:flex-row gap-6">
         {/* ── LEFT: Main content ── */}
         <div className="flex-1 min-w-0 space-y-5">
+          {/* Document requirements */}
+          {job.documentRequirements && job.documentRequirements.length > 0 && (
+              <div className="bg-white border border-ink/10 rounded-card p-6">
+                <h2 className="font-jakarta font-bold text-lg text-ink mb-4 flex items-center gap-2">
+                  <UserAdd01Icon size={18} className="text-primary" />
+                  Dokumen yang Diperlukan
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {job.documentRequirements.map((doc, idx) => (
+                    <div key={idx} className="flex items-center gap-2 font-jakarta text-sm text-ink-muted">
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary/60 shrink-0" />
+                      {doc}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           {/* Description */}
           <div className="bg-white border border-ink/10 rounded-card p-6">
             <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
@@ -190,7 +167,7 @@ export default async function JobDetailPage({ params }: PageProps) {
           </div>
 
           {/* Qualifications */}
-          <div className="bg-white border border-ink/10 rounded-card p-6">
+           <div className="bg-white border border-ink/10 rounded-card p-6">
             <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
               Kualifikasi
             </h2>
@@ -204,6 +181,8 @@ export default async function JobDetailPage({ params }: PageProps) {
             </ul>
           </div>
 
+          {/* Skill Gap Panel */}
+          <SkillGapPanel skillRequirements={job.skillRequirements} />
           {/* Benefits */}
           <div className="bg-white border border-ink/10 rounded-card p-6">
             <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
@@ -238,38 +217,62 @@ export default async function JobDetailPage({ params }: PageProps) {
               <div>
                 <p className="font-jakarta font-semibold text-ink">{job.company}</p>
                 <p className="font-jakarta text-xs text-ink-muted">
-                  {job.countryFlag} {job.country} · {job.sector}
+                  {job.countryFlag} {job.placement ? `${job.placement.city}, ${job.placement.country}` : job.country} · {job.sector}
                 </p>
               </div>
             </div>
             <p className="font-jakarta text-sm text-ink-muted leading-relaxed">
-              {job.company} adalah perusahaan terkemuka di bidang {job.sector.toLowerCase()} yang beroperasi di {job.country}.
-              Rekrutmen dilakukan secara resmi melalui {job.offTaker}, memastikan proses yang transparan dan terpercaya untuk seluruh pekerja migran Indonesia.
+              {job.employerInfo ?? `${job.company} adalah perusahaan terkemuka di bidang ${job.sector.toLowerCase()} yang beroperasi di ${job.country}. Rekrutmen dilakukan secara resmi melalui ${job.offTaker}.`}
             </p>
           </div>
+
+          {/* Terms & Conditions */}
+          {job.termsAndConditions && (
+            <div className="bg-white border border-ink/10 rounded-card p-6">
+              <h2 className="font-jakarta font-bold text-lg text-ink mb-4 flex items-center gap-2">
+                <Calendar01Icon size={18} className="text-primary" />
+                Syarat & Ketentuan Kontrak
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {[
+                  { label: "Durasi Kontrak", value: job.termsAndConditions.durationOfContract },
+                  { label: "Cuti Tahunan", value: job.termsAndConditions.annualLeave },
+                  { label: "Masa Probasi", value: job.termsAndConditions.probationPeriod },
+                  { label: "Hari Kerja", value: job.termsAndConditions.workingDays },
+                  { label: "Jam Kerja", value: job.termsAndConditions.workingHours },
+                ].map(({ label, value }) => (
+                  <div key={label} className="bg-app-bg rounded-lg px-4 py-3">
+                    <p className="font-jakarta text-xs text-ink-muted mb-0.5">{label}</p>
+                    <p className="font-jakarta text-sm font-medium text-ink">{value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Required subcourses */}
+          {job.requiredSubcourses && job.requiredSubcourses.length > 0 && (
+            <div className="bg-white border border-ink/10 rounded-card p-6">
+              <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
+                Materi Pelatihan yang Diperlukan
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {job.requiredSubcourses.map((course, idx) => (
+                  <span
+                    key={idx}
+                    className="font-jakarta text-xs bg-primary/5 text-primary border border-primary/15 px-2.5 py-1 rounded-badge"
+                  >
+                    {course}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* ── RIGHT: Sticky sidebar ── */}
         <aside className="w-full lg:w-72 shrink-0 space-y-4">
           <div className="lg:sticky lg:top-20 space-y-4">
-            {/* Skill Gap Panel */}
-            <SkillGapPanel skillRequirements={job.skillRequirements} />
-
-            {/* Apply card */}
-            <div className="bg-white border border-ink/10 rounded-card p-5">
-              <div className="mb-4">
-                <p className="font-jakarta text-xs text-ink-muted mb-1">Gaji</p>
-                <p className="font-jakarta font-bold text-xl text-primary">
-                  {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-                </p>
-              </div>
-              <div className="flex items-center gap-2 mb-4 font-jakarta text-xs text-ink-muted">
-                <Calendar01Icon size={13} />
-                <span>Deadline: {deadlineDate}</span>
-              </div>
-              <ApplyButton job={job} fullWidth />
-            </div>
-
             {/* Similar jobs */}
             {similarJobs.length > 0 && (
               <div>

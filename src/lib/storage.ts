@@ -4,7 +4,6 @@ export const STORAGE_KEYS = {
   USER_PROFILE: "pmi_user_profile",
   APPLICATIONS: "pmi_applications",
   BOOKMARKS: "pmi_bookmarks",
-  JOB_FAIR_BOOKMARKS: "pmi_jf_bookmarks",
   MP_REFERRAL: "pmi_mp_referral",
   FILTERS: "pmi_filters",
   MP_BANNER_DISMISSED: "pmi_mp_banner_dismissed",
@@ -126,26 +125,6 @@ export function isBookmarked(jobId: string): boolean {
   return getBookmarks().includes(jobId);
 }
 
-// Job Fair Bookmarks
-export function getJobFairBookmarks(): string[] {
-  return getItem<string[]>(STORAGE_KEYS.JOB_FAIR_BOOKMARKS) ?? [];
-}
-
-export function toggleJobFairBookmark(jobId: string): boolean {
-  const bookmarks = getJobFairBookmarks();
-  const idx = bookmarks.indexOf(jobId);
-  if (idx === -1) {
-    setItem(STORAGE_KEYS.JOB_FAIR_BOOKMARKS, [...bookmarks, jobId]);
-    return true;
-  } else {
-    setItem(
-      STORAGE_KEYS.JOB_FAIR_BOOKMARKS,
-      bookmarks.filter((id) => id !== jobId)
-    );
-    return false;
-  }
-}
-
 // MP Referral
 export function getMPReferral(): MPSlug | null {
   return getItem<MPSlug>(STORAGE_KEYS.MP_REFERRAL);
@@ -166,7 +145,9 @@ export function dismissMPBanner(): void {
 
 // Filters
 export function getFilters(): FilterState {
-  return getItem<FilterState>(STORAGE_KEYS.FILTERS) ?? DEFAULT_FILTERS;
+  const stored = getItem<FilterState>(STORAGE_KEYS.FILTERS) ?? DEFAULT_FILTERS;
+  const sortBy = stored.sortBy === "funded_first" ? "latest" : stored.sortBy;
+  return { ...stored, sortBy };
 }
 
 export function setFilters(filters: FilterState): void {

@@ -1,9 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo, Fragment } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { JobCard } from "@/components/jobs/JobCard";
-import { MPChannelBanner } from "@/components/mp/MPChannelBanner";
 import { SkillBar } from "@/components/ui/SkillBar";
 import { JOBS } from "@/lib/mock-data";
 import {
@@ -17,20 +16,23 @@ import {
   FilterIcon,
   GridViewIcon,
   ListViewIcon,
-  ArrowRight01Icon,
 } from "hugeicons-react";
 import Link from "next/link";
 import { Button, ButtonGroup } from "@heroui/react";
+import { Pagination } from "@/components/ui/pagination";
 
-const COUNTRIES = ["Jepang", "Korea Selatan", "Hong Kong", "UAE", "Singapura"];
-const SECTORS = ["Care Worker", "Hospitality", "Construction", "Manufacturing", "IT"];
+const COUNTRIES = [
+  "Germany", "Australia", "Austria", "Switzerland",
+  "Japan", "South Korea", "Hong Kong SAR",
+  "United Arab Emirates", "Singapore",
+];
+const SECTORS = ["Care Worker", "Healthcare", "Hospitality", "Construction", "Manufacturing", "Transportation", "IT"];
 const SORT_OPTIONS = [
   { value: "latest", label: "Terbaru" },
   { value: "skill_match", label: "Skill match" },
-  { value: "funded_first", label: "Funded first" },
 ] as const;
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 9;
 
 export default function HomePage() {
   const [user, setUser] = useState<UserProfile | null>(null);
@@ -42,7 +44,7 @@ export default function HomePage() {
     sortBy: "latest",
     viewMode: "grid",
   });
-  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  const [currentPage, setCurrentPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function HomePage() {
     const next = { ...filters, ...updates };
     setFiltersState(next);
     persistFilters(next);
-    setVisibleCount(PAGE_SIZE);
+    setCurrentPage(1);
   }
 
   function toggleCountry(country: string) {
@@ -89,9 +91,7 @@ export default function HomePage() {
       );
     }
 
-    if (filters.sortBy === "funded_first") {
-      jobs = [...jobs].sort((a, b) => (b.isFunded ? 1 : 0) - (a.isFunded ? 1 : 0));
-    } else if (filters.sortBy === "skill_match" && user) {
+    if (filters.sortBy === "skill_match" && user) {
       jobs = [...jobs].sort((a, b) => {
         const score = (j: (typeof JOBS)[0]) => {
           const reqs = j.skillRequirements;
@@ -112,8 +112,12 @@ export default function HomePage() {
     return jobs;
   }, [filters, user]);
 
-  const visibleJobs = filteredJobs.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredJobs.length;
+  const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
+  const page = Math.min(currentPage, totalPages);
+  const visibleJobs = filteredJobs.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
 
   const SKILL_TARGETS: Record<string, number> = {
     "Basic Thinking Skills": 70,
@@ -242,9 +246,6 @@ export default function HomePage() {
               <h1 className="font-jakarta font-bold text-xl sm:text-2xl text-ink">
                 Selamat datang, {user?.name?.split(" ")[0] ?? "PMI"}
               </h1>
-              <p className="font-jakarta text-sm text-ink-muted mt-1">
-                {filteredJobs.length} lowongan tersedia untuk kamu
-              </p>
             </div>
             {/* Mobile filter toggle */}
             <Button
@@ -280,9 +281,6 @@ export default function HomePage() {
               </Button>
             ))}
           </div>
-
-          {/* MP Channel Banner */}
-          <MPChannelBanner />
 
           {/* Sort + View controls */}
           <div className="flex items-center justify-between gap-3 mb-4">
@@ -347,57 +345,20 @@ export default function HomePage() {
                     : "flex flex-col gap-4"
                 }
               >
-                {visibleJobs.map((job, idx) => (
-                  <Fragment key={job.id}>
-                    <div className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
-                      <JobCard job={job} viewMode={filters.viewMode} />
-                    </div>
-                    {/* Job Fair CTA card at position 3 */}
-                    {idx === 2 && (
-                      <div
-                        key="jf-cta"
-                        className={`rounded-xl flex relative overflow-hidden ${
-                          filters.viewMode === "grid"
-                            ? "h-full min-h-[274px] flex-col justify-between p-5"
-                            : "min-h-[81px] flex-row items-center justify-between gap-4 px-5 py-3"
-                        }`}
-                        style={{ background: 'linear-gradient(135deg, #8B0000 0%, #6B0000 100%)' }}
-                      >
-                        <div className={filters.viewMode === "grid" ? "" : "flex flex-col gap-0.5 flex-1 min-w-0"}>
-                          <span className="font-jakarta text-[10px] font-bold text-white/60 uppercase tracking-widest">
-                            Event Mendatang
-                          </span>
-                          <h3 className="font-jakarta font-bold text-white text-base leading-snug">
-                            Job Fair Internasional Q1 2025
-                          </h3>
-                          <p className="font-jakarta text-xs text-white/70">
-                            15–17 April · 38 Employer · 240+ Posisi
-                          </p>
-                        </div>
-                        <Link
-                          href="/job-fair"
-                          className={`inline-flex items-center gap-1.5 font-jakarta text-xs font-semibold text-white hover:underline shrink-0 ${
-                            filters.viewMode === "grid" ? "mt-4" : ""
-                          }`}
-                        >
-                          Lihat Job Fair <ArrowRight01Icon size={13} />
-                        </Link>
-                      </div>
-                    )}
-                  </Fragment>
+                {visibleJobs.map((job) => (
+                  <div key={job.id} className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
+                    <JobCard job={job} viewMode={filters.viewMode} />
+                  </div>
                 ))}
               </div>
 
-              {hasMore && (
-                <div className="text-center mt-8">
-                  <Button
-                    variant="bordered"
-                    color="default"
-                    onClick={() => setVisibleCount((v) => v + PAGE_SIZE)}
-                    className="font-jakarta"
-                  >
-                    Muat lebih banyak ({filteredJobs.length - visibleCount} tersisa)
-                  </Button>
+              {totalPages > 1 && (
+                <div className="mt-8">
+                  <Pagination
+                    currentPage={page}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
+                  />
                 </div>
               )}
             </>
@@ -418,11 +379,6 @@ export default function HomePage() {
                   <p className="font-jakarta text-xs text-ink-muted">{user.location}</p>
                 </div>
               </div>
-              {user.mpReferral && (
-                <div className="text-[10px] bg-primary-light text-primary border border-primary/20 rounded-badge px-2 py-1 text-center font-jakarta font-medium">
-                  via {user.mpReferral.charAt(0).toUpperCase() + user.mpReferral.slice(1)}
-                </div>
-              )}
             </div>
           )}
 
