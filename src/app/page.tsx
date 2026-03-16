@@ -224,7 +224,7 @@ export default function LandingPage() {
               100% gratis.
             </h2>
             <p className="font-jakarta text-base text-white/70 mt-4 max-w-md mx-auto leading-relaxed">
-              Didanai oleh program pemerintah dan CSR korporat — ratusan PMI
+              Didanai oleh program pemerintah dan korporat — ratusan PMI
               sudah mendapat subsidi penuh untuk pelatihan dan penempatan kerja.
             </p>
             <Link

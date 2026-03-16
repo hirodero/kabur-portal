@@ -71,7 +71,7 @@ const TABS = [
         icon: MoneyBag01Icon,
         number: "01",
         title: "Buat Program Beasiswa",
-        desc: "Subsidi biaya pelatihan PMI — pemerintah, CSR korporat, atau dana negara tujuan.",
+        desc: "Subsidi biaya pelatihan PMI — pemerintah, korporat, atau dana negara tujuan.",
       },
       {
         icon: FolderCheckIcon,

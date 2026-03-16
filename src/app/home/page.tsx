@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Fragment } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { JobCard } from "@/components/jobs/JobCard";
 import { MPChannelBanner } from "@/components/mp/MPChannelBanner";
@@ -348,8 +348,8 @@ export default function HomePage() {
                 }
               >
                 {visibleJobs.map((job, idx) => (
-                  <>
-                    <div key={job.id} className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
+                  <Fragment key={job.id}>
+                    <div className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
                       <JobCard job={job} viewMode={filters.viewMode} />
                     </div>
                     {/* Job Fair CTA card at position 3 */}
@@ -384,7 +384,7 @@ export default function HomePage() {
                         </Link>
                       </div>
                     )}
-                  </>
+                  </Fragment>
                 ))}
               </div>
 
