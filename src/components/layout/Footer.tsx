@@ -12,6 +12,7 @@ export function Footer() {
   const partners = [
     { logo: "/zenius.png", label: "Zenius" },
     { logo: "/telkomsel.png", label: "Telkomsel" },
+    { logo: "/malaka.png", label: "Malaka" },
   ];
 
   return (

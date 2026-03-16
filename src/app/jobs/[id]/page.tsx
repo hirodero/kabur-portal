@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { AppLayout } from "@/components/layout/AppLayout";
-import { SkillGapPanel } from "@/components/jobs/SkillGapPanel";
 import { JobCardMini } from "@/components/jobs/JobCardMini";
 import { FunderModeHeader } from "@/components/jobs/FunderModeHeader";
 import { QualificationsPanel } from "@/components/jobs/QualificationsPanel";
+import { SubcoursesPanel } from "@/components/jobs/SubcoursesPanel";
 import { JOBS } from "@/lib/mock-data";
 import {
   ArrowRight01Icon,
@@ -131,8 +131,10 @@ export default async function JobDetailPage({ params }: PageProps) {
           {/* Qualifications — with funder toggle */}
           <QualificationsPanel jobId={job.id} qualifications={job.qualifications} />
 
-          {/* Skill Gap Panel */}
-          <SkillGapPanel skillRequirements={job.skillRequirements} />
+          {/* Subcourses panel — replaces old skill gap */}
+          {job.requiredSubcourses && job.requiredSubcourses.length > 0 && (
+            <SubcoursesPanel courses={job.requiredSubcourses} />
+          )}
           {/* Benefits */}
           <div className="bg-white border border-ink/10 rounded-card p-6">
             <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
@@ -200,24 +202,6 @@ export default async function JobDetailPage({ params }: PageProps) {
             </div>
           )}
 
-          {/* Required subcourses */}
-          {job.requiredSubcourses && job.requiredSubcourses.length > 0 && (
-            <div className="bg-white border border-ink/10 rounded-card p-6">
-              <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
-                Materi Pelatihan yang Diperlukan
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {job.requiredSubcourses.map((course, idx) => (
-                  <span
-                    key={idx}
-                    className="font-jakarta text-xs bg-primary/5 text-primary border border-primary/15 px-2.5 py-1 rounded-badge"
-                  >
-                    {course}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* ── RIGHT: Sticky sidebar ── */}

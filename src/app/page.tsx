@@ -22,7 +22,22 @@ const STATS = [
 
 export default function LandingPage() {
   useScrollReveal();
-  const featuredJobs = JOBS.filter((j) => j.isFunded || j.mpChannel).slice(0, 3);
+  // Pick 3 featured jobs with different countries
+  const eligible = JOBS.filter((j) => j.isFunded || j.mpChannel);
+  const featuredJobs: typeof JOBS = [];
+  const seenCountries = new Set<string>();
+  for (const job of eligible) {
+    if (featuredJobs.length >= 3) break;
+    if (!seenCountries.has(job.country)) {
+      seenCountries.add(job.country);
+      featuredJobs.push(job);
+    }
+  }
+  // If fewer than 3 unique countries, fill with remaining eligible
+  for (const job of eligible) {
+    if (featuredJobs.length >= 3) break;
+    if (!featuredJobs.includes(job)) featuredJobs.push(job);
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -126,6 +141,7 @@ export default function LandingPage() {
                 items={[
                   { src: "/telkomsel.png", alt: "Telkomsel" },
                   { src: "/zenius.png", alt: "Zenius" },
+                  { src: "/malaka.png", alt: "Malaka" },
                   { src: "/vokati-logo.png", alt: "Vokati" },
                   { src: "/apjati-logo.png", alt: "APJATI" },
                 ]}

@@ -66,7 +66,7 @@ export interface Job {
 export interface MarketingPartner {
   id: string;
   name: string;
-  slug: "zenius" | "telkomsel" | "vokati" | "apjati";
+  slug: "zenius" | "telkomsel" | "malaka" | "vokati" | "apjati";
   tagline: string;
   color: string;
   referralCount: number;

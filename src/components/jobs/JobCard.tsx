@@ -64,7 +64,7 @@ function OffTakerBadge({ offTaker, size = "md" }: { offTaker: string; size?: "sm
     );
   }
   return (
-    <span className="font-jakarta text-[10px] font-medium text-ink-muted bg-ink/5 px-2 py-0.5 rounded-badge shrink-0">
+    <span className="font-jakarta text-[10px] font-medium text-ink-muted bg-ink/5 px-2 py-0.5 rounded-badge shrink-0 max-w-[96px] truncate">
       {offTaker}
     </span>
   );

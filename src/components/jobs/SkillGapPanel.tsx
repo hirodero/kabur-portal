@@ -46,40 +46,7 @@ export function SkillGapPanel({ skillRequirements }: SkillGapPanelProps) {
         </span>
       </div>
 
-      {/* Gap callout */}
-      {!allMet && (
-        <div className="bg-primary-light border border-primary/20 rounded-card p-3 space-y-2">
-          <p className="font-jakarta text-xs font-semibold text-primary">
-            Tingkatkan skill kamu di ZenLeap sebelum apply
-          </p>
-          <div className="space-y-1">
-            {skillRequirements
-              .filter((s) => s.userLevel < s.requiredLevel)
-              .map((s) => (
-                <a
-                  key={s.skillName}
-                  href={`https://zenleap.id/course/${getSkillSlug(s.skillName)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between font-jakarta text-[11px] text-primary font-medium hover:underline"
-                >
-                  <span>{s.skillName}</span>
-                  <span className="text-[10px] bg-white text-primary border border-primary/20 px-1.5 py-0.5 rounded-badge">
-                    -{s.requiredLevel - s.userLevel} poin
-                  </span>
-                </a>
-              ))}
-          </div>
-          <a
-            href="https://zenleap.id"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block mt-2 text-center font-jakarta text-xs font-semibold bg-primary text-white rounded-btn py-2 hover:bg-primary-dark transition-colors active:scale-[0.97]"
-          >
-            Mulai training di ZenLeap →
-          </a>
-        </div>
-      )}
+      
     </div>
   );
 }

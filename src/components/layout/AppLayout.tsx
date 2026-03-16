@@ -3,7 +3,6 @@
 import { Suspense } from 'react'
 import { AppSidebar } from '@/components/layout/AppSidebar'
 import { AppBottomNav } from '@/components/layout/AppBottomNav'
-import { Footer } from '@/components/layout/Footer'
 import { SidebarProvider, useSidebar } from '@/contexts/SidebarContext'
 
 interface AppLayoutProps {
@@ -38,7 +37,7 @@ function AppLayoutInner({ children, title, subtitle }: AppLayoutProps) {
         <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 py-8 w-full flex-1">
           {children}
         </main>
-        <Footer />
+        {/* Footer hidden in app pages — only shown on landing page */}
       </div>
     </div>
   )

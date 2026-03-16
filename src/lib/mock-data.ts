@@ -1429,6 +1429,15 @@ export const MARKETING_PARTNERS: MarketingPartner[] = [
     activeJobCount: 52,
   },
   {
+    id: "mp-malaka",
+    name: "Malaka",
+    slug: "malaka",
+    tagline: "Pelatihan vokasi dan sertifikasi untuk karir global.",
+    color: "#1E40AF",
+    referralCount: 2100,
+    activeJobCount: 28,
+  },
+  {
     id: "ot-vokati",
     name: "Vokati",
     slug: "vokati",

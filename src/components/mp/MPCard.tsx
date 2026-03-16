@@ -5,6 +5,7 @@ import type { MarketingPartner } from "@/types";
 const PARTNER_LOGOS: Record<string, string> = {
   zenius: "/zenius.png",
   telkomsel: "/telkomsel.png",
+  malaka: "/malaka.png",
   vokati: "/vokati-logo.png",
   apjati: "/apjati-logo.png",
 };
