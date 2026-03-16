@@ -7,8 +7,9 @@ import { cn } from "@/lib/utils";
  * HeroUI Button wrapper - applies HeroUI UI/UX to all buttons.
  * Maps common variants to HeroUI equivalents.
  */
-export interface ButtonProps extends Omit<HeroUIButtonProps, "color" | "variant"> {
+export interface ButtonProps extends Omit<HeroUIButtonProps, "color" | "variant" | "size"> {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  size?: "default" | "sm" | "lg" | "xs" | "icon" | "icon-xs" | "icon-sm" | "icon-lg";
 }
 
 const variantMap = {
