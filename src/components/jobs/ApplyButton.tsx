@@ -41,11 +41,9 @@ export function ApplyButton({
     });
   }
 
-  const heroSize = size === "default" ? "md" : size;
-
   return (
     <Button
-      size={heroSize}
+      size={size}
       onClick={handleApply}
       isDisabled={applied}
       fullWidth={fullWidth}

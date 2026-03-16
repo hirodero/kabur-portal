@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { AppSidebar } from '@/components/layout/AppSidebar'
 import { AppBottomNav } from '@/components/layout/AppBottomNav'
 import { Footer } from '@/components/layout/Footer'
@@ -17,8 +18,12 @@ function AppLayoutInner({ children, title, subtitle }: AppLayoutProps) {
 
   return (
     <div className="min-h-screen bg-app-bg flex flex-col">
-      <AppSidebar />
-      <AppBottomNav />
+      <Suspense>
+        <AppSidebar />
+      </Suspense>
+      <Suspense>
+        <AppBottomNav />
+      </Suspense>
       <div className={`flex-1 flex flex-col pl-0 ${contentPadding} transition-[padding] duration-300 pb-20 lg:pb-0`}>
         {title && (
           <div className="app-header px-4 md:px-6 lg:px-10 py-7">

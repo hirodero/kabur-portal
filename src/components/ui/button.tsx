@@ -36,11 +36,10 @@ function Button({
   className,
   variant = "default",
   size = "default",
-  color: colorProp,
   ...props
 }: ButtonProps) {
   const mapped = variantMap[variant] ?? variantMap.default;
-  const color = colorProp ?? mapped.color;
+  const color = mapped.color;
   const heroVariant = mapped.variant;
   const heroSize = sizeMap[size as string] ?? "md";
 
