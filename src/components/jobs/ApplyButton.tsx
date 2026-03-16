@@ -49,7 +49,6 @@ export function ApplyButton({
       onClick={handleApply}
       isDisabled={applied}
       fullWidth={fullWidth}
-      color="primary"
       variant="default"
       className={className}
     >
