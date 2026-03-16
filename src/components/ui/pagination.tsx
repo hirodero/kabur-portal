@@ -1,13 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import { ArrowLeft01Icon, ArrowRight01Icon } from "hugeicons-react";
 import { cn } from "@/lib/utils";
 
 interface PaginationProps extends React.ComponentProps<"nav"> {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  /** Compact mode: icon-only prev/next, no text (for narrow containers) */
+  compact?: boolean;
 }
 
 function getPageNumbers(currentPage: number, totalPages: number): (number | "ellipsis")[] {
@@ -40,6 +42,7 @@ function Pagination({
   currentPage,
   totalPages,
   onPageChange,
+  compact = false,
   className,
   ...props
 }: PaginationProps) {
@@ -49,10 +52,10 @@ function Pagination({
     <nav
       role="navigation"
       aria-label="Pagination"
-      className={cn("flex justify-center", className)}
+      className={cn("flex justify-center min-w-0 overflow-hidden", className)}
       {...props}
     >
-      <ul className="flex flex-row items-center gap-1">
+      <ul className="flex flex-row flex-wrap items-center justify-center gap-1">
         <li>
           <button
             type="button"
@@ -60,20 +63,21 @@ function Pagination({
             disabled={currentPage <= 1}
             aria-label="Halaman sebelumnya"
             className={cn(
-              "inline-flex items-center justify-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium transition-colors",
+              "inline-flex items-center justify-center gap-1.5 rounded-md border border-input bg-background px-2 py-1.5 text-sm font-medium transition-colors shrink-0",
+              compact ? "px-2" : "px-3 py-2",
               "hover:bg-accent hover:text-accent-foreground",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               "disabled:pointer-events-none disabled:opacity-50"
             )}
           >
-            <ChevronLeftIcon className="size-4" />
-            <span className="hidden sm:inline">Sebelumnya</span>
+            <ArrowLeft01Icon size={16} />
+            {!compact && <span className="hidden sm:inline">Sebelumnya</span>}
           </button>
         </li>
         {pages.map((p, i) =>
           p === "ellipsis" ? (
             <li key={`ellipsis-${i}`}>
-              <span className="flex size-9 items-center justify-center text-muted-foreground">
+              <span className={cn("flex items-center justify-center text-muted-foreground", compact ? "size-7" : "size-9")}>
                 …
               </span>
             </li>
@@ -85,7 +89,8 @@ function Pagination({
                 aria-current={p === currentPage ? "page" : undefined}
                 aria-label={`Halaman ${p}`}
                 className={cn(
-                  "inline-flex size-9 items-center justify-center rounded-md border text-sm font-medium transition-colors",
+                  "inline-flex items-center justify-center rounded-md border text-sm font-medium transition-colors shrink-0",
+                  compact ? "size-7" : "size-9",
                   p === currentPage
                     ? "border-primary bg-primary text-primary-foreground"
                     : "border-input bg-background hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -103,14 +108,15 @@ function Pagination({
             disabled={currentPage >= totalPages}
             aria-label="Halaman selanjutnya"
             className={cn(
-              "inline-flex items-center justify-center gap-1.5 rounded-md border border-input bg-background px-3 py-2 text-sm font-medium transition-colors",
+              "inline-flex items-center justify-center gap-1.5 rounded-md border border-input bg-background px-2 py-1.5 text-sm font-medium transition-colors shrink-0",
+              compact ? "px-2" : "px-3 py-2",
               "hover:bg-accent hover:text-accent-foreground",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               "disabled:pointer-events-none disabled:opacity-50"
             )}
           >
-            <span className="hidden sm:inline">Selanjutnya</span>
-            <ChevronRightIcon className="size-4" />
+            {!compact && <span className="hidden sm:inline">Selanjutnya</span>}
+            <ArrowRight01Icon size={16} />
           </button>
         </li>
       </ul>

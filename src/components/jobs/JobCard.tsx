@@ -78,51 +78,49 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
 
   if (isBar) {
     return (
-      <Link href={`/jobs/${job.id}`} className="block group">
+      <Link href={`/jobs/${job.id}`} className="block group min-w-0">
         <motion.article
-          className="bg-white border border-ink/15 rounded-xl px-5 py-3 min-h-[81px] flex flex-row items-center gap-4 border-l-4 border-l-primary shadow-sm"
+          className="bg-white border border-ink/15 rounded-xl px-4 py-3 min-w-0 flex flex-row items-center gap-3 sm:gap-4 border-l-4 border-l-primary shadow-sm"
           whileHover={{
             boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(200, 16, 46, 0.06)",
             transition: { duration: 0.2, ease: "easeOut" },
           }}
           transition={{ duration: 0.2 }}
         >
-          {/* Flag + country */}
-          <span className="flex items-center gap-2 shrink-0">
-            {FlagIcon ? (
-              <span className="flex items-center justify-center w-10 h-6 rounded-md border border-ink/20 bg-white overflow-hidden shrink-0">
-                <FlagIcon title={job.country} className="w-full h-full" />
-              </span>
-            ) : (
-              <span className="text-sm">{job.countryFlag}</span>
-            )}
-            <span className="text-sm font-medium text-ink hidden sm:inline">{job.country}</span>
-          </span>
-
-          {/* Title + company */}
-          <div className="flex-1 min-w-0">
-            <h3 className="font-jakarta font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
-              {job.title}
-            </h3>
-            <p className="text-xs text-ink-muted truncate">{job.company} · via {job.offTaker}</p>
+          {/* Left: flag + country, salary below */}
+          <div className="flex flex-col gap-1 shrink-0">
+            <span className="flex items-center gap-2">
+              {FlagIcon ? (
+                <span className="flex items-center justify-center w-10 h-6 rounded-md border border-ink/20 bg-white overflow-hidden shrink-0">
+                  <FlagIcon title={job.country} className="w-full h-full" />
+                </span>
+              ) : (
+                <span className="text-sm">{job.countryFlag}</span>
+              )}
+              <span className="text-sm font-medium text-ink hidden sm:inline">{job.country}</span>
+            </span>
+            <p className="font-jakarta font-bold text-sm text-primary">
+              {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+              <span className="text-[10px] font-medium text-ink/70 ml-0.5">/bln</span>
+            </p>
           </div>
 
-          {/* Off-taker logo */}
-          <OffTakerBadge offTaker={job.offTaker} size="sm" />
+          {/* Center: title + company, off-taker, sector */}
+          <div className="flex-1 min-w-0 flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+            <div className="min-w-0 flex-1 basis-0 sm:basis-auto">
+              <h3 className="font-jakarta font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
+                {job.title}
+              </h3>
+              <p className="text-xs text-ink-muted truncate">{job.company} · via {job.offTaker}</p>
+            </div>
+            <OffTakerBadge offTaker={job.offTaker} size="sm" />
+            <span className="text-[11px] text-ink-muted bg-ink/5 px-2 py-1 rounded-badge font-medium shrink-0 hidden lg:inline">
+              {job.sector}
+            </span>
+          </div>
 
-          {/* Salary */}
-          <p className="font-jakarta font-bold text-lg text-primary shrink-0 hidden md:block">
-            {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-            <span className="text-xs font-medium text-ink/70 ml-0.5">/bln</span>
-          </p>
-
-          {/* Sector */}
-          <span className="text-[11px] text-ink-muted bg-ink/5 px-2 py-1 rounded-badge font-medium shrink-0 hidden lg:inline">
-            {job.sector}
-          </span>
-
-          {/* Posisi button */}
-          <span className="inline-flex items-center gap-1 font-jakarta text-xs font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-2.5 py-1 transition-colors shrink-0">
+          {/* Right: posisi button */}
+          <span className="inline-flex items-center justify-center font-jakarta text-xs font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-2.5 py-1 transition-colors shrink-0">
             <ArrowRight01Icon size={12} className="shrink-0" />
           </span>
         </motion.article>
@@ -131,9 +129,9 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
   }
 
   return (
-    <Link href={`/jobs/${job.id}`} className="block group h-full">
+    <Link href={`/jobs/${job.id}`} className="block group h-full min-w-0">
       <motion.article
-        className="bg-white border border-ink/15 rounded-2xl p-5 min-h-[274px] h-full flex flex-col border-l-4 border-l-primary shadow-sm"
+        className="bg-white border border-ink/15 rounded-2xl p-5 min-h-[260px] h-full flex flex-col min-w-0 overflow-hidden border-l-4 border-l-primary shadow-sm"
         whileHover={{
           y: -4,
           boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(200, 16, 46, 0.08)",
@@ -142,16 +140,16 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
         transition={{ duration: 0.2 }}
       >
         {/* Top row: flag + country | off-taker logo */}
-        <div className="flex items-center justify-between mb-3">
-          <span className="flex items-center gap-3">
+        <div className="flex items-center justify-between gap-2 mb-3 min-w-0">
+          <span className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
             {FlagIcon ? (
               <span className="flex items-center justify-center w-12 h-8 rounded-lg border-2 border-ink/20 bg-white overflow-hidden shrink-0 shadow-sm">
                 <FlagIcon title={job.country} className="w-full h-full" />
               </span>
             ) : (
-              <span>{job.countryFlag}</span>
+              <span className="shrink-0">{job.countryFlag}</span>
             )}
-            <span className="text-sm font-medium text-ink">{job.country}</span>
+            <span className="text-sm font-medium text-ink truncate min-w-0">{job.country}</span>
           </span>
           <OffTakerBadge offTaker={job.offTaker} />
         </div>
@@ -168,9 +166,9 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
 
         {/* Salary + footer pinned to bottom */}
         <div className="mt-auto">
-          <p className="font-jakarta font-bold text-2xl text-primary pt-4">
-            {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}{" "}
-            <span className="text-sm font-jakarta font-medium text-ink/70">/bln</span>
+          <p className="font-jakarta font-bold text-2xl text-primary pt-4 min-w-0">
+            <span className="whitespace-nowrap">{formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}</span>
+            <span className="text-sm font-jakarta font-medium text-ink/70"> /bln</span>
           </p>
 
           {/* Funder overlay */}
@@ -187,8 +185,8 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
             </div>
           )}
 
-          <div className="flex items-center justify-between pt-3 border-t border-ink/10 mt-3">
-            <span className="text-xs text-ink-muted bg-ink/5 px-2.5 py-1.5 rounded-badge font-medium">
+          <div className="flex items-center justify-between gap-2 pt-3 border-t border-ink/10 mt-3 min-w-0">
+            <span className="text-xs text-ink-muted bg-ink/5 px-2.5 py-1.5 rounded-badge font-medium truncate min-w-0">
               {job.sector}
             </span>
             <span className="inline-flex items-center gap-1 font-jakarta text-sm font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-3 py-1.5 transition-colors group-hover:border-primary/40">

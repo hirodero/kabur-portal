@@ -12,6 +12,9 @@ import {
   MoneyBag01Icon,
   FolderCheckIcon,
   CheckListIcon,
+  Briefcase01Icon,
+  UserListIcon,
+  DeliveryTracking01Icon,
 } from "hugeicons-react";
 
 const TABS = [
@@ -64,6 +67,30 @@ const TABS = [
     ],
   },
   {
+    id: "offtaker",
+    label: "Untuk Offtaker",
+    steps: [
+      {
+        icon: Briefcase01Icon,
+        number: "01",
+        title: "Pasang Lowongan",
+        desc: "Publikasikan kebutuhan tenaga kerja Anda, sistem kami langsung mencocokkan dengan kandidat yang punya skill relevan.",
+      },
+      {
+        icon: UserListIcon,
+        number: "02",
+        title: "Seleksi Kandidat Terverifikasi",
+        desc: "Akses pool PMI yang sudah terlatih, tersertifikasi, dan siap ditempatkan, lengkap dengan skill match score.",
+      },
+      {
+        icon: DeliveryTracking01Icon,
+        number: "03",
+        title: "Pantau Penempatan",
+        desc: "Ikuti perkembangan kandidat Anda: dari persiapan dokumen, pelatihan, hingga siap diberangkatkan ke lokasi penempatan.",
+      },
+    ],
+  },
+  {
     id: "funder",
     label: "Untuk Funder",
     steps: [
@@ -90,7 +117,7 @@ const TABS = [
 ] as const;
 
 export function HowItWorksTabs() {
-  const [active, setActive] = useState<"pmi" | "mp" | "funder">("pmi");
+  const [active, setActive] = useState<"pmi" | "mp" | "offtaker" | "funder">("pmi");
   const activeTab = TABS.find((t) => t.id === active)!;
 
   return (
@@ -103,7 +130,7 @@ export function HowItWorksTabs() {
             variant="light"
             color={active === tab.id ? "primary" : "default"}
             size="sm"
-            onClick={() => setActive(tab.id as "pmi" | "mp" | "funder")}
+            onClick={() => setActive(tab.id as "pmi" | "mp" | "offtaker" | "funder")}
             className={`font-jakarta text-sm font-medium px-0 py-3 mr-8 min-w-0 h-auto rounded-none border-b-2 transition-all duration-150 ${
               active === tab.id
                 ? "border-primary text-primary"

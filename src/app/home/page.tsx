@@ -30,10 +30,6 @@ const COUNTRIES = [
   "United Arab Emirates", "Singapore",
 ];
 const SECTORS = ["Care Worker", "Healthcare", "Hospitality", "Construction", "Manufacturing", "Transportation", "IT"];
-const SORT_OPTIONS = [
-  { value: "latest", label: "Terbaru" },
-  { value: "skill_match", label: "Skill match" },
-] as const;
 
 const PAGE_SIZE = 9;
 
@@ -49,6 +45,7 @@ export default function HomePage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { funderMode, toggleFunderMode, getCount, hydrated } = useFunderMode();
 
   useEffect(() => {
@@ -87,12 +84,23 @@ export default function HomePage() {
       jobs = jobs.filter((j) => filters.countries.includes(j.country));
     if (filters.sectors.length > 0)
       jobs = jobs.filter((j) => filters.sectors.includes(j.sector));
-    if (filters.fundedOnly) jobs = jobs.filter((j) => j.isFunded);
     if (filters.skillMatchOnly && user) {
       jobs = jobs.filter((j) =>
         j.skillRequirements.every(
           (req) => (user.skills[req.skillName] ?? 0) >= req.requiredLevel
         )
+      );
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      jobs = jobs.filter(
+        (j) =>
+          j.title.toLowerCase().includes(q) ||
+          j.company.toLowerCase().includes(q) ||
+          j.country.toLowerCase().includes(q) ||
+          j.sector.toLowerCase().includes(q) ||
+          j.offTaker.toLowerCase().includes(q)
       );
     }
 
@@ -115,7 +123,7 @@ export default function HomePage() {
     }
 
     return jobs;
-  }, [filters, user]);
+  }, [filters, user, searchQuery]);
 
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / PAGE_SIZE));
   const page = Math.min(currentPage, totalPages);
@@ -124,16 +132,34 @@ export default function HomePage() {
     currentPage * PAGE_SIZE
   );
 
-  const SKILL_TARGETS: Record<string, number> = {
-    "Basic Thinking Skills": 70,
-    "Understanding and Be Effective with Others": 80,
-    "Basic Decision-Making": 65,
-    "Productivity and Management Skills": 65,
-    "Business and Economics for Everyone": 60,
-    "Communication in Japanese/Korean/English": 70,
-  };
+  // Aggregate unique skills from JOBS (from zenleap dummy data), max requiredLevel per skill
+  const allSkillsFromJobs = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const job of JOBS) {
+      for (const req of job.skillRequirements) {
+        const current = map.get(req.skillName) ?? 0;
+        map.set(req.skillName, Math.max(current, req.requiredLevel));
+      }
+    }
+    return Array.from(map.keys()).map((skillName) => ({
+      skillName,
+      requiredLevel: 100,
+      userLevel: user ? (user.skills[skillName] ?? 0) : 0,
+    }));
+  }, [user]);
 
-  const userSkillEntries = user ? Object.entries(user.skills).slice(0, 4) : [];
+  const SKILL_PAGE_SIZE = 4;
+  const [skillPage, setSkillPage] = useState(1);
+  const skillTotalPages = Math.max(1, Math.ceil(allSkillsFromJobs.length / SKILL_PAGE_SIZE));
+  const safeSkillPage = Math.min(skillPage, skillTotalPages);
+  const visibleSkills = allSkillsFromJobs.slice(
+    (safeSkillPage - 1) * SKILL_PAGE_SIZE,
+    safeSkillPage * SKILL_PAGE_SIZE
+  );
+
+  useEffect(() => {
+    if (skillPage > skillTotalPages) setSkillPage(1);
+  }, [skillTotalPages, skillPage]);
 
   const FilterPanel = () => (
     <div className="space-y-6">
@@ -184,21 +210,6 @@ export default function HomePage() {
       {/* Toggles */}
       <div className="space-y-3 pt-3 border-t border-ink/8">
         <label className="flex items-center justify-between cursor-pointer">
-          <span className="font-jakarta text-sm text-ink font-medium">Funded only</span>
-          <div
-            onClick={() => updateFilters({ fundedOnly: !filters.fundedOnly })}
-            className={`relative w-9 h-5 rounded-full transition-colors duration-200 cursor-pointer ${
-              filters.fundedOnly ? "bg-primary" : "bg-ink/15"
-            }`}
-          >
-            <div
-              className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
-                filters.fundedOnly ? "translate-x-4" : "translate-x-0.5"
-              }`}
-            />
-          </div>
-        </label>
-        <label className="flex items-center justify-between cursor-pointer">
           <span className="font-jakarta text-sm text-ink font-medium">Skill-matched</span>
           <div
             onClick={() => updateFilters({ skillMatchOnly: !filters.skillMatchOnly })}
@@ -218,7 +229,6 @@ export default function HomePage() {
       {/* Reset */}
       {(filters.countries.length > 0 ||
         filters.sectors.length > 0 ||
-        filters.fundedOnly ||
         filters.skillMatchOnly) && (
         <Button
           variant="light"
@@ -228,7 +238,6 @@ export default function HomePage() {
             updateFilters({
               countries: [],
               sectors: [],
-              fundedOnly: false,
               skillMatchOnly: false,
             })
           }
@@ -242,9 +251,9 @@ export default function HomePage() {
 
   return (
     <AppLayout>
-      <div className="flex gap-7">
+      <div className="flex gap-7 min-w-0 overflow-x-hidden">
         {/* ── MAIN CONTENT ── */}
-        <div className="flex-1 min-w-0 w-full">
+        <div className="flex-1 min-w-0 w-full overflow-x-hidden">
           {/* Welcome bar */}
           <div className="flex items-start justify-between gap-4 mb-5">
             <div>
@@ -319,24 +328,22 @@ export default function HomePage() {
             ))}
           </div>
 
-          {/* Sort + View controls */}
+          {/* Search + View controls */}
           <div className="flex items-center justify-between gap-3 mb-4">
-            <div className="flex gap-1">
-              {SORT_OPTIONS.map((opt) => (
-                <Button
-                  key={opt.value}
-                  size="sm"
-                  variant={filters.sortBy === opt.value ? "solid" : "bordered"}
-                  color={filters.sortBy === opt.value ? "primary" : "default"}
-                  className="font-jakarta text-xs min-w-0"
-                  onClick={() => updateFilters({ sortBy: opt.value })}
-                >
-                  {opt.label}
-                </Button>
-              ))}
+            <div className="flex-1 min-w-0 max-w-md">
+              <input
+                type="text"
+                placeholder="Cari lowongan, negara, sektor..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+                className="w-full font-jakarta text-sm bg-white border border-ink/10 rounded-lg px-4 py-2 text-ink placeholder:text-ink-faint focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+              />
             </div>
 
-            <ButtonGroup variant="flat" size="sm" className="gap-0 p-0.5 bg-white border border-ink/10 rounded-lg overflow-hidden">
+            <ButtonGroup variant="flat" size="sm" className="gap-0 p-0.5 bg-white border border-ink/10 rounded-lg overflow-hidden shrink-0">
               <Button
                 isIconOnly
                 size="sm"
@@ -378,8 +385,8 @@ export default function HomePage() {
               <div
                 className={
                   filters.viewMode === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch"
-                    : "flex flex-col gap-4"
+                    ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch min-w-0"
+                    : "flex flex-col gap-4 min-w-0"
                 }
               >
                 {visibleJobs.map((job) => {
@@ -397,7 +404,7 @@ export default function HomePage() {
               </div>
 
               {totalPages > 1 && (
-                <div className="mt-8">
+                <div className="mt-8 min-w-0 overflow-hidden">
                   <Pagination
                     currentPage={page}
                     totalPages={totalPages}
@@ -426,24 +433,34 @@ export default function HomePage() {
             </div>
           )}
 
-          {/* Skill match meter */}
+          {/* Skill match meter — data from JOBS (zenleap dummy), max 4 per page */}
           {user && (
-            <div className="bg-white border border-ink/10 rounded-card p-4">
+            <div className="bg-white border border-ink/10 rounded-card p-4 min-w-0 overflow-hidden">
               <h3 className="font-jakarta font-semibold text-[10px] uppercase tracking-widest text-ink-muted mb-4">
                 Skill Kamu
               </h3>
-              <div className="space-y-4">
-                {userSkillEntries.map(([skillName, level]) => (
+              <div className="space-y-4 min-w-0 overflow-hidden">
+                {visibleSkills.map((skill) => (
                   <SkillBar
-                    key={skillName}
-                    skillName={skillName}
-                    userLevel={level}
-                    requiredLevel={SKILL_TARGETS[skillName] ?? 70}
-                    showGapPill={false}
-                    showZenLeapLink={true}
+                    key={skill.skillName}
+                    skillName={skill.skillName}
+                    userLevel={skill.userLevel}
+                    requiredLevel={skill.requiredLevel}
+                    showGapPill
+                    showZenLeapLink
                   />
                 ))}
               </div>
+              {skillTotalPages > 1 && (
+                <div className="mt-4 min-w-0 overflow-hidden">
+                  <Pagination
+                    currentPage={safeSkillPage}
+                    totalPages={skillTotalPages}
+                    onPageChange={setSkillPage}
+                    compact
+                  />
+                </div>
+              )}
             </div>
           )}
 

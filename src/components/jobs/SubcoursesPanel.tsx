@@ -132,10 +132,10 @@ export function SubcoursesPanel({ courses }: SubcoursesPanelProps) {
                         className="object-contain w-full h-full"
                       />
                     </span>
-                    <span className="font-jakarta text-xs font-semibold text-ink">
+                    <span className="font-jakarta text-[16px] font-semibold text-ink">
                       {config.label}
                     </span>
-                    <span className="font-jakarta text-[10px] text-ink-muted">
+                    <span className="font-jakarta text-[14px] text-ink-muted">
                       ({list.length} materi)
                     </span>
                   </div>
@@ -152,7 +152,7 @@ export function SubcoursesPanel({ courses }: SubcoursesPanelProps) {
                           <span className="font-jakarta text-xs font-medium text-ink leading-snug">
                             {item.name}
                           </span>
-                          <span className={`font-jakarta text-[11px] font-medium ${config.pillText}`}>
+                          <span className={`font-jakarta text-[13px] font-medium ${config.pillText}`}>
                             {item.userProgress}/{REQUIRED_LEVEL}
                           </span>
                           {gap > 0 && (

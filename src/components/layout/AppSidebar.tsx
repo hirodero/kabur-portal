@@ -31,42 +31,32 @@ export function AppSidebar() {
     <aside
       className={`hidden lg:flex fixed left-0 top-0 z-40 h-screen ${width} flex-col bg-white border-r border-ink/10 shadow-sm transition-all duration-300 ease-out`}
     >
-      {/* Logo + toggle */}
-      <div
-        className={`flex items-center h-16 border-b border-ink/10 shrink-0 ${
-          expanded ? "justify-between px-4" : "flex-col justify-center gap-1 py-2"
-        }`}
+      {/* Toggle button — floating on the right edge, vertically centered */}
+      <button
+        onClick={toggle}
+        aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
+        className="absolute -right-3.5 top-1/2 -translate-y-1/2 z-50 w-7 h-7 rounded-full bg-white border border-ink/15 shadow-md flex items-center justify-center text-ink-muted hover:text-primary hover:border-primary/30 transition-colors"
       >
-        <Link
-          href="/"
-          className={`flex items-center min-w-0 ${expanded ? "gap-3" : "justify-center"}`}
-        >
+        {expanded ? (
+          <ArrowLeft01Icon size={14} />
+        ) : (
+          <ArrowRight01Icon size={14} />
+        )}
+      </button>
+
+      {/* Logo */}
+      <div className={`flex items-center h-16 border-b border-ink/10 shrink-0 px-4 ${expanded ? "" : "justify-center"}`}>
+        <Link href="/" className="flex items-center min-w-0">
           {expanded ? (
             <span className="font-jakarta font-bold text-lg text-ink tracking-tight whitespace-nowrap">
               #Kabur<span className="text-primary">Portal</span>
             </span>
           ) : (
-            <span className="w-10 h-8 rounded flex items-center justify-center bg-primary text-white font-jakarta font-bold text-xs shrink-0">
+            <span className="w-10 h-7 rounded-md flex items-center justify-center bg-primary text-white font-jakarta font-bold text-xs shrink-0">
               #KP
             </span>
           )}
         </Link>
-        <Button
-          isIconOnly
-          size="sm"
-          variant="light"
-          aria-label={expanded ? "Collapse sidebar" : "Expand sidebar"}
-          onClick={toggle}
-          className={`shrink-0 min-w-8 w-8 h-8 text-ink-muted hover:text-ink ${
-            expanded ? "" : "self-center"
-          }`}
-        >
-          {expanded ? (
-            <ArrowLeft01Icon size={18} />
-          ) : (
-            <ArrowRight01Icon size={18} />
-          )}
-        </Button>
       </div>
 
       {/* Menu */}

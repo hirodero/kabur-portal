@@ -21,23 +21,18 @@ export function SkillBar({
   const gap = requiredLevel - userLevel;
 
   return (
-    <div className="space-y-1.5">
-      <div className="flex items-baseline justify-between mb-1.5">
-        <span className="text-xs font-medium text-ink">{skillName}</span>
-        <div className="flex items-center gap-2">
-          <span
-            className={`text-[11px] font-medium ${
-              hasGap ? "text-primary" : "text-funded"
-            }`}
-          >
-            {userLevel}/{requiredLevel}
+    <div className="space-y-1.5 min-w-0">
+      {/* Name + score + gap pill — all inline, wraps gracefully */}
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 mb-1.5 min-w-0">
+        <span className="text-xs font-medium text-ink leading-snug">{skillName}</span>
+        <span className={`text-[11px] font-medium shrink-0 ${hasGap ? "text-primary" : "text-funded"}`}>
+          {userLevel}/{requiredLevel}
+        </span>
+        {showGapPill && hasGap && (
+          <span className="text-[10px] font-semibold bg-primary-light text-primary border border-primary/20 px-1.5 py-0.5 rounded-badge shrink-0">
+            -{gap}
           </span>
-          {showGapPill && hasGap && (
-            <span className="text-[10px] font-semibold bg-primary-light text-primary border border-primary/20 px-1.5 py-0.5 rounded-badge">
-              -{gap}
-            </span>
-          )}
-        </div>
+        )}
       </div>
 
       {/* Track */}

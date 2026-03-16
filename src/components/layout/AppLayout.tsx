@@ -34,7 +34,7 @@ function AppLayoutInner({ children, title, subtitle }: AppLayoutProps) {
             </div>
           </div>
         )}
-        <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 py-8 w-full flex-1">
+        <main className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10 py-8 w-full flex-1 min-w-0 overflow-x-hidden">
           {children}
         </main>
         {/* Footer hidden in app pages — only shown on landing page */}
