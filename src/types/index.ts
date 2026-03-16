@@ -17,7 +17,7 @@ export interface Job {
   id: string;
   title: string;
   company: string;
-  offTaker: "APJATI" | "KP2MI";
+  offTaker: "APJATI" | "Vokati";
   country: string;
   countryFlag: string; // emoji (legacy)
   countryCode?: string; // ISO code for flag icons

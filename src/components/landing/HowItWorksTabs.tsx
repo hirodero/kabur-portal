@@ -35,7 +35,7 @@ const TABS = [
         icon: DocumentAttachmentIcon,
         number: "03",
         title: "Apply dengan Dukungan",
-        desc: "Ajukan lamaran dengan dukungan APJATI atau KP2MI — transparan dan terpercaya.",
+        desc: "Ajukan lamaran dengan dukungan APJATI atau Vokati — transparan dan terpercaya.",
       },
     ],
   },

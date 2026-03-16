@@ -77,9 +77,8 @@ export function Footer() {
               Dukungan
             </h4>
             <div className="space-y-2">
-              <p className="text-sm text-white/50">KP2MI</p>
+              <p className="text-sm text-white/50">Vokati</p>
               <p className="text-sm text-white/50">APJATI</p>
-              <p className="text-sm text-white/50">BNP2TKI</p>
             </div>
           </div>
         </div>
@@ -87,7 +86,7 @@ export function Footer() {
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-xs text-white/30">© 2025 #KaburPortal. Hak cipta dilindungi.</p>
           <p className="text-xs text-white/30">
-            Didukung oleh KP2MI &amp; APJATI
+            Didukung oleh Vokati &amp; APJATI
           </p>
         </div>
       </div>

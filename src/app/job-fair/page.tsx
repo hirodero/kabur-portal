@@ -105,7 +105,7 @@ export default function JobFairPage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <UserMultiple02Icon size={14} className="text-primary" />
-                #KaburPortal × KP2MI
+                #KaburPortal × Vokati
               </span>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">

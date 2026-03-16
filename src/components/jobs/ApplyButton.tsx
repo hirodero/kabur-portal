@@ -15,7 +15,7 @@ interface ApplyButtonProps {
 
 const OFF_TAKER_MESSAGES: Record<string, string> = {
   APJATI: "Tim APJATI akan menghubungi kamu dalam 3–5 hari kerja.",
-  KP2MI: "Tim KP2MI akan memverifikasi lamaranmu segera.",
+  Vokati: "Tim Vokati akan memverifikasi lamaranmu segera.",
 };
 
 export function ApplyButton({
@@ -41,9 +41,11 @@ export function ApplyButton({
     });
   }
 
+  const heroSize = size === "default" ? "md" : size;
+
   return (
     <Button
-      size={size}
+      size={heroSize}
       onClick={handleApply}
       isDisabled={applied}
       fullWidth={fullWidth}
