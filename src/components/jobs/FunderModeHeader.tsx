@@ -10,6 +10,7 @@ import {
   CheckmarkCircle02Icon,
 } from "hugeicons-react";
 import { ApplyButton } from "@/components/jobs/ApplyButton";
+import { JobCountryFlagBadge } from "@/components/jobs/job-country-flag-badge";
 
 interface FunderModeHeaderProps {
   job: Job;
@@ -147,15 +148,26 @@ export function FunderModeHeader({
       )}
 
       {/* ── HEADER BODY ── */}
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-6">
-        {/* Left info */}
-        <div className="flex-1">
+      <div className="flex flex-col gap-4">
+        <div>
+          <p className="font-jakarta text-sm text-ink-muted flex items-center gap-2.5 mb-2">
+            <JobCountryFlagBadge job={job} />
+            <span>
+              {job.placement
+                ? `${job.placement.city}, ${job.placement.country}`
+                : job.country}
+            </span>
+          </p>
           <h1 className="font-jakarta font-bold text-2xl sm:text-3xl text-ink mb-1">
             {job.title}
           </h1>
-          <p className="font-jakarta text-base text-ink-muted mb-4">{job.company}</p>
+          <p className="font-jakarta text-base text-ink-muted">{job.company}</p>
 
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="mt-3">
+            <p className="font-jakarta font-bold text-2xl text-primary">{formattedSalary}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mt-4">
             <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
               via {job.offTaker}
             </span>
@@ -163,32 +175,21 @@ export function FunderModeHeader({
               {job.sector}
             </span>
           </div>
+        </div>
 
-          <div className="flex flex-wrap gap-4 font-jakarta text-sm text-ink-muted">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-ink/8">
+          <div className="flex flex-wrap gap-4 font-jakarta text-sm text-ink-muted min-w-0">
             <span className="flex items-center gap-1.5">
-              <Calendar01Icon size={14} />
+              <Calendar01Icon size={14} className="shrink-0" />
               Diposting {postedDate}
             </span>
             <span className="flex items-center gap-1.5">
-              <UserAdd01Icon size={14} />
+              <UserAdd01Icon size={14} className="shrink-0" />
               Deadline {deadlineDate}
             </span>
           </div>
-        </div>
-
-        {/* Right: salary + actions */}
-        <div className="flex flex-col items-start lg:items-end gap-4">
-          <div className="lg:text-right">
-            <p className="font-jakarta text-xs text-ink-muted mb-1">Gaji</p>
-            <p className="font-jakarta font-bold text-2xl text-primary">{formattedSalary}</p>
-            <p className="font-jakarta text-sm text-ink-muted mt-0.5">
-              {job.placement
-                ? `📍 ${job.placement.city}, ${job.placement.country}`
-                : `${job.countryFlag} ${job.country}`}
-            </p>
-          </div>
-          <div className="flex gap-3 w-full lg:w-auto">
-            <ApplyButton job={job} size="default" className="flex-1 lg:flex-none lg:w-36" />
+          <div className="flex w-full justify-end sm:w-auto sm:shrink-0">
+            <ApplyButton job={job} size="default" className="w-36 max-w-full" />
           </div>
         </div>
       </div>
