@@ -32,7 +32,7 @@ const DEFAULT_FILTERS: FilterState = {
   fundedOnly: false,
   skillMatchOnly: false,
   sortBy: "latest",
-  viewMode: "grid", // default card view when accessing /home
+  viewMode: "grid", // default card view when accessing /jobs
 };
 
 function isBrowser(): boolean {

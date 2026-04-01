@@ -21,7 +21,7 @@ export function LandingNav() {
       }`}
     >
       <Link
-        href="/"
+        href="/detail"
         className={`font-jakarta font-bold text-xl tracking-tight transition-colors duration-300 ${
           scrolled ? 'text-ink' : 'text-white'
         }`}
@@ -30,7 +30,7 @@ export function LandingNav() {
       </Link>
 
       <Link
-        href="/home"
+        href="/jobs"
         className={`text-sm px-5 py-2 rounded-pill border transition-all duration-200 ${
           scrolled
             ? 'border-ink/20 text-ink hover:bg-primary hover:text-white hover:border-primary'

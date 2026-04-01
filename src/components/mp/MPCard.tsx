@@ -1,4 +1,3 @@
-import Link from "next/link";
 import Image from "next/image";
 import type { MarketingPartner } from "@/types";
 
@@ -48,26 +47,6 @@ export function MPCard({ partner }: MPCardProps) {
       <p className="text-sm text-ink-muted mt-1 leading-relaxed flex-1">
         {partner.tagline}
       </p>
-
-      {/* Stats row */}
-      <div className="flex gap-4 mt-3">
-        {partner.referralCount > 0 && (
-          <span className="text-[11px] text-ink-muted">
-            {partner.referralCount.toLocaleString("id-ID")} referral
-          </span>
-        )}
-        <span className="text-[11px] text-ink-muted">
-          {partner.activeJobCount} lowongan aktif
-        </span>
-      </div>
-
-      {/* CTA */}
-      <Link
-        href={partner.ctaHref ?? `/home?mp=${partner.slug}`}
-        className="mt-4 text-xs text-primary font-medium hover:underline"
-      >
-        {partner.ctaLabel ?? "→ Lihat channel"}
-      </Link>
     </div>
   );
 }

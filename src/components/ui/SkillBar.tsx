@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { ZenLeapCtaButton } from "@/components/ui/zenleap-cta-button";
 
 interface SkillBarProps {
   skillName: string;
@@ -51,28 +51,7 @@ export function SkillBar({
         />
       </div>
 
-      {showZenLeapLink && hasGap && (
-        <motion.a
-          href="https://zenleap.id/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="relative inline-block text-[11px] text-primary font-medium"
-          initial="rest"
-          whileHover="hover"
-          variants={{ rest: {}, hover: {} }}
-        >
-          Tingkatkan via ZenLeap →
-          <motion.span
-            className="absolute left-0 bottom-0 h-px w-full bg-primary"
-            style={{ transformOrigin: "left" }}
-            variants={{
-              rest: { scaleX: 0 },
-              hover: { scaleX: 1 },
-            }}
-            transition={{ duration: 0.2, ease: "easeOut" }}
-          />
-        </motion.a>
-      )}
+      {showZenLeapLink && hasGap && <ZenLeapCtaButton className="mt-0.5" />}
     </div>
   );
 }

@@ -10,12 +10,12 @@ export function AppNav() {
       <nav className="h-full max-w-6xl mx-auto px-4 md:px-6 lg:px-10 flex items-center justify-between gap-4">
         {/* Left: Logo + divider + breadcrumb */}
         <div className="flex items-center gap-3 shrink-0">
-          <Link href="/" className="font-jakarta font-bold text-[15px] text-ink tracking-tight">
+          <Link href="/jobs" className="font-jakarta font-bold text-[15px] text-ink tracking-tight">
             #Kabur<span className="text-primary">Portal</span>
           </Link>
           <span className="w-px h-4 bg-ink/10" />
           <Link
-            href="/home"
+            href="/jobs"
             className="hidden sm:block text-xs text-ink-muted hover:text-ink transition-colors"
           >
             Lowongan

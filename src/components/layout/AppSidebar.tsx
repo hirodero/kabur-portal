@@ -1,29 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   Home01Icon,
-  Search01Icon,
-  Bookmark02Icon,
-  Settings01Icon,
   ArrowLeft01Icon,
   ArrowRight01Icon,
+  InformationCircleIcon,
 } from "hugeicons-react";
-import { Button } from "@heroui/react";
 import { useSidebar } from "@/contexts/SidebarContext";
 
-const NAV_ITEMS = [
-  { href: "/", label: "Beranda", icon: Home01Icon },
-  { href: "/home", label: "Lowongan", icon: Search01Icon },
-  { href: "/home?tab=saved", label: "Simpan", icon: Bookmark02Icon },
-  { href: "#", label: "Pengaturan", icon: Settings01Icon },
-];
+const NAV_ITEMS = [{ href: "/jobs", label: "Beranda", icon: Home01Icon }];
 
 export function AppSidebar() {
   const { expanded, toggle } = useSidebar();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   const width = expanded ? "w-60" : "w-[72px]";
 
@@ -46,7 +37,7 @@ export function AppSidebar() {
 
       {/* Logo */}
       <div className={`flex items-center h-16 border-b border-ink/10 shrink-0 px-4 ${expanded ? "" : "justify-center"}`}>
-        <Link href="/" className="flex items-center min-w-0">
+        <Link href="/jobs" className="flex items-center min-w-0">
           {expanded ? (
             <span className="font-jakarta font-bold text-lg text-ink tracking-tight whitespace-nowrap">
               #Kabur<span className="text-primary">Portal</span>
@@ -68,24 +59,7 @@ export function AppSidebar() {
         )}
         <ul className="space-y-0.5">
           {NAV_ITEMS.map((item) => {
-            const [path] = item.href.split("?");
-            const tab = item.href.includes("tab=")
-              ? item.href.split("tab=")[1]?.split("&")[0]
-              : null;
-            let isActive: boolean;
-            if (item.href === "/") {
-              isActive = pathname === "/";
-            } else if (path === "/home" && tab === "saved") {
-              isActive =
-                pathname.startsWith("/home") &&
-                searchParams.get("tab") === "saved";
-            } else if (path === "/home") {
-              isActive =
-                pathname.startsWith("/home") &&
-                searchParams.get("tab") !== "saved";
-            } else {
-              isActive = pathname.startsWith(path);
-            }
+            const isActive = pathname.startsWith(item.href);
             const Icon = item.icon;
             return (
               <li key={item.href}>
@@ -108,12 +82,19 @@ export function AppSidebar() {
         {/* Bottom actions - expanded only */}
         {expanded && (
           <div className="mt-6 pt-4 border-t border-ink/10 space-y-2">
-            <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-ink-muted hover:bg-ink/5 hover:text-ink font-jakarta text-sm transition-colors text-left">
-              <span className="w-5 h-5 rounded bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="text-primary text-[10px] font-bold">?</span>
+            <Link
+              href="/detail"
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg font-jakarta text-sm transition-colors ${
+                pathname === "/detail"
+                  ? "bg-ink/5 text-primary font-medium"
+                  : "text-ink-muted hover:bg-ink/5 hover:text-ink"
+              }`}
+            >
+              <span className="w-5 h-5 rounded bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                <InformationCircleIcon size={14} strokeWidth={1.75} />
               </span>
-              <span>Bantuan</span>
-            </button>
+              <span>About Us</span>
+            </Link>
           </div>
         )}
       </nav>

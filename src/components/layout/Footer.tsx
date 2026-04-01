@@ -3,9 +3,9 @@ import Image from "next/image";
 
 export function Footer() {
   const navLinks = [
-    { label: "Tentang Kami", href: "/#tentang" },
-    { label: "Lowongan", href: "/home" },
-    { label: "Untuk Partner", href: "/#partner" },
+    { label: "Tentang Kami", href: "/detail#tentang" },
+    { label: "Lowongan", href: "/jobs" },
+    { label: "Untuk Partner", href: "/detail#partner" },
     { label: "Kebijakan Privasi", href: "#" },
   ];
 
@@ -21,7 +21,7 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {/* Brand + tagline */}
           <div className="col-span-2 md:col-span-1 space-y-3">
-            <Link href="/" className="font-jakarta font-bold text-xl text-white tracking-tight">
+            <Link href="/detail" className="font-jakarta font-bold text-xl text-white tracking-tight">
               #Kabur<span className="text-primary">Portal</span>
             </Link>
             <p className="text-sm text-white/50 leading-relaxed max-w-xs">

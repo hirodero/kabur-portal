@@ -74,11 +74,11 @@ export default async function JobDetailPage({ params }: PageProps) {
     <AppLayout>
       {/* ── BREADCRUMB ── */}
       <nav className="flex items-center gap-1.5 font-jakarta text-xs text-ink-muted mb-6">
-        <Link href="/" className="hover:text-primary transition-colors">
+        <Link href="/jobs" className="hover:text-primary transition-colors">
           Beranda
         </Link>
         <ArrowRight01Icon size={10} className="text-ink-faint" />
-        <Link href="/home" className="hover:text-primary transition-colors">
+        <Link href="/jobs" className="hover:text-primary transition-colors">
           Lowongan
         </Link>
         <ArrowRight01Icon size={10} className="text-ink-faint" />

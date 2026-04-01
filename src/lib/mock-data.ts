@@ -1445,7 +1445,7 @@ export const MARKETING_PARTNERS: MarketingPartner[] = [
     color: "#1E40AF",
     referralCount: 0,
     activeJobCount: 142,
-    ctaHref: "/home",
+    ctaHref: "/jobs",
     ctaLabel: "→ Lihat lowongan",
   },
   {
@@ -1456,7 +1456,7 @@ export const MARKETING_PARTNERS: MarketingPartner[] = [
     color: "#B45309",
     referralCount: 0,
     activeJobCount: 98,
-    ctaHref: "/home",
+    ctaHref: "/jobs",
     ctaLabel: "→ Lihat lowongan",
   },
 ];
