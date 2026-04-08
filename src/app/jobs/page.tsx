@@ -12,7 +12,6 @@ import { JobsSidebarFilterCard } from "@/components/jobs/jobs-sidebar-filter-car
 import { JobsSidebarSkillsPanel } from "@/components/jobs/jobs-sidebar-skills-panel";
 import { JOBS } from "@/lib/mock-data";
 import {
-  getUserProfile,
   initUserProfile,
   initQualifiedUsers,
   getFilters,
@@ -58,7 +57,6 @@ export default function JobsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { funderMode, toggleFunderMode, getCount, hydrated } = useFunderMode();
 
   useEffect(() => {
     const profile = initUserProfile();
@@ -67,6 +65,14 @@ export default function JobsPage() {
     setFiltersState(savedFilters);
     initQualifiedUsers();
   }, []);
+  const {
+    funderMode,
+    toggleFunderMode,
+    canUseFunderMode,
+    isToggleVisible,
+    getCount,
+    hydrated,
+  } = useFunderMode({ role: user?.role ?? "candidate" });
 
   useLayoutEffect(() => {
     function apply() {
@@ -210,7 +216,7 @@ export default function JobsPage() {
             </div>
             <div className="flex items-center gap-2">
               {/* Funder mode toggle */}
-              {hydrated && (
+              {hydrated && isToggleVisible && (
                 <button
                   type="button"
                   onClick={toggleFunderMode}
@@ -238,7 +244,7 @@ export default function JobsPage() {
           </div>
 
           {/* Funder mode banner */}
-          {hydrated && funderMode && (
+          {hydrated && canUseFunderMode && funderMode && (
             <div className="mb-4 flex items-center gap-2 bg-funded/8 border border-funded/20 rounded-card px-4 py-2.5">
               <span className="w-2 h-2 rounded-full bg-funded animate-pulse shrink-0" />
               <p className="font-jakarta text-xs text-funded-dark font-medium">
@@ -341,7 +347,7 @@ export default function JobsPage() {
                 {visibleJobs.map((job) => {
                   const qualifiedCount = hydrated ? getCount(job.id) : 0;
                   const funderData =
-                    funderMode && hydrated
+                    canUseFunderMode && funderMode && hydrated
                       ? { qualifiedCount, fundingNeeded: qualifiedCount * job.salaryMin }
                       : undefined;
                   return (

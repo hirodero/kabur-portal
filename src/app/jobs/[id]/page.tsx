@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { AppLayout } from "@/components/layout/AppLayout";
+import { ApplyButton } from "@/components/jobs/ApplyButton";
 import { JobCardMini } from "@/components/jobs/JobCardMini";
-import { FunderModeHeader } from "@/components/jobs/FunderModeHeader";
-import { QualificationsPanel } from "@/components/jobs/QualificationsPanel";
+import { JobCountryFlagBadge } from "@/components/jobs/job-country-flag-badge";
 import { SubcoursesPanel } from "@/components/jobs/SubcoursesPanel";
 import { JOBS } from "@/lib/mock-data";
 import {
@@ -89,12 +89,53 @@ export default async function JobDetailPage({ params }: PageProps) {
 
       {/* ── JOB HEADER CARD ── */}
       <div className="bg-white border border-ink/10 rounded-card p-6 mb-5">
-        <FunderModeHeader
-          job={job}
-          postedDate={postedDate}
-          deadlineDate={deadlineDate}
-          formattedSalary={formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-        />
+        <div className="flex flex-col gap-4">
+          <div>
+            <p className="font-jakarta text-sm text-ink-muted flex items-center gap-2.5 mb-2">
+              <JobCountryFlagBadge job={job} />
+              <span>
+                {job.placement
+                  ? `${job.placement.city}, ${job.placement.country}`
+                  : job.country}
+              </span>
+            </p>
+            <h1 className="font-jakarta font-bold text-2xl sm:text-3xl text-ink mb-1">
+              {job.title}
+            </h1>
+            <p className="font-jakarta text-base text-ink-muted">{job.company}</p>
+
+            <div className="mt-3">
+              <p className="font-jakarta font-bold text-2xl text-primary">
+                {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-4">
+              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
+                via {job.offTaker}
+              </span>
+              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
+                {job.sector}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-ink/8">
+            <div className="flex flex-wrap gap-4 font-jakarta text-sm text-ink-muted min-w-0">
+              <span className="flex items-center gap-1.5">
+                <Calendar01Icon size={14} className="shrink-0" />
+                Diposting {postedDate}
+              </span>
+              <span className="flex items-center gap-1.5">
+                <UserAdd01Icon size={14} className="shrink-0" />
+                Deadline {deadlineDate}
+              </span>
+            </div>
+            <div className="flex w-full justify-end sm:w-auto sm:shrink-0">
+              <ApplyButton job={job} size="default" className="w-36 max-w-full" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ── TWO-COLUMN LAYOUT ── */}
@@ -128,8 +169,22 @@ export default async function JobDetailPage({ params }: PageProps) {
             </p>
           </div>
 
-          {/* Qualifications — with funder toggle */}
-          <QualificationsPanel jobId={job.id} qualifications={job.qualifications} />
+          {/* Qualifications */}
+          <div className="bg-white border border-ink/10 rounded-card p-6">
+            <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
+              Kualifikasi
+            </h2>
+            <ul className="space-y-2.5">
+              {job.qualifications.map((q, idx) => (
+                <li key={idx} className="flex items-start gap-2.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
+                  <span className="font-jakarta text-sm text-ink-muted leading-snug">
+                    {q}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Subcourses panel — replaces old skill gap */}
           {job.requiredSubcourses && job.requiredSubcourses.length > 0 && (

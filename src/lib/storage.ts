@@ -15,6 +15,7 @@ const DEFAULT_USER: UserProfile = {
   name: "Budi Santoso",
   initials: "BS",
   location: "Jawa Timur",
+  role: "candidate",
   mpReferral: "zenius",
   skills: {
     "Basic Thinking Skills": 45,
@@ -25,6 +26,14 @@ const DEFAULT_USER: UserProfile = {
     "Communication in Japanese/Korean/English": 20,
   },
 };
+
+function normalizeUserProfile(profile: Partial<UserProfile> | null): UserProfile {
+  return {
+    ...DEFAULT_USER,
+    ...profile,
+    role: profile?.role ?? "candidate",
+  };
+}
 
 const DEFAULT_FILTERS: FilterState = {
   countries: [],
@@ -66,7 +75,7 @@ function removeItem(key: string): void {
 
 // User Profile
 export function getUserProfile(): UserProfile {
-  return getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE) ?? DEFAULT_USER;
+  return normalizeUserProfile(getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE));
 }
 
 export function setUserProfile(profile: UserProfile): void {
@@ -76,11 +85,12 @@ export function setUserProfile(profile: UserProfile): void {
 export function initUserProfile(): UserProfile {
   if (!isBrowser()) return DEFAULT_USER;
   const existing = getItem<UserProfile>(STORAGE_KEYS.USER_PROFILE);
-  if (!existing) {
-    setItem(STORAGE_KEYS.USER_PROFILE, DEFAULT_USER);
-    setItem(STORAGE_KEYS.MP_REFERRAL, DEFAULT_USER.mpReferral);
+  const normalized = normalizeUserProfile(existing);
+  if (!existing || existing.role === undefined) {
+    setItem(STORAGE_KEYS.USER_PROFILE, normalized);
+    setItem(STORAGE_KEYS.MP_REFERRAL, normalized.mpReferral);
   }
-  return existing ?? DEFAULT_USER;
+  return normalized;
 }
 
 // Applications

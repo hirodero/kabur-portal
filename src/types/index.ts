@@ -81,6 +81,7 @@ export interface UserProfile {
   name: string;
   initials: string;
   location: string;
+  role: "candidate" | "funder" | "admin";
   mpReferral: "zenius" | "telkomsel" | null;
   skills: Record<string, number>;
 }
