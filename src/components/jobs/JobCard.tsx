@@ -40,6 +40,7 @@ interface JobCardProps {
   variant?: "default" | "featured";
   viewMode?: "grid" | "list";
   funderData?: { qualifiedCount: number; fundingNeeded: number };
+  minimal?: boolean;
 }
 
 function formatSalary(min: number, max: number, currency: string): string {
@@ -70,7 +71,13 @@ function OffTakerBadge({ offTaker, size = "md" }: { offTaker: string; size?: "sm
   );
 }
 
-export function JobCard({ job, variant = "default", viewMode = "grid", funderData }: JobCardProps) {
+export function JobCard({
+  job,
+  variant = "default",
+  viewMode = "grid",
+  funderData,
+  minimal = false,
+}: JobCardProps) {
   const countryCode = job.countryCode ?? COUNTRY_TO_ISO[job.country];
   const FlagIcon = countryCode ? FLAG_MAP[countryCode] : null;
 
@@ -133,19 +140,27 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
   return (
     <Link href={`/jobs/${job.id}`} className="block group h-full min-w-0">
       <motion.article
-        className="bg-white border border-ink/15 rounded-2xl p-5 min-h-[260px] h-full flex flex-col min-w-0 overflow-hidden border-l-4 border-l-primary shadow-sm"
+        className={`bg-white border border-ink/15 rounded-2xl h-full flex flex-col min-w-0 overflow-hidden shadow-sm ${
+          minimal ? "p-4 min-h-[220px]" : "p-5 min-h-[260px] border-l-4 border-l-primary"
+        }`}
         whileHover={{
-          y: -4,
-          boxShadow: "0 8px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(200, 16, 46, 0.08)",
+          y: minimal ? -2 : -4,
+          boxShadow: minimal
+            ? "0 6px 20px rgba(0, 0, 0, 0.08)"
+            : "0 8px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(200, 16, 46, 0.08)",
           transition: { duration: 0.2, ease: "easeOut" },
         }}
         transition={{ duration: 0.2 }}
       >
         {/* Top row: flag + country | off-taker logo */}
-        <div className="flex items-center justify-between gap-2 mb-3 min-w-0">
+        <div className={`flex items-center justify-between gap-2 min-w-0 ${minimal ? "mb-2" : "mb-3"}`}>
           <span className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
             {FlagIcon ? (
-              <span className="relative block w-12 h-8 rounded-lg border-2 border-ink/20 overflow-hidden shrink-0 shadow-sm">
+              <span
+                className={`relative block rounded-lg border border-ink/20 overflow-hidden shrink-0 ${
+                  minimal ? "w-10 h-7" : "w-12 h-8 border-2 shadow-sm"
+                }`}
+              >
                 <span className="absolute inset-0 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:w-full [&>svg]:h-full [&>svg]:scale-125 [&>svg]:block">
                   <FlagIcon title={job.country} className="w-full h-full" />
                 </span>
@@ -155,24 +170,28 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
             )}
             <span className="text-sm font-medium text-ink truncate min-w-0">{job.country}</span>
           </span>
-          <OffTakerBadge offTaker={job.offTaker} />
+          {!minimal && <OffTakerBadge offTaker={job.offTaker} />}
         </div>
 
         {/* Job title */}
-        <h3 className="font-jakarta font-bold text-base text-ink leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-150">
+        <h3
+          className={`font-jakarta font-bold text-ink leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-150 ${
+            minimal ? "text-lg sm:text-xl font-semibold" : "text-base"
+          }`}
+        >
           {job.title}
         </h3>
 
         {/* Company + offTaker */}
-        <p className="text-sm text-ink-muted mt-1.5 line-clamp-1">
-          {job.company} · via {job.offTaker}
+        <p className={`text-ink-muted mt-1.5 line-clamp-1 ${minimal ? "text-xs" : "text-sm"}`}>
+          {minimal ? job.company : `${job.company} · via ${job.offTaker}`}
         </p>
 
         {/* Salary + footer pinned to bottom */}
         <div className="mt-auto">
-          <p className="font-jakarta font-bold text-2xl text-primary pt-4 min-w-0">
+          <p className={`font-jakarta text-primary min-w-0 ${minimal ? "font-semibold text-base pt-4" : "font-bold text-2xl pt-4"}`}>
             <span className="whitespace-nowrap">{formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}</span>
-            <span className="text-sm font-jakarta font-medium text-ink/70"> /bln</span>
+            <span className={`${minimal ? "text-xs" : "text-sm"} font-jakarta font-medium text-ink/70`}> /bln</span>
           </p>
 
           {/* Funder overlay */}
@@ -189,11 +208,17 @@ export function JobCard({ job, variant = "default", viewMode = "grid", funderDat
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-2 pt-3 border-t border-ink/10 mt-3 min-w-0">
+          <div className={`flex items-center justify-between gap-2 min-w-0 ${minimal ? "pt-2 mt-2" : "pt-3 border-t border-ink/10 mt-3"}`}>
             <span className="text-xs text-ink-muted bg-ink/5 px-2.5 py-1.5 rounded-badge font-medium truncate min-w-0">
               {job.sector}
             </span>
-            <span className="inline-flex items-center gap-1 font-jakarta text-sm font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-3 py-1.5 transition-colors group-hover:border-primary/40">
+            <span
+              className={`inline-flex items-center gap-1 font-jakarta font-semibold text-primary rounded-lg transition-colors ${
+                minimal
+                  ? "text-xs px-2 py-1 bg-transparent"
+                  : "text-sm bg-primary/5 hover:bg-primary/10 border border-primary/20 px-3 py-1.5 group-hover:border-primary/40"
+              }`}
+            >
               <ArrowRight01Icon size={14} className="shrink-0" />
             </span>
           </div>

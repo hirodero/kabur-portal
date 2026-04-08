@@ -30,7 +30,7 @@ export function LandingNav() {
       </Link>
 
       <Link
-        href="/authorization"
+        href="/login"
         className={`text-sm px-5 py-2 rounded-pill border transition-all duration-200 ${
           scrolled
             ? 'border-ink/20 text-ink hover:bg-primary hover:text-white hover:border-primary'

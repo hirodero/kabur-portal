@@ -14,12 +14,14 @@ export function InfiniteMovingLogos({
   direction = "left",
   speed = "normal",
   pauseOnHover = true,
+  edgeFade = true,
   className,
 }: {
   items: LogoItem[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
+  edgeFade?: boolean;
   className?: string;
 }) {
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -27,9 +29,11 @@ export function InfiniteMovingLogos({
 
   useEffect(() => {
     if (containerRef.current && scrollerRef.current) {
+      scrollerRef.current.querySelectorAll("[data-clone='true']").forEach((node) => node.remove());
       const scrollerContent = Array.from(scrollerRef.current.children);
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
+        if (duplicatedItem instanceof HTMLElement) duplicatedItem.dataset.clone = "true";
         scrollerRef.current?.appendChild(duplicatedItem);
       });
 
@@ -53,7 +57,8 @@ export function InfiniteMovingLogos({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full overflow-hidden mask-[linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
+        "relative w-full overflow-hidden",
+        edgeFade && "mask-[linear-gradient(to_right,transparent,white_14%,white_86%,transparent)]",
         pauseOnHover && "group",
         className
       )}
@@ -69,13 +74,13 @@ export function InfiniteMovingLogos({
         {items.map((item, idx) => (
           <div
             key={`${item.alt}-${idx}`}
-            className="relative flex size-16 shrink-0 items-center justify-center rounded-lg border border-white/20 bg-white p-2"
+            className="relative flex h-20 w-36 shrink-0 items-center justify-center rounded-xl border border-ink/10 bg-white px-4 py-3 shadow-sm"
           >
             <Image
               src={item.src}
               alt={item.alt}
-              width={48}
-              height={48}
+              width={110}
+              height={52}
               className="object-contain w-full h-full"
             />
           </div>

@@ -3,13 +3,6 @@
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { JobCard } from "@/components/jobs/JobCard";
-import {
-  JobsFilterPanel,
-  JOBS_FILTER_COUNTRIES,
-} from "@/components/jobs/jobs-filter-panel";
-import { JobsProfileMiniCard } from "@/components/jobs/jobs-profile-mini-card";
-import { JobsSidebarFilterCard } from "@/components/jobs/jobs-sidebar-filter-card";
-import { JobsSidebarSkillsPanel } from "@/components/jobs/jobs-sidebar-skills-panel";
 import { JOBS } from "@/lib/mock-data";
 import {
   initUserProfile,
@@ -19,16 +12,11 @@ import {
 } from "@/lib/storage";
 import { useFunderMode } from "@/hooks/useFunderMode";
 import type { UserProfile, FilterState } from "@/types";
-import {
-  FilterIcon,
-  GridViewIcon,
-  ListViewIcon,
-  MoneyBag01Icon,
-} from "hugeicons-react";
 import Link from "next/link";
-import { Button } from "@heroui/react";
 import { Pagination } from "@/components/ui/pagination";
-import { JobsSearchBar } from "@/components/ui/jobs-search-bar";
+import { ArrowDown01Icon } from "hugeicons-react";
+import { InfiniteMovingLogos } from "@/components/ui/infinite-moving-logos";
+import { Globe } from "@/components/ui/Globe";
 
 /** Sync with grid: 1 col / sm 2 col / xl 3 col — use innerWidth (not only matchMedia) for reliable desktop sizing */
 const JOBS_PAGE_SIZE_NARROW = 9;
@@ -36,6 +24,14 @@ const JOBS_PAGE_SIZE_TABLET = 10;
 const JOBS_PAGE_SIZE_DESKTOP = 12;
 const JOBS_PAGE_MIN_TABLET_PX = 768;
 const JOBS_PAGE_MIN_XL_PX = 1280;
+const JOBS_QUICK_COUNTRY_FILTERS = ["Japan", "South Korea", "Germany", "Singapore", "United Arab Emirates"];
+const MARKETING_PARTNER_LOGOS: Record<string, string> = {
+  APJATI: "/apjati-logo.png",
+  Vokati: "/vokati-logo.png",
+  zenius: "/zenius.png",
+  telkomsel: "/telkomsel.png",
+  malaka: "/malaka.png",
+};
 
 function jobsPageSizeForViewportWidth(width: number): number {
   if (width >= JOBS_PAGE_MIN_XL_PX) return JOBS_PAGE_SIZE_DESKTOP;
@@ -55,21 +51,18 @@ export default function JobsPage() {
     viewMode: "grid",
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [isFilterRowOpen, setIsFilterRowOpen] = useState(false);
 
   useEffect(() => {
     const profile = initUserProfile();
     setUser(profile);
     const savedFilters = getFilters();
-    setFiltersState(savedFilters);
+    setFiltersState({ ...savedFilters, viewMode: "grid" });
     initQualifiedUsers();
   }, []);
   const {
     funderMode,
-    toggleFunderMode,
     canUseFunderMode,
-    isToggleVisible,
     getCount,
     hydrated,
   } = useFunderMode({ role: user?.role ?? "candidate" });
@@ -81,6 +74,14 @@ export default function JobsPage() {
     apply();
     window.addEventListener("resize", apply);
     return () => window.removeEventListener("resize", apply);
+  }, []);
+
+  useEffect(() => {
+    function onToggleFilterRow() {
+      setIsFilterRowOpen((open) => !open);
+    }
+    window.addEventListener("jobs:toggle-filter-row", onToggleFilterRow as EventListener);
+    return () => window.removeEventListener("jobs:toggle-filter-row", onToggleFilterRow as EventListener);
   }, []);
 
   function updateFilters(updates: Partial<FilterState>) {
@@ -111,23 +112,13 @@ export default function JobsPage() {
       jobs = jobs.filter((j) => filters.countries.includes(j.country));
     if (filters.sectors.length > 0)
       jobs = jobs.filter((j) => filters.sectors.includes(j.sector));
+    if (filters.fundedOnly)
+      jobs = jobs.filter((j) => j.isFunded);
     if (filters.skillMatchOnly && user) {
       jobs = jobs.filter((j) =>
         j.skillRequirements.every(
           (req) => (user.skills[req.skillName] ?? 0) >= req.requiredLevel
         )
-      );
-    }
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      jobs = jobs.filter(
-        (j) =>
-          j.title.toLowerCase().includes(q) ||
-          j.company.toLowerCase().includes(q) ||
-          j.country.toLowerCase().includes(q) ||
-          j.sector.toLowerCase().includes(q) ||
-          j.offTaker.toLowerCase().includes(q)
       );
     }
 
@@ -150,7 +141,7 @@ export default function JobsPage() {
     }
 
     return jobs;
-  }, [filters, user, searchQuery]);
+  }, [filters, user]);
 
   const totalPages = Math.max(1, Math.ceil(filteredJobs.length / jobsPageSize));
   const page = Math.min(currentPage, totalPages);
@@ -161,87 +152,179 @@ export default function JobsPage() {
 
   const visibleJobs = filteredJobs.slice((page - 1) * jobsPageSize, page * jobsPageSize);
 
-  // Aggregate unique skills from JOBS (from zenleap dummy data), max requiredLevel per skill
-  const allSkillsFromJobs = useMemo(() => {
-    const map = new Map<string, number>();
+  const hasActiveQuickCountry =
+    filters.countries.length === 1 && JOBS_QUICK_COUNTRY_FILTERS.includes(filters.countries[0]);
+  const countryOptions = useMemo(
+    () => Array.from(new Set(JOBS.map((job) => job.country))).sort((a, b) => a.localeCompare(b)),
+    []
+  );
+  const sectorOptions = useMemo(
+    () => Array.from(new Set(JOBS.map((job) => job.sector))).sort((a, b) => a.localeCompare(b)),
+    []
+  );
+  const trustedPartnerItems = useMemo(() => {
+    const seen = new Set<string>();
+    const items: Array<{ src: string; alt: string }> = [];
+
     for (const job of JOBS) {
-      for (const req of job.skillRequirements) {
-        const current = map.get(req.skillName) ?? 0;
-        map.set(req.skillName, Math.max(current, req.requiredLevel));
+      const offTakerLogo = MARKETING_PARTNER_LOGOS[job.offTaker];
+      if (offTakerLogo && !seen.has(job.offTaker)) {
+        seen.add(job.offTaker);
+        items.push({ src: offTakerLogo, alt: job.offTaker });
+      }
+
+      if (job.mpChannel) {
+        const channelLogo = MARKETING_PARTNER_LOGOS[job.mpChannel];
+        if (channelLogo && !seen.has(job.mpChannel)) {
+          seen.add(job.mpChannel);
+          items.push({ src: channelLogo, alt: job.mpChannel });
+        }
       }
     }
-    return Array.from(map.keys()).map((skillName) => ({
-      skillName,
-      requiredLevel: 100,
-      userLevel: user ? (user.skills[skillName] ?? 0) : 0,
-    }));
-  }, [user]);
 
-  const SKILL_PAGE_SIZE = 4;
-  const [skillPage, setSkillPage] = useState(1);
-  const skillTotalPages = Math.max(1, Math.ceil(allSkillsFromJobs.length / SKILL_PAGE_SIZE));
-  const safeSkillPage = Math.min(skillPage, skillTotalPages);
-  const visibleSkills = allSkillsFromJobs.slice(
-    (safeSkillPage - 1) * SKILL_PAGE_SIZE,
-    safeSkillPage * SKILL_PAGE_SIZE
-  );
-
-  useEffect(() => {
-    if (skillPage > skillTotalPages) setSkillPage(1);
-  }, [skillTotalPages, skillPage]);
-
-  const filterPanelProps = {
-    filters,
-    onToggleCountry: toggleCountry,
-    onToggleSector: toggleSector,
-    onUpdateFilters: updateFilters,
-  };
+    return items;
+  }, []);
+  const marqueeItems = useMemo(() => {
+    if (trustedPartnerItems.length === 0) return trustedPartnerItems;
+    const minBaseItems = 18;
+    const repeatCount = Math.max(1, Math.ceil(minBaseItems / trustedPartnerItems.length));
+    return Array.from({ length: repeatCount }).flatMap((_, index) =>
+      trustedPartnerItems.map((item) => ({
+        src: item.src,
+        alt: `${item.alt}-${index + 1}`,
+      }))
+    );
+  }, [trustedPartnerItems]);
 
   return (
-    <AppLayout>
-      <div className="flex gap-7 min-w-0 overflow-x-hidden">
-        {/* ── MAIN CONTENT ── */}
+    <AppLayout layoutMode="topnav">
+      <div className="flex min-w-0 overflow-x-hidden">
         <div className="flex-1 min-w-0 w-full overflow-x-hidden">
-          {/* Welcome bar */}
-          <div className="flex items-start justify-between gap-4 mb-5">
-            <div>
-              <h1 className="font-jakarta font-bold text-xl sm:text-2xl text-ink">
-                Selamat datang, {user?.name?.split(" ")[0] ?? "PMI"}
-              </h1>
-              {hydrated && funderMode && (
-                <p className="font-jakarta text-xs text-funded font-semibold mt-0.5">
-                  Funder Mode aktif
-                </p>
-              )}
+          {isFilterRowOpen && (
+            <>
+            <div className="fixed top-[74px] left-0 right-0 z-30 bg-white border-b border-[#E8E6E1] shadow-sm">
+              <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-10">
+                {/* Row 1 — dropdown filter chips */}
+                <div className="flex items-center gap-1 border-b border-[#E8E6E1] py-2 overflow-x-auto scrollbar-none">
+                  {/* Lokasi chip */}
+                  <div className="relative inline-flex shrink-0">
+                    <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center gap-1">
+                      <span className="font-jakarta text-sm font-medium text-ink whitespace-nowrap">Lokasi</span>
+                    </div>
+                    <select
+                      value={filters.countries[0] ?? ""}
+                      onChange={(e) => updateFilters({ countries: e.target.value ? [e.target.value] : [] })}
+                      className="h-10 appearance-none rounded-lg border border-[#BFC7D4] bg-white pl-14 pr-8 font-jakarta text-sm text-ink-muted focus:outline-none focus:border-primary cursor-pointer min-w-[120px]"
+                    >
+                      <option value="">Semua</option>
+                      {countryOptions.map((c) => <option key={c} value={c}>{c}</option>)}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
+                      <ArrowDown01Icon size={14} className="text-ink-muted" />
+                    </div>
+                  </div>
+
+                  {/* Sektor chip */}
+                  <div className="relative inline-flex shrink-0">
+                    <div className="pointer-events-none absolute inset-y-0 left-3 flex items-center">
+                      <span className="font-jakarta text-sm font-medium text-ink whitespace-nowrap">Sektor</span>
+                    </div>
+                    <select
+                      value={filters.sectors[0] ?? ""}
+                      onChange={(e) => updateFilters({ sectors: e.target.value ? [e.target.value] : [] })}
+                      className="h-10 appearance-none rounded-lg border border-[#BFC7D4] bg-white pl-14 pr-8 font-jakarta text-sm text-ink-muted focus:outline-none focus:border-primary cursor-pointer min-w-[120px]"
+                    >
+                      <option value="">Semua</option>
+                      {sectorOptions.map((s) => <option key={s} value={s}>{s}</option>)}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-2 flex items-center">
+                      <ArrowDown01Icon size={14} className="text-ink-muted" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Row 2 — sort + toggles + clear all */}
+                <div className="flex items-center gap-5 py-2 overflow-x-auto scrollbar-none">
+                  {/* Sort */}
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className="font-jakarta text-sm text-ink whitespace-nowrap">Urut dengan</span>
+                    <div className="relative inline-flex">
+                      <select
+                        value={filters.sortBy}
+                        onChange={(e) => updateFilters({ sortBy: e.target.value as FilterState["sortBy"] })}
+                        className="h-8 appearance-none rounded-lg border border-[#BFC7D4] bg-white pl-3 pr-7 font-jakarta text-sm text-ink focus:outline-none focus:border-primary cursor-pointer"
+                      >
+                        <option value="latest">Terbaru</option>
+                        <option value="skill_match">Skill match</option>
+                      </select>
+                      <div className="pointer-events-none absolute inset-y-0 right-1.5 flex items-center">
+                        <ArrowDown01Icon size={12} className="text-ink-muted" />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Skill Match toggle */}
+                  <label className="flex items-center gap-2 shrink-0 cursor-pointer select-none">
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={filters.skillMatchOnly}
+                      onClick={() => updateFilters({ skillMatchOnly: !filters.skillMatchOnly })}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${
+                        filters.skillMatchOnly ? "bg-primary" : "bg-[#D1D5DB]"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow transition-transform ${
+                          filters.skillMatchOnly ? "translate-x-[18px]" : "translate-x-[3px]"
+                        }`}
+                      />
+                    </button>
+                    <span className="font-jakarta text-sm text-ink whitespace-nowrap">Skill Match</span>
+                  </label>
+
+                  {/* Funder Only toggle */}
+                  <label className="flex items-center gap-2 shrink-0 cursor-pointer select-none">
+                    <button
+                      type="button"
+                      role="switch"
+                      aria-checked={filters.fundedOnly}
+                      onClick={() => updateFilters({ fundedOnly: !filters.fundedOnly })}
+                      className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${
+                        filters.fundedOnly ? "bg-primary" : "bg-[#D1D5DB]"
+                      }`}
+                    >
+                      <span
+                        className={`inline-block h-3.5 w-3.5 rounded-full bg-white shadow transition-transform ${
+                          filters.fundedOnly ? "translate-x-[18px]" : "translate-x-[3px]"
+                        }`}
+                      />
+                    </button>
+                    <span className="font-jakarta text-sm text-ink whitespace-nowrap">Funder Only</span>
+                  </label>
+
+                  {/* Spacer */}
+                  <div className="flex-1" />
+
+                  {/* Clear All */}
+                  <button
+                    type="button"
+                    onClick={() => updateFilters({ countries: [], sectors: [], fundedOnly: false, skillMatchOnly: false, sortBy: "latest" })}
+                    className="shrink-0 h-8 px-4 rounded-lg bg-primary text-white font-jakarta text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              {/* Funder mode toggle */}
-              {hydrated && isToggleVisible && (
-                <button
-                  type="button"
-                  onClick={toggleFunderMode}
-                  className={`inline-flex items-center gap-1.5 font-jakarta text-xs font-semibold px-3 py-1.5 rounded-badge border transition-all duration-200 ${
-                    funderMode
-                      ? "bg-funded text-white border-funded shadow-sm"
-                      : "bg-white text-ink-muted border-ink/15 hover:border-funded/50 hover:text-funded"
-                  }`}
-                >
-                  <MoneyBag01Icon size={13} />
-                  {funderMode ? "Funder" : "Funder Mode"}
-                </button>
-              )}
-              {/* Mobile filter toggle */}
-              <Button
-                variant="bordered"
-                size="sm"
-                className="lg:hidden font-jakarta"
-                startContent={<FilterIcon size={14} />}
-                onClick={() => setMobileFiltersOpen((v) => !v)}
-              >
-                Filter
-              </Button>
-            </div>
-          </div>
+            {/* Dark backdrop */}
+            <div
+              className="fixed top-[74px] inset-x-0 bottom-0 z-20 bg-black/40"
+              onClick={() => setIsFilterRowOpen(false)}
+              aria-hidden="true"
+            />
+            </>
+          )}
 
           {/* Funder mode banner */}
           {hydrated && canUseFunderMode && funderMode && (
@@ -253,77 +336,102 @@ export default function JobsPage() {
             </div>
           )}
 
-          {/* Mobile filters panel */}
-          {mobileFiltersOpen && (
-            <div className="lg:hidden bg-white border border-ink/10 rounded-card p-4 mb-5">
-              <JobsFilterPanel {...filterPanelProps} />
+          {/* CTA Banner */}
+          <Link href="/detail" className="block mb-2 group">
+            <div className="relative overflow-hidden rounded-2xl bg-[#0e0e0e] h-[140px] flex items-center">
+              {/* Dot-grid texture */}
+              <div
+                className="absolute inset-0 opacity-[0.18]"
+                style={{
+                  backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1px)",
+                  backgroundSize: "14px 14px",
+                }}
+              />
+              {/* Globe — right 2/5 of container */}
+              <div className="absolute right-0 top-0 w-2/5 aspect-square pointer-events-none">
+                <Globe
+                  config={{
+                    width: 800,
+                    height: 800,
+                    onRender: () => {},
+                    devicePixelRatio: 2,
+                    phi: 0,
+                    theta: 0.3,
+                    dark: 1,
+                    diffuse: 0.8,
+                    mapSamples: 16000,
+                    mapBrightness: 8,
+                    baseColor: [0.3, 0.3, 0.3],
+                    markerColor: [200 / 255, 16 / 255, 46 / 255],
+                    glowColor: [0.4, 0.08, 0.12],
+                    markers: [
+                      { location: [-6.2088, 106.8456], size: 0.08 },
+                      { location: [35.6762, 139.6503], size: 0.05 },
+                      { location: [37.5665, 126.978], size: 0.05 },
+                      { location: [1.3521, 103.8198], size: 0.04 },
+                      { location: [25.2048, 55.2708], size: 0.04 },
+                    ],
+                  }}
+                  className="w-full h-full max-w-none"
+                />
+              </div>
+              {/* Gradient fade from left text to globe on right */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#0e0e0e] from-30% via-[#0e0e0e]/60 via-50% to-transparent" />
+              {/* Text content */}
+              <div className="relative z-10 px-7 max-w-[58%]">
+                <p className="font-jakarta text-[10px] font-semibold uppercase tracking-widest text-white/40 mb-1">Tentang Kami</p>
+                <h3 className="font-jakarta text-lg font-bold text-white leading-snug mb-3">
+                  Kerja di luar negeri lebih mudah<br className="hidden sm:block" /> dari yang kamu kira.
+                </h3>
+                <span className="inline-flex items-center gap-2 h-8 px-4 rounded-lg bg-primary text-white font-jakarta text-xs font-semibold group-hover:bg-primary/90 transition-colors">
+                  Klik disini
+                </span>
+              </div>
             </div>
-          )}
+          </Link>
 
-          {/* Mobile horizontal filter chips */}
-          <div className="lg:hidden flex gap-2 overflow-x-auto pb-2 mb-4 scrollbar-none">
-            {JOBS_FILTER_COUNTRIES.map((c) => (
-              <Button
-                key={c}
-                size="sm"
-                variant={filters.countries.includes(c) ? "solid" : "bordered"}
-                color={filters.countries.includes(c) ? "primary" : "default"}
-                className="shrink-0 font-jakarta text-xs"
-                onClick={() => toggleCountry(c)}
+          <div className="mb-5">
+            <p className="font-jakarta text-xs font-semibold text-ink-muted mb-2">Trusted by</p>
+            <InfiniteMovingLogos
+              items={marqueeItems}
+              speed="slow"
+              pauseOnHover
+              edgeFade
+              className="mb-3"
+            />
+          </div>
+
+          {/* Quick category chips */}
+          <div className="flex gap-2 overflow-x-auto pb-2 mb-5 scrollbar-none">
+            <button
+              type="button"
+              className={`shrink-0 h-10 rounded-xl border px-4 font-jakarta text-sm transition-colors ${
+                filters.countries.length === 0
+                  ? "bg-ink text-white border-ink"
+                  : "bg-white text-ink-muted border-ink/10 hover:text-ink"
+              }`}
+              onClick={() => updateFilters({ countries: [] })}
+            >
+              All Jobs
+            </button>
+            {JOBS_QUICK_COUNTRY_FILTERS.map((country) => (
+              <button
+                key={country}
+                type="button"
+                className={`shrink-0 h-10 rounded-xl border px-4 font-jakarta text-sm transition-colors ${
+                  hasActiveQuickCountry && filters.countries[0] === country
+                    ? "bg-ink text-white border-ink"
+                    : "bg-white text-ink-muted border-ink/10 hover:text-ink"
+                }`}
+                onClick={() => updateFilters({ countries: [country] })}
               >
-                {c}
-              </Button>
+                {country}
+              </button>
             ))}
           </div>
 
-          {/* Search + View controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
-            <JobsSearchBar
-              value={searchQuery}
-              onValueChange={(v) => {
-                setSearchQuery(v);
-                setCurrentPage(1);
-              }}
-            />
-
-            <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto justify-end sm:justify-start">
-              <Link
-                href="/detail"
-                className="inline-flex items-center justify-center h-9 px-7 rounded-lg font-jakarta text-xs font-medium text-ink-muted border border-ink/10 bg-white hover:bg-ink/5 hover:text-ink transition-colors whitespace-nowrap"
-              >
-                Get to know us
-              </Link>
-              <div className="flex bg-ink/10 border border-ink/10 rounded-lg overflow-hidden p-0">
-                <button
-                  type="button"
-                  aria-label="Grid view"
-                  onClick={() => updateFilters({ viewMode: "grid" })}
-                  className={`flex-1 flex items-center justify-center min-w-[36px] h-9 rounded-l-lg transition-colors ${
-                    filters.viewMode === "grid"
-                      ? "bg-primary text-white"
-                      : "bg-white text-ink-muted hover:text-ink"
-                  }`}
-                >
-                  <GridViewIcon size={14} />
-                </button>
-                <button
-                  type="button"
-                  aria-label="List view"
-                  onClick={() => updateFilters({ viewMode: "list" })}
-                  className={`flex-1 flex items-center justify-center min-w-[36px] h-9 rounded-r-lg transition-colors ${
-                    filters.viewMode === "list"
-                      ? "bg-primary text-white"
-                      : "bg-white text-ink-muted hover:text-ink"
-                  }`}
-                >
-                  <ListViewIcon size={14} />
-                </button>
-              </div>
-            </div>
-          </div>
-
           {/* Results count */}
-          <p className="font-jakarta text-xs text-ink-muted mb-4">
+          <p className="font-jakarta text-xs text-ink-muted mb-5">
             {filteredJobs.length} lowongan ditemukan
           </p>
 
@@ -340,7 +448,7 @@ export default function JobsPage() {
               <div
                 className={
                   filters.viewMode === "grid"
-                    ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 items-stretch min-w-0"
+                    ? "grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch min-w-0"
                     : "flex flex-col gap-4 min-w-0"
                 }
               >
@@ -352,7 +460,7 @@ export default function JobsPage() {
                       : undefined;
                   return (
                     <div key={job.id} className={filters.viewMode === "grid" ? "h-full min-h-0" : undefined}>
-                      <JobCard job={job} viewMode={filters.viewMode} funderData={funderData} />
+                      <JobCard job={job} viewMode={filters.viewMode} funderData={funderData} minimal />
                     </div>
                   );
                 })}
@@ -370,23 +478,6 @@ export default function JobsPage() {
             </>
           )}
         </div>
-
-        {/* ── RIGHT SIDEBAR (desktop) ── */}
-        <aside className="hidden lg:flex flex-col w-56 shrink-0 gap-4">
-          {user && <JobsProfileMiniCard user={user} />}
-
-          {/* Skill match meter — data from JOBS (zenleap dummy), max 4 per page */}
-          {user && (
-            <JobsSidebarSkillsPanel
-              skills={visibleSkills}
-              skillTotalPages={skillTotalPages}
-              skillCurrentPage={safeSkillPage}
-              onSkillPageChange={setSkillPage}
-            />
-          )}
-
-          <JobsSidebarFilterCard {...filterPanelProps} />
-        </aside>
       </div>
     </AppLayout>
   );
