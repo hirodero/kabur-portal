@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { ArrowRight01Icon } from "hugeicons-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Location01Icon, CreditCardIcon, Briefcase01Icon, Search01Icon } from "hugeicons-react";
 import { COUNTRY_TO_ISO } from "@/types";
 import type { Job } from "@/types";
+import { useState } from "react";
 
 const OFFTAKER_LOGOS: Record<string, string> = {
   APJATI: "/apjati-logo.png",
@@ -43,7 +44,16 @@ interface JobCardProps {
   minimal?: boolean;
 }
 
-function formatSalary(min: number, max: number, currency: string): string {
+function formatSalaryFull(min: number, max: number, currency: string): string {
+  if (currency === "IDR") {
+    const fmt = (n: number) =>
+      `Rp ${n.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `${fmt(min)} – ${fmt(max)}`;
+  }
+  return `${currency} ${min.toLocaleString()} – ${max.toLocaleString()}`;
+}
+
+function formatSalaryShort(min: number, max: number, currency: string): string {
   if (currency === "IDR") {
     const fmt = (n: number) =>
       n >= 1_000_000
@@ -52,6 +62,21 @@ function formatSalary(min: number, max: number, currency: string): string {
     return `${fmt(min)} – ${fmt(max)}`;
   }
   return `${currency} ${min.toLocaleString()} – ${max.toLocaleString()}`;
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const hours = Math.floor(diff / 3_600_000);
+  if (hours < 1) return "baru saja";
+  if (hours < 24) return `${hours} hours ago`;
+  const days = Math.floor(hours / 24);
+  if (days === 1) return "a day ago";
+  return `${days} days ago`;
+}
+
+function formatDeadline(dateStr: string): string {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 }
 
 function OffTakerBadge({ offTaker, size = "md" }: { offTaker: string; size?: "sm" | "md" }) {
@@ -71,6 +96,16 @@ function OffTakerBadge({ offTaker, size = "md" }: { offTaker: string; size?: "sm
   );
 }
 
+// Verified checkmark badge (blue shield style)
+function VerifiedBadge() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
+      <path d="M8 1L10.12 3.31L13.19 3L13.5 6.07L15.81 8L13.5 9.93L13.19 13L10.12 12.69L8 15L5.88 12.69L2.81 13L2.5 9.93L0.19 8L2.5 6.07L2.81 3L5.88 3.31L8 1Z" fill="#1877F2"/>
+      <path d="M5.5 8L7 9.5L10.5 6" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
+
 export function JobCard({
   job,
   variant = "default",
@@ -80,6 +115,7 @@ export function JobCard({
 }: JobCardProps) {
   const countryCode = job.countryCode ?? COUNTRY_TO_ISO[job.country];
   const FlagIcon = countryCode ? FLAG_MAP[countryCode] : null;
+  const [hovered, setHovered] = useState(false);
 
   const isBar = viewMode === "list";
 
@@ -109,7 +145,7 @@ export function JobCard({
               <span className="text-sm font-medium text-ink hidden sm:inline">{job.country}</span>
             </span>
             <p className="font-jakarta font-bold text-sm text-primary">
-              {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+              {formatSalaryShort(job.salaryMin, job.salaryMax, job.salaryCurrency)}
               <span className="text-[10px] font-medium text-ink/70 ml-0.5">/bln</span>
             </p>
           </div>
@@ -128,102 +164,135 @@ export function JobCard({
             </span>
           </div>
 
-          {/* Right: posisi button */}
+          {/* Right: arrow */}
           <span className="inline-flex items-center justify-center font-jakarta text-xs font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-2.5 py-1 transition-colors shrink-0">
-            <ArrowRight01Icon size={12} className="shrink-0" />
+            →
           </span>
         </motion.article>
       </Link>
     );
   }
 
+  // Grid card — Kalibrr-style
   return (
-    <Link href={`/jobs/${job.id}`} className="block group h-full min-w-0">
+    <div
+      className="block group h-full min-w-0"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
       <motion.article
-        className={`bg-white border border-ink/15 rounded-2xl h-full flex flex-col min-w-0 overflow-hidden shadow-sm ${
-          minimal ? "p-4 min-h-[220px]" : "p-5 min-h-[260px] border-l-4 border-l-primary"
-        }`}
+        className="relative bg-white border border-ink/10 rounded-2xl h-full flex flex-col min-w-0 overflow-hidden shadow-sm"
         whileHover={{
-          y: minimal ? -2 : -4,
-          boxShadow: minimal
-            ? "0 6px 20px rgba(0, 0, 0, 0.08)"
-            : "0 8px 30px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(200, 16, 46, 0.08)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.12)",
           transition: { duration: 0.2, ease: "easeOut" },
         }}
         transition={{ duration: 0.2 }}
       >
-        {/* Top row: flag + country | off-taker logo */}
-        <div className={`flex items-center justify-between gap-2 min-w-0 ${minimal ? "mb-2" : "mb-3"}`}>
-          <span className="flex items-center gap-2 min-w-0 flex-1 overflow-hidden">
-            {FlagIcon ? (
-              <span
-                className={`relative block rounded-lg border border-ink/20 overflow-hidden shrink-0 ${
-                  minimal ? "w-10 h-7" : "w-12 h-8 border-2 shadow-sm"
-                }`}
-              >
+        {/* Card body */}
+        <div className="flex flex-col flex-1 p-5">
+          {/* Flag + company row */}
+          <div className="flex items-start gap-3 mb-4">
+            {/* Flag as main visual */}
+            <div className="relative w-14 h-10 rounded-lg border border-ink/15 overflow-hidden shadow-sm shrink-0">
+              {FlagIcon ? (
                 <span className="absolute inset-0 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:w-full [&>svg]:h-full [&>svg]:scale-125 [&>svg]:block">
                   <FlagIcon title={job.country} className="w-full h-full" />
                 </span>
-              </span>
-            ) : (
-              <span className="shrink-0">{job.countryFlag}</span>
-            )}
-            <span className="text-sm font-medium text-ink truncate min-w-0">{job.country}</span>
-          </span>
-          {!minimal && <OffTakerBadge offTaker={job.offTaker} />}
-        </div>
-
-        {/* Job title */}
-        <h3
-          className={`font-jakarta font-bold text-ink leading-snug line-clamp-2 group-hover:text-primary transition-colors duration-150 ${
-            minimal ? "text-lg sm:text-xl font-semibold" : "text-base"
-          }`}
-        >
-          {job.title}
-        </h3>
-
-        {/* Company + offTaker */}
-        <p className={`text-ink-muted mt-1.5 line-clamp-1 ${minimal ? "text-xs" : "text-sm"}`}>
-          {minimal ? job.company : `${job.company} · via ${job.offTaker}`}
-        </p>
-
-        {/* Salary + footer pinned to bottom */}
-        <div className="mt-auto">
-          <p className={`font-jakarta text-primary min-w-0 ${minimal ? "font-semibold text-base pt-4" : "font-bold text-2xl pt-4"}`}>
-            <span className="whitespace-nowrap">{formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}</span>
-            <span className={`${minimal ? "text-xs" : "text-sm"} font-jakarta font-medium text-ink/70`}> /bln</span>
-          </p>
-
-          {/* Funder overlay */}
-          {funderData && (
-            <div className="mt-3 flex items-center justify-between bg-funded/8 border border-funded/20 rounded-lg px-3 py-2 gap-2">
-              <span className="font-jakarta text-[11px] font-semibold text-funded">
-                {funderData.qualifiedCount} qualified
-              </span>
-              <span className="font-jakarta text-[11px] text-funded-dark font-medium">
-                {funderData.fundingNeeded > 0
-                  ? `Rp ${(funderData.fundingNeeded / 1_000_000).toFixed(1)} jt needed`
-                  : "Belum ada kandidat"}
+              ) : (
+                <span className="flex items-center justify-center w-full h-full text-2xl">
+                  {job.countryFlag}
+                </span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="font-jakarta font-bold text-[15px] text-ink leading-snug line-clamp-2">
+                {job.title}
+              </h3>
+              <span className="flex items-center gap-1 mt-0.5">
+                <p className="text-[13px] text-ink-muted truncate">{job.company}</p>
+                <VerifiedBadge />
               </span>
             </div>
-          )}
+          </div>
 
-          <div className={`flex items-center justify-between gap-2 min-w-0 ${minimal ? "pt-2 mt-2" : "pt-3 border-t border-ink/10 mt-3"}`}>
-            <span className="text-xs text-ink-muted bg-ink/5 px-2.5 py-1.5 rounded-badge font-medium truncate min-w-0">
-              {job.sector}
-            </span>
-            <span
-              className={`inline-flex items-center gap-1 font-jakarta font-semibold text-primary rounded-lg transition-colors ${
-                minimal
-                  ? "text-xs px-2 py-1 bg-transparent"
-                  : "text-sm bg-primary/5 hover:bg-primary/10 border border-primary/20 px-3 py-1.5 group-hover:border-primary/40"
-              }`}
-            >
-              <ArrowRight01Icon size={14} className="shrink-0" />
-            </span>
+          {/* Detail rows */}
+          <div className="flex flex-col gap-2.5 flex-1">
+            <div className="flex items-center gap-2 text-[13px] text-ink-muted">
+              <Location01Icon size={15} className="shrink-0 text-ink/30" />
+              <span className="truncate">{job.placement?.city ? `${job.placement.city}, ${job.country}` : job.country}</span>
+            </div>
+            <div className="flex items-center gap-2 text-[13px] text-ink-muted">
+              <CreditCardIcon size={15} className="shrink-0 text-ink/30" />
+              <span className="truncate">{formatSalaryFull(job.salaryMin, job.salaryMax, job.salaryCurrency)} / bulan</span>
+            </div>
+            <div className="flex items-center gap-2 text-[13px] text-ink-muted">
+              <Briefcase01Icon size={15} className="shrink-0 text-ink/30" />
+              <span>Penuh waktu</span>
+            </div>
+            <div className="flex items-center gap-2 text-[13px] text-ink-muted">
+              <Search01Icon size={15} className="shrink-0 text-ink/30" />
+              <span>Rekruter terakhir aktif {timeAgo(job.postedAt)}</span>
+            </div>
+
+            {/* Funder overlay */}
+            {funderData && (
+              <div className="mt-1 flex items-center justify-between bg-funded/8 border border-funded/20 rounded-lg px-3 py-2 gap-2">
+                <span className="font-jakarta text-[11px] font-semibold text-funded">
+                  {funderData.qualifiedCount} qualified
+                </span>
+                <span className="font-jakarta text-[11px] text-funded-dark font-medium">
+                  {funderData.fundingNeeded > 0
+                    ? `Rp ${(funderData.fundingNeeded / 1_000_000).toFixed(1)} jt needed`
+                    : "Belum ada kandidat"}
+                </span>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between gap-2 px-5 py-3 border-t border-ink/8 bg-ink/[0.02]">
+          <span className="font-jakarta text-[12px] text-ink-muted">
+            Apply before {formatDeadline(job.deadline)}
+          </span>
+          <span className="font-jakarta text-[11px] text-ink-muted bg-ink/8 px-2.5 py-1 rounded-full truncate max-w-[140px]">
+            {job.sector}
+          </span>
+        </div>
+
+        {/* Hover overlay — glass blur with CTAs */}
+        <AnimatePresence>
+          {hovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
+              className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl"
+              style={{
+                backdropFilter: "blur(6px)",
+                WebkitBackdropFilter: "blur(6px)",
+                background: "rgba(255,255,255,0.55)",
+              }}
+            >
+              <Link
+                href={`/jobs/${job.id}`}
+                className="w-40 h-11 flex items-center justify-center rounded-xl border border-ink/20 bg-white font-jakarta text-sm font-semibold text-ink hover:bg-ink/5 transition-colors shadow-sm"
+                onClick={(e) => e.stopPropagation()}
+              >
+                View Post
+              </Link>
+              <Link
+                href={`/jobs/${job.id}?apply=1`}
+                className="w-40 h-11 flex items-center justify-center rounded-xl bg-primary font-jakarta text-sm font-semibold text-white hover:bg-primary/90 transition-colors shadow-sm"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Apply
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.article>
-    </Link>
+    </div>
   );
 }

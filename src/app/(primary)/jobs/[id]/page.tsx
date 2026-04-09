@@ -71,7 +71,7 @@ export default async function JobDetailPage({ params }: PageProps) {
   });
 
   return (
-    <AppLayout>
+    <AppLayout layoutMode="topnav">
       {/* ── BREADCRUMB ── */}
       <nav className="flex items-center gap-1.5 font-jakarta text-xs text-ink-muted mb-6">
         <Link href="/jobs" className="hover:text-primary transition-colors">
