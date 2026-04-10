@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Notification01Icon, PreferenceHorizontalIcon, Search01Icon, UserCircleIcon } from 'hugeicons-react'
+import { Notification01Icon, PreferenceHorizontalIcon, Search01Icon } from 'hugeicons-react'
 import { Button } from '@heroui/react'
 
 export function AppNav() {
@@ -11,7 +11,7 @@ export function AppNav() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 w-full bg-white border-b border-[#E8E6E1]" style={{ height: '74px' }}>
-      <nav className="h-full max-w-6xl mx-auto px-4 md:px-6 lg:px-10 flex items-center justify-between gap-4">
+      <nav className="h-full max-w-7xl mx-auto px-4 md:px-6 lg:px-10 flex items-center justify-between gap-4">
         {/* Left: Logo + divider + breadcrumb */}
         <div className="flex items-center gap-3 shrink-0">
           <Link href="/jobs" className="font-jakarta font-bold text-[17px] text-ink tracking-tight">
@@ -59,15 +59,6 @@ export function AppNav() {
             className="min-w-10 w-10 h-10 text-ink-muted hover:text-ink"
           >
             <Notification01Icon size={18} />
-          </Button>
-          <Button
-            isIconOnly
-            size="sm"
-            variant="light"
-            aria-label="Profil"
-            className="min-w-10 w-10 h-10 text-ink-muted hover:text-ink"
-          >
-            <UserCircleIcon size={18} />
           </Button>
           <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-jakarta font-bold text-[10px] shrink-0 ml-1">
             BS
