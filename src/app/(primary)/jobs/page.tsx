@@ -3,7 +3,9 @@
 import { useState, useEffect, useLayoutEffect, useMemo } from "react";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { JobCard } from "@/components/jobs/JobCard";
-import { JOBS } from "@/lib/mock-data";
+import { listJobs, getMetadataFilters, JobsServiceError } from "@/services/jobs";
+import { listMarketingPartners, listOfftakers } from "@/services/partners";
+import { mapPortalJobToUi } from "@/lib/map-portal-job";
 import {
   initUserProfile,
   initQualifiedUsers,
@@ -11,7 +13,7 @@ import {
   setFilters as persistFilters,
 } from "@/lib/storage";
 import { useFunderMode } from "@/hooks/useFunderMode";
-import type { UserProfile, FilterState } from "@/types";
+import type { UserProfile, FilterState, Job } from "@/types";
 import Link from "next/link";
 import { Pagination } from "@/components/ui/pagination";
 import { ArrowDown01Icon } from "hugeicons-react";
@@ -25,9 +27,9 @@ const JOBS_PAGE_SIZE_DESKTOP = 12;
 const JOBS_PAGE_MIN_TABLET_PX = 768;
 const JOBS_PAGE_MIN_XL_PX = 1280;
 const JOBS_QUICK_COUNTRY_FILTERS = ["Japan", "South Korea", "Germany", "Singapore", "United Arab Emirates"];
-const MARKETING_PARTNER_LOGOS: Record<string, string> = {
-  APJATI: "/apjati-logo.png",
-  Vokati: "/vokati-logo.png",
+const PARTNER_NAME_LOGOS: Record<string, string> = {
+  apjati: "/apjati-logo.png",
+  vokati: "/vokati-logo.png",
   zenius: "/zenius.png",
   telkomsel: "/telkomsel.png",
   malaka: "/malaka.png",
@@ -52,6 +54,13 @@ export default function JobsPage() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterRowOpen, setIsFilterRowOpen] = useState(false);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [countryOptions, setCountryOptions] = useState<string[]>([]);
+  const [sectorOptions, setSectorOptions] = useState<string[]>([]);
+  const [marqueeItems, setMarqueeItems] = useState<Array<{ src: string; alt: string }>>([]);
 
   useEffect(() => {
     const profile = initUserProfile();
@@ -84,6 +93,138 @@ export default function JobsPage() {
     return () => window.removeEventListener("jobs:toggle-filter-row", onToggleFilterRow as EventListener);
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    getMetadataFilters()
+      .then((m) => {
+        if (!cancelled) {
+          setCountryOptions(m.countries);
+          setSectorOptions(m.sectors);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setCountryOptions([]);
+          setSectorOptions([]);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [mps, offs] = await Promise.all([
+          listMarketingPartners(),
+          listOfftakers(),
+        ]);
+        if (cancelled) return;
+        const items: Array<{ src: string; alt: string }> = [];
+        const seen = new Set<string>();
+        for (const row of [...mps, ...offs]) {
+          const name = typeof row.name === "string" ? row.name : "";
+          if (!name || seen.has(name)) continue;
+          const key = Object.keys(PARTNER_NAME_LOGOS).find((k) =>
+            name.toLowerCase().includes(k),
+          );
+          if (!key) continue;
+          seen.add(name);
+          items.push({ src: PARTNER_NAME_LOGOS[key], alt: name });
+        }
+        setMarqueeItems(items);
+      } catch {
+        if (!cancelled) setMarqueeItems([]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      setLoading(true);
+      setLoadError(null);
+      try {
+        const needBulk =
+          filters.skillMatchOnly || filters.sortBy === "skill_match";
+        const res = await listJobs({
+          countries: filters.countries.length ? filters.countries : undefined,
+          sectors: filters.sectors.length ? filters.sectors : undefined,
+          fundedOnly: filters.fundedOnly ? true : undefined,
+          page: needBulk ? 1 : currentPage,
+          pageSize: needBulk ? 150 : jobsPageSize,
+        });
+        if (cancelled) return;
+        let list = res.jobs.map((j) => mapPortalJobToUi(j as unknown));
+        if (filters.skillMatchOnly && user) {
+          list = list.filter((j) =>
+            j.skillRequirements.length === 0
+              ? true
+              : j.skillRequirements.every(
+                  (req) =>
+                    (user.skills[req.skillName] ?? 0) >= req.requiredLevel,
+                ),
+          );
+        }
+        if (filters.sortBy === "skill_match" && user) {
+          list = [...list].sort((a, b) => {
+            const score = (j: Job) => {
+              const reqs = j.skillRequirements;
+              if (reqs.length === 0) return 0;
+              return (
+                reqs.filter(
+                  (r) =>
+                    (user.skills[r.skillName] ?? 0) >= r.requiredLevel,
+                ).length / reqs.length
+              );
+            };
+            return score(b) - score(a);
+          });
+        }
+        const total = needBulk ? list.length : res["total-count"];
+        const visible = needBulk
+          ? list.slice(
+              (currentPage - 1) * jobsPageSize,
+              currentPage * jobsPageSize,
+            )
+          : list;
+        setJobs(visible);
+        setTotalCount(total);
+      } catch (e) {
+        if (!cancelled) {
+          const msg =
+            e instanceof JobsServiceError
+              ? e.message
+              : e instanceof Error
+                ? e.message
+                : "Gagal memuat lowongan";
+          setLoadError(msg);
+          setJobs([]);
+          setTotalCount(0);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    filters.countries,
+    filters.sectors,
+    filters.fundedOnly,
+    filters.skillMatchOnly,
+    filters.sortBy,
+    currentPage,
+    jobsPageSize,
+    user,
+  ]);
+
   function updateFilters(updates: Partial<FilterState>) {
     const next = { ...filters, ...updates };
     setFiltersState(next);
@@ -91,110 +232,26 @@ export default function JobsPage() {
     setCurrentPage(1);
   }
 
-  function toggleCountry(country: string) {
-    const next = filters.countries.includes(country)
-      ? filters.countries.filter((c) => c !== country)
-      : [...filters.countries, country];
-    updateFilters({ countries: next });
-  }
-
-  function toggleSector(sector: string) {
-    const next = filters.sectors.includes(sector)
-      ? filters.sectors.filter((s) => s !== sector)
-      : [...filters.sectors, sector];
-    updateFilters({ sectors: next });
-  }
-
-  const filteredJobs = useMemo(() => {
-    let jobs = [...JOBS];
-
-    if (filters.countries.length > 0)
-      jobs = jobs.filter((j) => filters.countries.includes(j.country));
-    if (filters.sectors.length > 0)
-      jobs = jobs.filter((j) => filters.sectors.includes(j.sector));
-    if (filters.fundedOnly)
-      jobs = jobs.filter((j) => j.isFunded);
-    if (filters.skillMatchOnly && user) {
-      jobs = jobs.filter((j) =>
-        j.skillRequirements.every(
-          (req) => (user.skills[req.skillName] ?? 0) >= req.requiredLevel
-        )
-      );
-    }
-
-    if (filters.sortBy === "skill_match" && user) {
-      jobs = [...jobs].sort((a, b) => {
-        const score = (j: (typeof JOBS)[0]) => {
-          const reqs = j.skillRequirements;
-          if (reqs.length === 0) return 0;
-          return (
-            reqs.filter((r) => (user.skills[r.skillName] ?? 0) >= r.requiredLevel)
-              .length / reqs.length
-          );
-        };
-        return score(b) - score(a);
-      });
-    } else {
-      jobs = [...jobs].sort(
-        (a, b) => new Date(b.postedAt).getTime() - new Date(a.postedAt).getTime()
-      );
-    }
-
-    return jobs;
-  }, [filters, user]);
-
-  const totalPages = Math.max(1, Math.ceil(filteredJobs.length / jobsPageSize));
+  const totalPages = Math.max(1, Math.ceil(totalCount / jobsPageSize));
   const page = Math.min(currentPage, totalPages);
 
   useEffect(() => {
     setCurrentPage((p) => Math.min(p, totalPages));
   }, [totalPages]);
 
-  const visibleJobs = filteredJobs.slice((page - 1) * jobsPageSize, page * jobsPageSize);
-
   const hasActiveQuickCountry =
     filters.countries.length === 1 && JOBS_QUICK_COUNTRY_FILTERS.includes(filters.countries[0]);
-  const countryOptions = useMemo(
-    () => Array.from(new Set(JOBS.map((job) => job.country))).sort((a, b) => a.localeCompare(b)),
-    []
-  );
-  const sectorOptions = useMemo(
-    () => Array.from(new Set(JOBS.map((job) => job.sector))).sort((a, b) => a.localeCompare(b)),
-    []
-  );
-  const trustedPartnerItems = useMemo(() => {
-    const seen = new Set<string>();
-    const items: Array<{ src: string; alt: string }> = [];
-
-    for (const job of JOBS) {
-      const offTakerLogo = MARKETING_PARTNER_LOGOS[job.offTaker];
-      if (offTakerLogo && !seen.has(job.offTaker)) {
-        seen.add(job.offTaker);
-        items.push({ src: offTakerLogo, alt: job.offTaker });
-      }
-
-      if (job.mpChannel) {
-        const channelLogo = MARKETING_PARTNER_LOGOS[job.mpChannel];
-        if (channelLogo && !seen.has(job.mpChannel)) {
-          seen.add(job.mpChannel);
-          items.push({ src: channelLogo, alt: job.mpChannel });
-        }
-      }
-    }
-
-    return items;
-  }, []);
-  const marqueeItems = useMemo(() => {
-    if (trustedPartnerItems.length === 0) return trustedPartnerItems;
+  const marqueeDisplayItems = useMemo(() => {
+    if (marqueeItems.length === 0) return marqueeItems;
     const minBaseItems = 18;
-    const repeatCount = Math.max(1, Math.ceil(minBaseItems / trustedPartnerItems.length));
+    const repeatCount = Math.max(1, Math.ceil(minBaseItems / marqueeItems.length));
     return Array.from({ length: repeatCount }).flatMap((_, index) =>
-      trustedPartnerItems.map((item) => ({
+      marqueeItems.map((item) => ({
         src: item.src,
         alt: `${item.alt}-${index + 1}`,
-      }))
+      })),
     );
-  }, [trustedPartnerItems]);
+  }, [marqueeItems]);
 
   return (
     <AppLayout layoutMode="topnav">
@@ -393,7 +450,7 @@ export default function JobsPage() {
           <div className="mb-5">
             <p className="font-jakarta text-xs font-semibold text-ink-muted mb-2">Trusted by</p>
             <InfiniteMovingLogos
-              items={marqueeItems}
+              items={marqueeDisplayItems}
               speed="slow"
               pauseOnHover
               edgeFade
@@ -431,12 +488,21 @@ export default function JobsPage() {
           </div>
 
           {/* Results count */}
+          {loadError && (
+            <p className="font-jakarta text-xs text-red-600 mb-3" role="alert">
+              {loadError}
+            </p>
+          )}
           <p className="font-jakarta text-xs text-ink-muted mb-5">
-            {filteredJobs.length} lowongan ditemukan
+            {loading ? "Memuat…" : `${totalCount} lowongan ditemukan`}
           </p>
 
           {/* Job grid */}
-          {filteredJobs.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-16 text-ink-muted font-jakarta text-sm">
+              Memuat lowongan…
+            </div>
+          ) : jobs.length === 0 ? (
             <div className="text-center py-16 text-ink-muted">
               <p className="font-jakarta text-lg font-semibold mb-2 text-ink">
                 Tidak ada lowongan
@@ -452,7 +518,7 @@ export default function JobsPage() {
                     : "flex flex-col gap-4 min-w-0"
                 }
               >
-                {visibleJobs.map((job) => {
+                {jobs.map((job) => {
                   const qualifiedCount = hydrated ? getCount(job.id) : 0;
                   const funderData =
                     canUseFunderMode && funderMode && hydrated

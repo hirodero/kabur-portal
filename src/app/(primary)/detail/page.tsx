@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Button } from "@heroui/react";
 import { LandingNav } from "@/components/layout/LandingNav";
@@ -9,34 +10,77 @@ import { MPCard } from "@/components/mp/MPCard";
 import { HowItWorksTabs } from "@/components/landing/HowItWorksTabs";
 import { Globe } from "@/components/ui/Globe";
 import { InfiniteMovingLogos } from "@/components/ui/infinite-moving-logos";
-import { JOBS, MARKETING_PARTNERS } from "@/lib/mock-data";
+import { listJobs } from "@/services/jobs";
+import { listMarketingPartners } from "@/services/partners";
+import { mapPortalJobToUi } from "@/lib/map-portal-job";
+import { mapPortalMarketingPartnerToUi } from "@/lib/map-portal-partner";
+import type { Job, MarketingPartner } from "@/types";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-
-const STATS = [
-  { value: "12.847", label: "PMI Terdaftar" },
-  { value: "2", label: "Mitra Aktif" },
-  { value: "284", label: "Lowongan Tersedia" },
-  { value: "68", label: "Berhasil Ditempatkan" },
-];
 
 export default function DetailLandingPage() {
   useScrollReveal();
-  // Pick 3 featured jobs with different countries
-  const eligible = JOBS.filter((j) => j.isFunded || j.mpChannel);
-  const featuredJobs: typeof JOBS = [];
-  const seenCountries = new Set<string>();
-  for (const job of eligible) {
-    if (featuredJobs.length >= 3) break;
-    if (!seenCountries.has(job.country)) {
-      seenCountries.add(job.country);
-      featuredJobs.push(job);
+  const [jobs, setJobs] = useState<Job[]>([]);
+  const [partners, setPartners] = useState<MarketingPartner[]>([]);
+  const [totalJobs, setTotalJobs] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const [list, mps] = await Promise.all([
+          listJobs({ page: 1, pageSize: 24 }),
+          listMarketingPartners(),
+        ]);
+        if (cancelled) return;
+        setTotalJobs(list["total-count"]);
+        setJobs(list.jobs.map((j) => mapPortalJobToUi(j as unknown)));
+        setPartners(mps.map(mapPortalMarketingPartnerToUi));
+      } catch {
+        if (!cancelled) {
+          setJobs([]);
+          setPartners([]);
+          setTotalJobs(null);
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const featuredJobs = useMemo(() => {
+    const eligible = jobs.filter((j) => j.isFunded || j.mpChannel);
+    const out: Job[] = [];
+    const seenCountries = new Set<string>();
+    for (const job of eligible) {
+      if (out.length >= 3) break;
+      if (!seenCountries.has(job.country)) {
+        seenCountries.add(job.country);
+        out.push(job);
+      }
     }
-  }
-  // If fewer than 3 unique countries, fill with remaining eligible
-  for (const job of eligible) {
-    if (featuredJobs.length >= 3) break;
-    if (!featuredJobs.includes(job)) featuredJobs.push(job);
-  }
+    for (const job of eligible) {
+      if (out.length >= 3) break;
+      if (!out.includes(job)) out.push(job);
+    }
+    return out;
+  }, [jobs]);
+
+  const stats = useMemo(
+    () => [
+      { value: "12.847", label: "PMI Terdaftar" },
+      { value: String(Math.max(partners.length, 0)), label: "Mitra Aktif" },
+      {
+        value: String(totalJobs ?? "—"),
+        label: "Lowongan Tersedia",
+      },
+      { value: "68", label: "Berhasil Ditempatkan" },
+    ],
+    [partners.length, totalJobs],
+  );
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -97,7 +141,7 @@ export default function DetailLandingPage() {
 
             {/* Stats */}
             <div className="reveal reveal-delay-2 mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-              {STATS.map((stat, idx) => (
+              {stats.map((stat, idx) => (
                 <div
                   key={stat.label}
                   className={`flex flex-col items-center justify-center py-2 ${
@@ -181,9 +225,13 @@ export default function DetailLandingPage() {
           </div>
 
           <div className="reveal reveal-delay-1 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {featuredJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
+            {loading ? (
+              <p className="font-jakarta text-sm text-ink-muted col-span-full py-8">
+                Memuat lowongan…
+              </p>
+            ) : (
+              featuredJobs.map((job) => <JobCard key={job.id} job={job} />)
+            )}
           </div>
 
           <div className="mt-6 sm:hidden text-center">
@@ -226,9 +274,17 @@ export default function DetailLandingPage() {
             </h2>
           </div>
           <div className="reveal reveal-delay-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {MARKETING_PARTNERS.map((mp) => (
-              <MPCard key={mp.id} partner={mp} />
-            ))}
+            {loading ? (
+              <p className="font-jakarta text-sm text-ink-muted col-span-full py-8">
+                Memuat mitra…
+              </p>
+            ) : partners.length === 0 ? (
+              <p className="font-jakarta text-sm text-ink-muted col-span-full py-8">
+                Belum ada data mitra.
+              </p>
+            ) : (
+              partners.map((mp) => <MPCard key={mp.id} partner={mp} />)
+            )}
           </div>
         </div>
       </section>

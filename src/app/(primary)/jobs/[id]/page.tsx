@@ -5,7 +5,9 @@ import { ApplyButton } from "@/components/jobs/ApplyButton";
 import { JobCardMini } from "@/components/jobs/JobCardMini";
 import { JobCountryFlagBadge } from "@/components/jobs/job-country-flag-badge";
 import { SubcoursesPanel } from "@/components/jobs/SubcoursesPanel";
-import { JOBS } from "@/lib/mock-data";
+import { getJob, getSimilarJobs, JobsServiceError } from "@/services/jobs";
+import { mapPortalJobToUi } from "@/lib/map-portal-job";
+import type { Job } from "@/types";
 import {
   ArrowRight01Icon,
   AirplaneTakeOff01Icon,
@@ -51,13 +53,21 @@ function formatSalary(min: number, max: number, currency: string): string {
 
 export default async function JobDetailPage({ params }: PageProps) {
   const { id } = await params;
-  const job = JOBS.find((j) => j.id === id);
-
-  if (!job) notFound();
-
-  const similarJobs = JOBS.filter(
-    (j) => j.id !== job.id && j.sector === job.sector
-  ).slice(0, 2);
+  let job: Job;
+  let similarJobs: Job[] = [];
+  try {
+    const [detail, similar] = await Promise.all([
+      getJob(id),
+      getSimilarJobs(id),
+    ]);
+    job = mapPortalJobToUi(detail as unknown);
+    similarJobs = similar
+      .map((j) => mapPortalJobToUi(j as unknown))
+      .slice(0, 2);
+  } catch (e) {
+    if (e instanceof JobsServiceError && e.status === 404) notFound();
+    throw e;
+  }
 
   const postedDate = new Date(job.postedAt).toLocaleDateString("id-ID", {
     day: "numeric",
