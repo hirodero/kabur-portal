@@ -22,6 +22,7 @@ export const COUNTRY_TO_ISO: Record<string, string> = {
   Australia: "AU",
   Austria: "AT",
   Switzerland: "CH",
+  Oman: "OM",
 };
 
 export interface TermsAndConditions {
@@ -61,6 +62,10 @@ export interface Job {
   termsAndConditions?: TermsAndConditions;
   documentRequirements?: string[];
   requiredSubcourses?: string[];
+  /** External listing (e.g. Vokati) when apply flow is off-platform */
+  externalJobUrl?: string;
+  /** Portal/backend job lifecycle, e.g. `active` */
+  status?: string;
 }
 
 export interface MarketingPartner {

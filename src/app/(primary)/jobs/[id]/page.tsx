@@ -40,7 +40,16 @@ function getBenefitIcon(benefit: string) {
   return MoneyBag01Icon;
 }
 
+function isJobNotFoundError(e: unknown): boolean {
+  if (!(e instanceof JobsServiceError)) return false;
+  if (e.status === 404) return true;
+  return /not\s*found|tidak\s*ditemukan|unknown\s+job|no\s+job/i.test(e.message);
+}
+
 function formatSalary(min: number, max: number, currency: string): string {
+  if (min <= 0 && max <= 0) {
+    return "Rentang gaji dijelaskan di deskripsi / seleksi";
+  }
   if (currency === "IDR") {
     const fmt = (n: number) =>
       n >= 1_000_000
@@ -54,19 +63,22 @@ function formatSalary(min: number, max: number, currency: string): string {
 export default async function JobDetailPage({ params }: PageProps) {
   const { id } = await params;
   let job: Job;
+  try {
+    const detail = await getJob(id);
+    job = mapPortalJobToUi(detail as unknown);
+  } catch (e) {
+    if (isJobNotFoundError(e)) notFound();
+    throw e;
+  }
+
   let similarJobs: Job[] = [];
   try {
-    const [detail, similar] = await Promise.all([
-      getJob(id),
-      getSimilarJobs(id),
-    ]);
-    job = mapPortalJobToUi(detail as unknown);
+    const similar = await getSimilarJobs(id);
     similarJobs = similar
       .map((j) => mapPortalJobToUi(j as unknown))
       .slice(0, 2);
-  } catch (e) {
-    if (e instanceof JobsServiceError && e.status === 404) notFound();
-    throw e;
+  } catch {
+    similarJobs = [];
   }
 
   const postedDate = new Date(job.postedAt).toLocaleDateString("id-ID", {
@@ -127,6 +139,11 @@ export default async function JobDetailPage({ params }: PageProps) {
               <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
                 {job.sector}
               </span>
+              {job.status ? (
+                <span className="font-jakarta text-xs bg-primary/10 text-primary px-2 py-1 rounded-badge font-medium capitalize">
+                  {job.status}
+                </span>
+              ) : null}
             </div>
           </div>
 
@@ -141,7 +158,17 @@ export default async function JobDetailPage({ params }: PageProps) {
                 Deadline {deadlineDate}
               </span>
             </div>
-            <div className="flex w-full justify-end sm:w-auto sm:shrink-0">
+            <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:shrink-0 sm:items-end">
+              {job.externalJobUrl ? (
+                <Link
+                  href={job.externalJobUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-jakarta text-center text-sm font-semibold text-primary underline-offset-2 hover:underline"
+                >
+                  Lamar di portal mitra →
+                </Link>
+              ) : null}
               <ApplyButton job={job} size="default" className="w-36 max-w-full" />
             </div>
           </div>
@@ -174,53 +201,76 @@ export default async function JobDetailPage({ params }: PageProps) {
             <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
               Deskripsi Pekerjaan
             </h2>
-            <p className="font-jakarta text-sm text-ink-muted leading-relaxed">
-              {job.description}
+            <p className="font-jakarta text-sm text-ink-muted leading-relaxed whitespace-pre-line">
+              {job.description.trim() ? job.description : "Deskripsi akan ditambahkan oleh rekruter."}
             </p>
           </div>
 
           {/* Qualifications */}
-          <div className="bg-white border border-ink/10 rounded-card p-6">
-            <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
-              Kualifikasi
-            </h2>
-            <ul className="space-y-2.5">
-              {job.qualifications.map((q, idx) => (
-                <li key={idx} className="flex items-start gap-2.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                  <span className="font-jakarta text-sm text-ink-muted leading-snug">
-                    {q}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {job.qualifications.length > 0 ? (
+            <div className="bg-white border border-ink/10 rounded-card p-6">
+              <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
+                Kualifikasi
+              </h2>
+              <ul className="space-y-2.5">
+                {job.qualifications.map((q, idx) => (
+                  <li key={idx} className="flex items-start gap-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
+                    <span className="font-jakarta text-sm text-ink-muted leading-snug">
+                      {q}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {job.skillRequirements.length > 0 ? (
+            <div className="bg-white border border-ink/10 rounded-card p-6">
+              <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
+                Keahlian
+              </h2>
+              <ul className="flex flex-wrap gap-2">
+                {job.skillRequirements.map((s, idx) => (
+                  <li
+                    key={`${s.skillName}-${idx}`}
+                    className="font-jakarta text-xs font-medium text-ink-muted bg-app-bg px-3 py-1.5 rounded-full border border-ink/10"
+                  >
+                    {s.skillName}
+                    {s.requiredLevel > 0 ? ` · min. ${s.requiredLevel}%` : ""}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           {/* Subcourses panel — replaces old skill gap */}
           {job.requiredSubcourses && job.requiredSubcourses.length > 0 && (
             <SubcoursesPanel courses={job.requiredSubcourses} />
           )}
           {/* Benefits */}
-          <div className="bg-white border border-ink/10 rounded-card p-6">
-            <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
-              Fasilitas &amp; Benefit
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {job.benefits.map((benefit, idx) => {
-                const Icon = getBenefitIcon(benefit);
-                return (
-                  <div key={idx} className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-primary-light rounded-card flex items-center justify-center shrink-0">
-                      <Icon size={16} className="text-primary" />
+          {job.benefits.length > 0 ? (
+            <div className="bg-white border border-ink/10 rounded-card p-6">
+              <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
+                Fasilitas &amp; Benefit
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {job.benefits.map((benefit, idx) => {
+                  const Icon = getBenefitIcon(benefit);
+                  return (
+                    <div key={idx} className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-primary-light rounded-card flex items-center justify-center shrink-0">
+                        <Icon size={16} className="text-primary" />
+                      </div>
+                      <p className="font-jakarta text-sm text-ink-muted leading-snug pt-1">
+                        {benefit}
+                      </p>
                     </div>
-                    <p className="font-jakarta text-sm text-ink-muted leading-snug pt-1">
-                      {benefit}
-                    </p>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          ) : null}
 
           {/* About Employer */}
           <div className="bg-white border border-ink/10 rounded-card p-6">

@@ -12,13 +12,22 @@ export interface JobsListQuery {
   sortBy?: string;
 }
 
-/** Job document (kebab-case keys as in Mongo / API). Extend at call sites as needed. */
+/** Job document from portal API (Mongo-style + snake_case). */
 export interface Job {
   _id?: string;
   "job-id"?: string;
   title?: string;
   company?: string;
+  company_name?: string;
   description?: string;
+  description_intro?: string;
+  requirements_text?: string;
+  benefits_text?: string;
+  document_requirements_text?: string;
+  placement?: string | Record<string, unknown>;
+  vokati_job_url?: string;
+  status?: string;
+  skills?: unknown[];
   "posted-at"?: string;
   country?: string;
   sector?: string;
@@ -142,11 +151,96 @@ async function readPortalData<T>(res: Response): Promise<T> {
     throw new JobsServiceError(res.status, errMsg);
   }
 
-  if (envelope.status !== "ok") {
+  const rawStatus = (body as { status?: unknown }).status;
+  const okish =
+    rawStatus === "ok" ||
+    rawStatus === "OK" ||
+    rawStatus === undefined ||
+    (typeof rawStatus === "string" && rawStatus.toLowerCase() === "success");
+
+  if (!okish) {
     throw new JobsServiceError(res.status, "Unexpected response status");
   }
 
-  return (envelope as PortalOkEnvelope<T>).data;
+  if ("data" in body && body.data !== undefined) {
+    return (envelope as PortalOkEnvelope<T>).data;
+  }
+
+  // Payload at envelope root: `{ status, jobs, total-count, … }` without nested `data`
+  const { status: _st, message: _msg, ...rest } = body as Record<string, unknown>;
+  return rest as T;
+}
+
+function toFiniteNumber(value: unknown, fallback: number): number {
+  if (typeof value === "number" && Number.isFinite(value)) return value;
+  if (typeof value === "string") {
+    const n = Number(value);
+    if (!Number.isNaN(n)) return n;
+  }
+  return fallback;
+}
+
+function pickNonNegativeTotal(inner: Record<string, unknown>, jobsLen: number): number {
+  const keys = [
+    "total-count",
+    "totalCount",
+    "total_count",
+    "count",
+    "totalElements",
+    "total",
+  ] as const;
+  for (const k of keys) {
+    const n = toFiniteNumber(inner[k], NaN);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return jobsLen;
+}
+
+/**
+ * Normalizes list payload: portal contract uses `jobs` + `total-count`, but backends
+ * may use Spring Page (`content`, `totalElements`), `items`, camelCase totals, etc.
+ */
+function normalizeJobsListPayload(raw: unknown): JobsListResult {
+  if (Array.isArray(raw)) {
+    return {
+      jobs: raw as Job[],
+      "total-count": raw.length,
+      page: 1,
+      "page-size": raw.length || 10,
+    };
+  }
+  if (!isRecord(raw)) {
+    return { jobs: [], "total-count": 0, page: 1, "page-size": 10 };
+  }
+
+  const r = raw as Record<string, unknown>;
+  const nested = r.data;
+  const inner = isRecord(nested) ? nested : r;
+
+  const jobsCandidate =
+    inner.jobs ??
+    inner.items ??
+    inner.results ??
+    inner.content ??
+    (Array.isArray(nested) ? nested : undefined);
+
+  const jobs = Array.isArray(jobsCandidate) ? (jobsCandidate as Job[]) : [];
+
+  const total = pickNonNegativeTotal(inner, jobs.length);
+
+  const page = toFiniteNumber(inner.page, NaN) || toFiniteNumber(inner.number, NaN) || 1;
+  const pageSize =
+    toFiniteNumber(inner["page-size"], NaN) ||
+    toFiniteNumber(inner.pageSize, NaN) ||
+    toFiniteNumber(inner.size, NaN) ||
+    10;
+
+  return {
+    jobs,
+    "total-count": total,
+    page,
+    "page-size": pageSize,
+  };
 }
 
 /**
@@ -165,13 +259,8 @@ export async function listJobs(
     ...init,
   });
 
-  const data = await readPortalData<JobsListResult>(res);
-  return {
-    jobs: data.jobs ?? [],
-    "total-count": data["total-count"] ?? 0,
-    page: data.page ?? 1,
-    "page-size": data["page-size"] ?? 10,
-  };
+  const data = await readPortalData<unknown>(res);
+  return normalizeJobsListPayload(data);
 }
 
 /**
@@ -191,11 +280,17 @@ export async function getJob(
     ...init,
   });
 
-  const data = await readPortalData<{ job: Job }>(res);
-  if (!data.job) {
-    throw new JobsServiceError(res.status, "Missing job in response");
+  const data = await readPortalData<unknown>(res);
+  if (!isRecord(data)) {
+    throw new JobsServiceError(res.status, "Unexpected job response");
   }
-  return data.job;
+  if (data.job !== undefined && isRecord(data.job)) {
+    return data.job as Job;
+  }
+  if (data._id !== undefined || data.title !== undefined) {
+    return data as Job;
+  }
+  throw new JobsServiceError(res.status, "Missing job in response");
 }
 
 /**
@@ -215,8 +310,10 @@ export async function getSimilarJobs(
     ...init,
   });
 
-  const data = await readPortalData<{ jobs: Job[] }>(res);
-  return data.jobs ?? [];
+  const data = await readPortalData<unknown>(res);
+  if (!isRecord(data)) return [];
+  const list = data.jobs ?? data.items ?? data.results ?? data.content;
+  return Array.isArray(list) ? (list as Job[]) : [];
 }
 
 /**

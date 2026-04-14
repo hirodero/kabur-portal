@@ -1,8 +1,87 @@
 'use client'
 
 import Link from 'next/link'
-import { Notification01Icon, PreferenceHorizontalIcon, Search01Icon } from 'hugeicons-react'
+import Image from 'next/image'
+import { useRef, useState, useEffect } from 'react'
+import { Notification01Icon, PreferenceHorizontalIcon, Search01Icon, UserCircleIcon, Logout01Icon } from 'hugeicons-react'
 import { Button } from '@heroui/react'
+import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
+function UserAvatarMenu() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onClickOutside)
+    return () => document.removeEventListener('mousedown', onClickOutside)
+  }, [])
+
+  function handleClick() {
+    if (status === 'unauthenticated') {
+      router.push('/login')
+      return
+    }
+    setOpen((v) => !v)
+  }
+
+  const user = session?.user
+  const picture = user?.image
+
+  const avatarEl = picture ? (
+    <Image
+      src={picture}
+      alt={user?.name ?? 'Profile'}
+      width={32}
+      height={32}
+      className="w-8 h-8 rounded-full object-cover"
+      referrerPolicy="no-referrer"
+    />
+  ) : status === 'authenticated' ? (
+    <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-jakarta font-bold text-[10px]">
+      {user?.name ? user.name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase() : '?'}
+    </div>
+  ) : (
+    <UserCircleIcon size={32} className="text-ink-muted" strokeWidth={1.8} />
+  )
+
+  return (
+    <div ref={ref} className="relative ml-1 shrink-0">
+      <button
+        type="button"
+        aria-label="Profil"
+        onClick={handleClick}
+        className="flex items-center justify-center rounded-full hover:opacity-80 transition-opacity focus:outline-none"
+      >
+        {avatarEl}
+      </button>
+
+      {open && status === 'authenticated' && (
+        <div className="absolute right-0 top-[calc(100%+8px)] w-52 rounded-xl border border-black/10 bg-white shadow-[0_8px_24px_rgba(0,0,0,0.10)] z-50 overflow-hidden">
+          <div className="px-4 py-3 border-b border-black/8">
+            <p className="text-xs font-semibold text-ink truncate">{user?.name}</p>
+            <p className="text-[11px] text-ink-muted truncate mt-0.5">{user?.email}</p>
+          </div>
+          <button
+            type="button"
+            onClick={() => { setOpen(false); signOut({ callbackUrl: '/login' }) }}
+            className="w-full flex items-center gap-2.5 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors"
+          >
+            <Logout01Icon size={16} strokeWidth={2} />
+            Keluar
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export function AppNav() {
   function handleToggleFilters() {
@@ -60,9 +139,7 @@ export function AppNav() {
           >
             <Notification01Icon size={18} />
           </Button>
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-jakarta font-bold text-[10px] shrink-0 ml-1">
-            BS
-          </div>
+          <UserAvatarMenu />
         </div>
       </nav>
     </header>

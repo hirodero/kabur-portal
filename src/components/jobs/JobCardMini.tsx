@@ -6,6 +6,7 @@ interface JobCardMiniProps {
 }
 
 function formatSalaryShort(min: number, max: number, currency: string): string {
+  if (min <= 0 && max <= 0) return "Lihat deskripsi";
   if (currency === "IDR") {
     const fmt = (n: number) =>
       n >= 1_000_000 ? `${(n / 1_000_000).toFixed(0)}jt` : `${n}`;

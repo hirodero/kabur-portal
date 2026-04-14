@@ -23,6 +23,7 @@ import DE from "country-flag-icons/react/3x2/DE";
 import AU from "country-flag-icons/react/3x2/AU";
 import AT from "country-flag-icons/react/3x2/AT";
 import CH from "country-flag-icons/react/3x2/CH";
+import OM from "country-flag-icons/react/3x2/OM";
 
 const FLAG_MAP: Record<string, React.ComponentType<{ title?: string; className?: string }>> = {
   JP,
@@ -34,6 +35,7 @@ const FLAG_MAP: Record<string, React.ComponentType<{ title?: string; className?:
   AU,
   AT,
   CH,
+  OM,
 };
 
 interface JobCardProps {
@@ -44,7 +46,12 @@ interface JobCardProps {
   minimal?: boolean;
 }
 
+function hasSalaryRange(min: number, max: number): boolean {
+  return min > 0 || max > 0;
+}
+
 function formatSalaryFull(min: number, max: number, currency: string): string {
+  if (!hasSalaryRange(min, max)) return "Gaji — dijelaskan di deskripsi";
   if (currency === "IDR") {
     const fmt = (n: number) =>
       `Rp ${n.toLocaleString("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -54,6 +61,7 @@ function formatSalaryFull(min: number, max: number, currency: string): string {
 }
 
 function formatSalaryShort(min: number, max: number, currency: string): string {
+  if (!hasSalaryRange(min, max)) return "Lihat deskripsi";
   if (currency === "IDR") {
     const fmt = (n: number) =>
       n >= 1_000_000

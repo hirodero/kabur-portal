@@ -2,10 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 export default function AuthorizationPage() {
-  function handleMockGoogleLogin() {
-    window.location.href = "/jobs";
+  const [loading, setLoading] = useState(false);
+
+  async function handleGoogleLogin() {
+    setLoading(true);
+    await signIn("google", { callbackUrl: "/jobs" });
   }
 
   return (
@@ -25,13 +30,13 @@ export default function AuthorizationPage() {
           <h1 className="mt-2 font-jakarta text-2xl font-bold text-ink">
             Masuk ke #KaburPortal
           </h1>
-
         </div>
 
         <button
           type="button"
-          onClick={handleMockGoogleLogin}
-          className="mt-8 w-full inline-flex items-center justify-center gap-3 rounded-xl border border-black/15 bg-white px-4 py-3 text-sm font-medium text-ink hover:bg-black/5 transition-colors"
+          onClick={handleGoogleLogin}
+          disabled={loading}
+          className="mt-8 w-full inline-flex items-center justify-center gap-3 rounded-xl border border-black/15 bg-white px-4 py-3 text-sm font-medium text-ink hover:bg-black/5 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
           <Image
             src="/google-icon-flaticon.png"
@@ -41,7 +46,7 @@ export default function AuthorizationPage() {
             className="h-5 w-5"
             loading="lazy"
           />
-          Lanjutkan dengan Google
+          {loading ? "Mengarahkan..." : "Lanjutkan dengan Google"}
         </button>
 
         <p className="mt-4 text-center text-xs text-ink-muted">
