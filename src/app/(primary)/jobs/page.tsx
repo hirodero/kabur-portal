@@ -14,7 +14,7 @@ import {
 } from "@/lib/storage";
 import { useFunderMode } from "@/hooks/useFunderMode";
 import type { UserProfile, FilterState, Job } from "@/types";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Pagination } from "@/components/ui/pagination";
 import { ArrowDown01Icon } from "hugeicons-react";
 import { InfiniteMovingLogos } from "@/components/ui/infinite-moving-logos";

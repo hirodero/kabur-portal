@@ -137,6 +137,21 @@ export function isBookmarked(jobId: string): boolean {
   return getBookmarks().includes(jobId);
 }
 
+export function setBookmarkState(jobId: string, bookmarked: boolean): void {
+  const bookmarks = getBookmarks();
+  const exists = bookmarks.includes(jobId);
+  if (bookmarked && !exists) {
+    setItem(STORAGE_KEYS.BOOKMARKS, [...bookmarks, jobId]);
+    return;
+  }
+  if (!bookmarked && exists) {
+    setItem(
+      STORAGE_KEYS.BOOKMARKS,
+      bookmarks.filter((id) => id !== jobId),
+    );
+  }
+}
+
 // MP Referral
 export function getMPReferral(): MPSlug | null {
   return getItem<MPSlug>(STORAGE_KEYS.MP_REFERRAL);

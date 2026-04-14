@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { AppLayout } from "@/components/layout/AppLayout";
 
 export default function JobDetailNotFound() {

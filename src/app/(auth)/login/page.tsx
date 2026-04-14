@@ -1,12 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function AuthorizationPage() {
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/jobs");
+    }
+  }, [status, router]);
 
   async function handleGoogleLogin() {
     setLoading(true);

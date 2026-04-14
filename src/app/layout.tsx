@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "./providers";
+import { ViewTransitions } from "next-view-transitions";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -22,13 +23,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={plusJakarta.variable}>
-      <body className="antialiased">
-        <Providers>
-          {children}
-          <Toaster position="bottom-right" richColors />
-        </Providers>
-      </body>
-    </html>
+    <ViewTransitions>
+      <html lang="id" className={plusJakarta.variable}>
+        <body className="antialiased">
+          <Providers>
+            {children}
+            <Toaster position="bottom-right" richColors />
+          </Providers>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Button } from "@heroui/react";
 import { LandingNav } from "@/components/layout/LandingNav";
 import { Footer } from "@/components/layout/Footer";

@@ -1,7 +1,7 @@
 import { resolvePortalFetchUrl } from "@/lib/portal-api-client";
 import { portalApiRoutes } from "@/lib/portal-api-config";
 
-const MONGO_OBJECT_ID_HEX = /^[0-9a-f]{24}$/i;
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export interface Bookmark {
   _id: string;
@@ -35,7 +35,7 @@ export class BookmarksServiceError extends Error {
 }
 
 export function isValidBookmarkJobId(jobId: string): boolean {
-  return MONGO_OBJECT_ID_HEX.test(jobId);
+  return UUID_REGEX.test(jobId);
 }
 
 function mergeHeaders(init?: RequestInit): Headers {

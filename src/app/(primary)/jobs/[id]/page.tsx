@@ -1,13 +1,20 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { ApplyButton } from "@/components/jobs/ApplyButton";
+import { BookmarkButton } from "@/components/jobs/BookmarkButton";
 import { JobCardMini } from "@/components/jobs/JobCardMini";
 import { JobCountryFlagBadge } from "@/components/jobs/job-country-flag-badge";
 import { SubcoursesPanel } from "@/components/jobs/SubcoursesPanel";
-import { getJob, getSimilarJobs, JobsServiceError } from "@/services/jobs";
+import {
+  getJob,
+  getSimilarJobs,
+  listJobs,
+  JobsServiceError,
+} from "@/services/jobs";
 import { mapPortalJobToUi } from "@/lib/map-portal-job";
 import type { Job } from "@/types";
+import type { Job as PortalJob } from "@/services/jobs";
 import {
   ArrowRight01Icon,
   AirplaneTakeOff01Icon,
@@ -20,6 +27,35 @@ import {
 
 interface PageProps {
   params: Promise<{ id: string }>;
+}
+
+const LANGUAGE_TO_ISO: Record<string, string> = {
+  english: "gb",
+  japanese: "jp",
+  "bahasa jepang": "jp",
+  nihongo: "jp",
+  korean: "kr",
+  "bahasa korea": "kr",
+  german: "de",
+  deutsch: "de",
+  "bahasa jerman": "de",
+  french: "fr",
+  arabic: "sa",
+  mandarin: "cn",
+  chinese: "cn",
+  italian: "it",
+  spanish: "es",
+  portuguese: "pt",
+  dutch: "nl",
+  thai: "th",
+};
+
+function getLanguageIso(skillName: string): string | null {
+  const lower = skillName.toLowerCase();
+  for (const [keyword, iso] of Object.entries(LANGUAGE_TO_ISO)) {
+    if (lower.includes(keyword)) return iso;
+  }
+  return null;
 }
 
 const BENEFIT_ICONS: Record<string, typeof Home02Icon> = {
@@ -46,9 +82,26 @@ function isJobNotFoundError(e: unknown): boolean {
   return /not\s*found|tidak\s*ditemukan|unknown\s+job|no\s+job/i.test(e.message);
 }
 
+async function findJobByPathnameId(pathId: string): Promise<Job | null> {
+  const id = pathId.trim();
+  if (!id) return null;
+  const first = await listJobs({ page: 1, pageSize: 150 });
+  const rows = first.jobs as PortalJob[];
+  const matched = rows.find((row) => {
+    const raw = (row._id ?? row["job-id"] ?? "") as unknown;
+    if (typeof raw === "string" && raw === id) return true;
+    if (typeof raw === "object" && raw && "$oid" in (raw as Record<string, unknown>)) {
+      const oid = (raw as { $oid?: unknown }).$oid;
+      return typeof oid === "string" && oid === id;
+    }
+    return row["job-id"] === id;
+  });
+  return matched ? mapPortalJobToUi(matched as unknown) : null;
+}
+
 function formatSalary(min: number, max: number, currency: string): string {
   if (min <= 0 && max <= 0) {
-    return "Rentang gaji dijelaskan di deskripsi / seleksi";
+    return "";
   }
   if (currency === "IDR") {
     const fmt = (n: number) =>
@@ -67,8 +120,10 @@ export default async function JobDetailPage({ params }: PageProps) {
     const detail = await getJob(id);
     job = mapPortalJobToUi(detail as unknown);
   } catch (e) {
-    if (isJobNotFoundError(e)) notFound();
-    throw e;
+    if (!isJobNotFoundError(e)) throw e;
+    const fallback = await findJobByPathnameId(id);
+    if (!fallback) notFound();
+    job = fallback;
   }
 
   let similarJobs: Job[] = [];
@@ -79,6 +134,23 @@ export default async function JobDetailPage({ params }: PageProps) {
       .slice(0, 2);
   } catch {
     similarJobs = [];
+  }
+
+  let otherPrograms: Job[] = [];
+  try {
+    const res = await listJobs({ page: 1, pageSize: 30 });
+    const seen = new Set<string>();
+    otherPrograms = res.jobs
+      .map((item) => mapPortalJobToUi(item as unknown))
+      .filter((item) => item.id !== job.id)
+      .filter((item) => {
+        if (seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      })
+      .slice(0, 10);
+  } catch {
+    otherPrograms = [];
   }
 
   const postedDate = new Date(job.postedAt).toLocaleDateString("id-ID", {
@@ -112,39 +184,48 @@ export default async function JobDetailPage({ params }: PageProps) {
       {/* ── JOB HEADER CARD ── */}
       <div className="bg-white border border-ink/10 rounded-card p-6 mb-5">
         <div className="flex flex-col gap-4">
-          <div>
-            <p className="font-jakarta text-sm text-ink-muted flex items-center gap-2.5 mb-2">
-              <JobCountryFlagBadge job={job} />
-              <span>
-                {job.placement
-                  ? `${job.placement.city}, ${job.placement.country}`
-                  : job.country}
-              </span>
-            </p>
-            <h1 className="font-jakarta font-bold text-2xl sm:text-3xl text-ink mb-1">
-              {job.title}
-            </h1>
-            <p className="font-jakarta text-base text-ink-muted">{job.company}</p>
-
-            <div className="mt-3">
-              <p className="font-jakarta font-bold text-2xl text-primary">
-                {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-2 mt-4">
-              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
-                via {job.offTaker}
-              </span>
-              <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
-                {job.sector}
-              </span>
-              {job.status ? (
-                <span className="font-jakarta text-xs bg-primary/10 text-primary px-2 py-1 rounded-badge font-medium capitalize">
-                  {job.status}
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="font-jakarta text-sm text-ink-muted flex items-center gap-2.5 mb-2">
+                <JobCountryFlagBadge job={job} />
+                <span>
+                  {job.placement
+                    ? `${job.placement.city}, ${job.placement.country}`
+                    : job.country}
                 </span>
+              </p>
+              <h1 className="font-jakarta font-bold text-2xl sm:text-3xl text-ink mb-1">
+                {job.title}
+              </h1>
+              <p className="font-jakarta text-base text-ink-muted">{job.company}</p>
+
+              {job.salaryMin > 0 || job.salaryMax > 0 ? (
+                <div className="mt-3">
+                  <p className="font-jakarta font-bold text-2xl text-primary">
+                    {formatSalary(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+                  </p>
+                </div>
               ) : null}
+
+              <div className="flex flex-wrap gap-2 mt-4">
+                <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
+                  via {job.offTaker}
+                </span>
+                <span className="font-jakarta text-xs bg-app-bg text-ink-muted px-2 py-1 rounded-badge font-medium">
+                  {job.sector}
+                </span>
+                {job.status ? (
+                  <span className="font-jakarta text-xs bg-primary/10 text-primary px-2 py-1 rounded-badge font-medium capitalize">
+                    {job.status}
+                  </span>
+                ) : null}
+              </div>
             </div>
+            <BookmarkButton
+              localJobId={job.id}
+              backendJobId={job.backendJobId}
+              className="self-end sm:self-start"
+            />
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-ink/8">
@@ -158,15 +239,15 @@ export default async function JobDetailPage({ params }: PageProps) {
                 Deadline {deadlineDate}
               </span>
             </div>
-            <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:shrink-0 sm:items-end">
+            <div className="flex w-full items-stretch justify-end gap-2 sm:w-auto sm:shrink-0">
               {job.externalJobUrl ? (
                 <Link
                   href={job.externalJobUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-jakarta text-center text-sm font-semibold text-primary underline-offset-2 hover:underline"
+                  className="inline-flex h-10 items-center justify-center rounded-md border border-ink/20 bg-white px-4 font-jakarta text-sm font-medium text-ink hover:bg-ink/5 transition-colors"
                 >
-                  Lamar di portal mitra →
+                  Lihat Detail
                 </Link>
               ) : null}
               <ApplyButton job={job} size="default" className="w-36 max-w-full" />
@@ -230,17 +311,51 @@ export default async function JobDetailPage({ params }: PageProps) {
               <h2 className="font-jakarta font-bold text-lg text-ink mb-4">
                 Keahlian
               </h2>
-              <ul className="flex flex-wrap gap-2">
-                {job.skillRequirements.map((s, idx) => (
-                  <li
-                    key={`${s.skillName}-${idx}`}
-                    className="font-jakarta text-xs font-medium text-ink-muted bg-app-bg px-3 py-1.5 rounded-full border border-ink/10"
-                  >
-                    {s.skillName}
-                    {s.requiredLevel > 0 ? ` · min. ${s.requiredLevel}%` : ""}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex flex-wrap gap-3">
+                {job.skillRequirements.map((s, idx) => {
+                  const iso = getLanguageIso(s.skillName);
+                  const href = s.zenleapUrl ?? `https://zenleap.id/search?q=${encodeURIComponent(s.skillName)}`;
+                  return (
+                    <a
+                      key={`${s.skillName}-${idx}`}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col w-[72px] rounded-xl border border-ink/10 hover:border-primary/40 hover:shadow-md transition-all overflow-hidden cursor-pointer"
+                    >
+                      {/* Flag — fills top section edge-to-edge, no padding */}
+                      <div className="w-full h-10 overflow-hidden bg-app-bg shrink-0">
+                        {iso ? (
+                          <img
+                            src={`https://flagcdn.com/w160/${iso}.png`}
+                            alt={s.skillName}
+                            width={160}
+                            height={107}
+                            className="w-full h-full object-cover object-center"
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <span className="flex items-center justify-center w-full h-full text-2xl">
+                            🌐
+                          </span>
+                        )}
+                      </div>
+                      {/* Text — bottom 2/3 */}
+                      <div className="flex flex-col items-center gap-0.5 px-2 py-2">
+                        <span className="font-jakarta text-xs font-semibold text-ink text-center leading-tight">
+                          {s.skillName}
+                        </span>
+                        {s.requiredLevel > 0 && (
+                          <span className="font-jakarta text-[10px] text-ink-muted">
+                            min. {s.requiredLevel}%
+                          </span>
+                        )}
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
             </div>
           ) : null}
 
@@ -331,6 +446,30 @@ export default async function JobDetailPage({ params }: PageProps) {
                 <div className="space-y-3">
                   {similarJobs.map((sj) => (
                     <JobCardMini key={sj.id} job={sj} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {otherPrograms.length > 0 && (
+              <div className="bg-white border border-ink/10 rounded-card p-4">
+                <h3 className="font-jakarta font-semibold text-sm text-ink mb-3">
+                  Program Lainnya
+                </h3>
+                <div className="space-y-2.5">
+                  {otherPrograms.map((program) => (
+                    <Link
+                      key={program.id}
+                      href={`/jobs/${program.id}`}
+                      className="block rounded-lg border border-ink/10 px-3 py-2 hover:border-primary/40 hover:bg-primary/5 transition-colors"
+                    >
+                      <p className="font-jakarta text-xs font-semibold text-ink line-clamp-2">
+                        {program.title}
+                      </p>
+                      <p className="font-jakarta text-[11px] text-ink-muted mt-0.5">
+                        {program.company}
+                      </p>
+                    </Link>
                   ))}
                 </div>
               </div>

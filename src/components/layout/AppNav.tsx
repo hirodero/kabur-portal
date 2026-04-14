@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link'
+import { Link } from 'next-view-transitions'
 import Image from 'next/image'
 import { useRef, useState, useEffect } from 'react'
 import { Notification01Icon, PreferenceHorizontalIcon, Search01Icon, UserCircleIcon, Logout01Icon } from 'hugeicons-react'

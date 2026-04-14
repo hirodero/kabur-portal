@@ -1,5 +1,6 @@
 import type { Job, SkillRequirement, TermsAndConditions } from "@/types";
 import { COUNTRY_TO_ISO } from "@/types";
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function asRecord(raw: unknown): Record<string, unknown> {
   if (typeof raw !== "object" || raw === null) return {};
@@ -101,6 +102,7 @@ function parseSkillRequirements(r: Record<string, unknown>): SkillRequirement[] 
         skillName,
         requiredLevel: pickNumber(o, ["required-level", "requiredLevel", "level"], 0),
         userLevel: pickNumber(o, ["user-level", "userLevel"], 0),
+        zenleapUrl: pickString(o, ["zenleap_url", "zenleapUrl"]) || undefined,
       });
     }
     if (out.length > 0) break;
@@ -190,6 +192,14 @@ function pickJobId(r: Record<string, unknown>): string {
   return "unknown";
 }
 
+function pickBackendJobId(r: Record<string, unknown>): string | undefined {
+  for (const key of ["id", "_id", "uuid"]) {
+    const raw = r[key];
+    if (typeof raw === "string" && UUID_REGEX.test(raw)) return raw;
+  }
+  return undefined;
+}
+
 /**
  * Maps a portal `GET /jobs` or `GET /jobs/:id` document (kebab-case / mixed) into UI `Job`.
  */
@@ -227,6 +237,7 @@ export function mapPortalJobToUi(raw: unknown): Job {
 
   return {
     id,
+    backendJobId: pickBackendJobId(r),
     title: pickString(r, ["title"], "Lowongan"),
     company: pickString(
       r,

@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Location01Icon, CreditCardIcon, Briefcase01Icon, Search01Icon } from "hugeicons-react";
 import { COUNTRY_TO_ISO } from "@/types";
 import type { Job } from "@/types";
 import { useState } from "react";
+import { BookmarkButton } from "@/components/jobs/BookmarkButton";
 
 const OFFTAKER_LOGOS: Record<string, string> = {
   APJATI: "/apjati-logo.png",
@@ -129,55 +130,62 @@ export function JobCard({
 
   if (isBar) {
     return (
-      <Link href={`/jobs/${job.id}`} className="block group min-w-0">
-        <motion.article
-          className="bg-white border border-ink/15 rounded-xl px-4 py-3 min-w-0 flex flex-row items-center gap-3 sm:gap-4 border-l-4 border-l-primary shadow-sm"
-          whileHover={{
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(200, 16, 46, 0.06)",
-            transition: { duration: 0.2, ease: "easeOut" },
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          {/* Left: flag + country, salary below */}
-          <div className="flex flex-col gap-1 shrink-0">
-            <span className="flex items-center gap-2">
-              {FlagIcon ? (
-                <span className="relative block w-10 h-6 rounded-md border border-ink/20 overflow-hidden shrink-0">
-                  <span className="absolute inset-0 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:w-full [&>svg]:h-full [&>svg]:scale-125 [&>svg]:block">
-                    <FlagIcon title={job.country} className="w-full h-full" />
+      <div className="relative">
+        <BookmarkButton
+          localJobId={job.id}
+          backendJobId={job.backendJobId}
+          className="absolute right-3 top-3 z-10"
+        />
+        <Link href={`/jobs/${job.id}`} className="block group min-w-0">
+          <motion.article
+            className="bg-white border border-ink/15 rounded-xl px-4 py-3 pr-14 min-w-0 flex flex-row items-center gap-3 sm:gap-4 border-l-4 border-l-primary shadow-sm"
+            whileHover={{
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(200, 16, 46, 0.06)",
+              transition: { duration: 0.2, ease: "easeOut" },
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            {/* Left: flag + country, salary below */}
+            <div className="flex flex-col gap-1 shrink-0">
+              <span className="flex items-center gap-2">
+                {FlagIcon ? (
+                  <span className="relative block w-10 h-6 rounded-md border border-ink/20 overflow-hidden shrink-0">
+                    <span className="absolute inset-0 [&>svg]:absolute [&>svg]:inset-0 [&>svg]:w-full [&>svg]:h-full [&>svg]:scale-125 [&>svg]:block">
+                      <FlagIcon title={job.country} className="w-full h-full" />
+                    </span>
                   </span>
-                </span>
-              ) : (
-                <span className="text-sm">{job.countryFlag}</span>
-              )}
-              <span className="text-sm font-medium text-ink hidden sm:inline">{job.country}</span>
-            </span>
-            <p className="font-jakarta font-bold text-sm text-primary">
-              {formatSalaryShort(job.salaryMin, job.salaryMax, job.salaryCurrency)}
-              <span className="text-[10px] font-medium text-ink/70 ml-0.5">/bln</span>
-            </p>
-          </div>
-
-          {/* Center: title + company, off-taker, sector */}
-          <div className="flex-1 min-w-0 flex flex-row flex-wrap items-center gap-2 sm:gap-3">
-            <div className="min-w-0 flex-1 basis-0 sm:basis-auto">
-              <h3 className="font-jakarta font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
-                {job.title}
-              </h3>
-              <p className="text-xs text-ink-muted truncate">{job.company} · via {job.offTaker}</p>
+                ) : (
+                  <span className="text-sm">{job.countryFlag}</span>
+                )}
+                <span className="text-sm font-medium text-ink hidden sm:inline">{job.country}</span>
+              </span>
+              <p className="font-jakarta font-bold text-sm text-primary">
+                {formatSalaryShort(job.salaryMin, job.salaryMax, job.salaryCurrency)}
+                <span className="text-[10px] font-medium text-ink/70 ml-0.5">/bln</span>
+              </p>
             </div>
-            <OffTakerBadge offTaker={job.offTaker} size="sm" />
-            <span className="text-[11px] text-ink-muted bg-ink/5 px-2 py-1 rounded-badge font-medium shrink-0 hidden lg:inline">
-              {job.sector}
-            </span>
-          </div>
 
-          {/* Right: arrow */}
-          <span className="inline-flex items-center justify-center font-jakarta text-xs font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-2.5 py-1 transition-colors shrink-0">
-            →
-          </span>
-        </motion.article>
-      </Link>
+            {/* Center: title + company, off-taker, sector */}
+            <div className="flex-1 min-w-0 flex flex-row flex-wrap items-center gap-2 sm:gap-3">
+              <div className="min-w-0 flex-1 basis-0 sm:basis-auto">
+                <h3 className="font-jakarta font-bold text-sm text-ink leading-snug truncate group-hover:text-primary transition-colors">
+                  {job.title}
+                </h3>
+                <p className="text-xs text-ink-muted truncate">{job.company} · via {job.offTaker}</p>
+              </div>
+              <OffTakerBadge offTaker={job.offTaker} size="sm" />
+              <span className="text-[11px] text-ink-muted bg-ink/5 px-2 py-1 rounded-badge font-medium shrink-0 hidden lg:inline">
+                {job.sector}
+              </span>
+            </div>
+
+            {/* Right: arrow */}
+            <span className="inline-flex items-center justify-center font-jakarta text-xs font-semibold text-primary bg-primary/5 hover:bg-primary/10 border border-primary/20 rounded-lg px-2.5 py-1 transition-colors shrink-0">
+              →
+            </span>
+          </motion.article>
+        </Link>
+      </div>
     );
   }
 
@@ -196,6 +204,11 @@ export function JobCard({
         }}
         transition={{ duration: 0.2 }}
       >
+        <BookmarkButton
+          localJobId={job.id}
+          backendJobId={job.backendJobId}
+          className="absolute top-3 right-3 z-20"
+        />
         {/* Card body */}
         <div className="flex flex-col flex-1 p-5">
           {/* Flag + company row */}
@@ -222,6 +235,9 @@ export function JobCard({
               </span>
             </div>
           </div>
+
+          {/* Separator */}
+          <div className="border-t border-ink/10 mb-4 -mx-5" />
 
           {/* Detail rows */}
           <div className="flex flex-col gap-2.5 flex-1">
@@ -268,7 +284,7 @@ export function JobCard({
           </span>
         </div>
 
-        {/* Hover overlay — glass blur with CTAs */}
+        {/* Hover overlay — glass blur covering only the bottom 2/3 */}
         <AnimatePresence>
           {hovered && (
             <motion.div
@@ -276,11 +292,12 @@ export function JobCard({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
-              className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-2xl"
+              className="absolute left-0 right-0 bottom-0 flex flex-col items-center justify-center gap-3 rounded-b-2xl"
               style={{
+                top: "33%",
                 backdropFilter: "blur(6px)",
                 WebkitBackdropFilter: "blur(6px)",
-                background: "rgba(255,255,255,0.55)",
+                background: "linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 18%, rgba(255,255,255,0.85) 100%)",
               }}
             >
               <Link

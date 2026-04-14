@@ -2,6 +2,7 @@ export interface SkillRequirement {
   skillName: string;
   requiredLevel: number; // 0–100
   userLevel: number; // mock user's current level
+  zenleapUrl?: string;
 }
 
 /** ISO 3166-1 alpha-2 country code for flag display */
@@ -35,6 +36,8 @@ export interface TermsAndConditions {
 
 export interface Job {
   id: string;
+  /** Mongo ObjectId `_id` for bookmark/apply endpoints when provided by backend */
+  backendJobId?: string;
   title: string;
   company: string;
   offTaker: "APJATI" | "Vokati" | "BINAWAN" | "Mitra Kerja Nusantara";
