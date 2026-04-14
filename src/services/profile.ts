@@ -1,4 +1,4 @@
-import { portalApiPath } from "@/lib/portal-api-client";
+import { resolvePortalFetchUrl } from "@/lib/portal-api-client";
 import { portalApiRoutes } from "@/lib/portal-api-config";
 
 /** Profile document (kebab-case + merged `role`; extend as fields stabilize). */
@@ -54,7 +54,7 @@ async function portalFetch(path: string, init?: RequestInit): Promise<Response> 
     typeof init?.body === "string" &&
     (method === "POST" || method === "PUT" || method === "PATCH");
 
-  return fetch(portalApiPath(path), {
+  return fetch(resolvePortalFetchUrl(path), {
     ...init,
     credentials: "include",
     headers: mergeHeaders(init, hasJsonStringBody),

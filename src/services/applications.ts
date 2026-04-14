@@ -1,4 +1,4 @@
-import { portalApiPath } from "@/lib/portal-api-client";
+import { resolvePortalFetchUrl } from "@/lib/portal-api-client";
 import { portalApiRoutes } from "@/lib/portal-api-config";
 
 const MONGO_OBJECT_ID_HEX = /^[0-9a-f]{24}$/i;
@@ -40,7 +40,7 @@ function mergeHeaders(init?: RequestInit): Headers {
 }
 
 async function portalFetch(path: string, init?: RequestInit): Promise<Response> {
-  return fetch(portalApiPath(path), {
+  return fetch(resolvePortalFetchUrl(path), {
     ...init,
     credentials: "include",
     headers: mergeHeaders(init),

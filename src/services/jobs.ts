@@ -1,4 +1,4 @@
-import { portalApiPath } from "@/lib/portal-api-client";
+import { resolvePortalFetchUrl } from "@/lib/portal-api-client";
 import { portalApiRoutes } from "@/lib/portal-api-config";
 
 /** Query for `GET /portal-api/v1/jobs` — all optional. */
@@ -63,7 +63,7 @@ function mergeHeaders(init?: RequestInit): Headers {
 }
 
 async function portalFetch(path: string, init?: RequestInit): Promise<Response> {
-  return fetch(portalApiPath(path), {
+  return fetch(resolvePortalFetchUrl(path), {
     ...init,
     credentials: "include",
     headers: mergeHeaders(init),
